@@ -52,10 +52,7 @@ with open('/home/ischmidt/cbbLogin.txt','r') as imp_file:
 
 r.login(username,password,disable_warning=True) #login to bot account
 url="http://www.espn.com/ncb/bottomline/scores" #url for espn bottom line scores
-#with urllib.request.urlopen(url) as response, open ('game_list.html','wb') as out_file:
- # shutil.copyfileobj(response, out_file)
-#thread=r.submit("cbbBotTest","Can this bot post?",text="damn right it can",send_replies="False")
-#thread_id=thread.short_link[15:]
+
 thread=r.get_submission(submission_id='5ctg2v') #get thread to edit
 thread.edit(datetime.datetime.now()) #edit same thread with current timestamp; let's me know that the bot is running
 
