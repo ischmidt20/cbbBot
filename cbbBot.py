@@ -9,7 +9,6 @@ import cbbBot_func
 import pytz
 
 tz=pytz.timezone('US/Eastern')
-time_1=pytz.utc.localize(datetime.datetime.now()).astimezone(tz)
 
 tv_flairs={'BTN':'[Big Ten Network](#f/btn)','CBS':'[CBS](#f/cbs)','CBSSN':'[CBS Sports Network](#f/cbssn)','ESPN':'[ESPN](#f/espn)','ESPN2':'[ESPN2](#f/espn2)','ESPN3':'[ESPN3](#f/espn3)','ESPNU':'[ESPNU](#f/espnu)','FOX':'[Fox](#f/fox)','FS1':'[Fox Sports 1](#f/fs1)','FSN':'[Fox Sports Network](#f/fsn)','Longhorn Network':'[Longhorn Network](#f/lhn)','NBC':'[NBC](#f/nbc)','NBCSN':'[NBC Sports Network](#f/nbcsn)','PAC12':'[Pac-12 Network](#f/p12n)','SECN':'[SEC Network](#f/secn)','TBS':'[TBS](#f/tbs)','TNT':'[TNT](#f/tnt)','truTV':'[truTV](#f/trutv)'}
 
@@ -213,6 +212,3 @@ with open('/home/ischmidt/cbbBot/games_to_write.txt','w') as f:
         else: #if we have to wait, write old same to file
           f.write(game[0]+',True,False,0\n')
           print('Game '+game[0]+' will be posted ~60 minutes before game time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-time_2=pytz.utc.localize(datetime.datetime.now()).astimezone(tz)
-with open('/home/ischmidt/cbbBot/times.txt','a') as f:
-  f.write(str(time_2-time_1)+'\n')
