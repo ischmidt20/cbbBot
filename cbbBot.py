@@ -98,7 +98,7 @@ def make_thread(game_id,permalink='http://www.reddit.com/r/CFB/comments/wn9uj/le
   return title,thread
 
 try:
-  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v2.2") #define praw and user agent, login
+  r = praw.Reddit(client_id="yixQbUFcDcZVSQ",client_secret="-EH4dR9bNu0mJmBSftwWhPrHthU",username="cbbBot",password="ILoveCBB1",user_agent="CBB Bot v2.2") #define praw and user agent, login
   print('Logged in to Reddit! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 except:
   print('Failed to login to Reddit. Shutting down..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
@@ -218,6 +218,7 @@ with open('/home/ischmidt/cbbBot/games_to_write.txt','w') as f:
             try:
               (title,thread_text)=make_thread(game[0])
               thread=r.subreddit('CollegeBasketball').submit(title=title,selftext=thread_text,send_replies=False)
+              thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
               thread_id=thread.id
               f.write(game[0]+',True,True,'+thread_id+'\n')
               print('Posted game thread '+game[0]+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
