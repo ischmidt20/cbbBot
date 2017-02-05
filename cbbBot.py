@@ -98,7 +98,7 @@ def make_thread(game_id,permalink='http://www.reddit.com/r/CFB/comments/wn9uj/le
   return title,thread
 
 try:
-  r = praw.Reddit(client_id="yixQbUFcDcZVSQ",client_secret="-EH4dR9bNu0mJmBSftwWhPrHthU",username="cbbBot",password="ILoveCBB1",user_agent="CBB Bot v2.2") #define praw and user agent, login
+  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v2.2") #define praw and user agent, login
   print('Logged in to Reddit! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 except:
   print('Failed to login to Reddit. Shutting down..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
