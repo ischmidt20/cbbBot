@@ -3,7 +3,6 @@ import urllib.request
 import shutil
 import os
 import time
-import cbbBot_newday2
 import datetime
 import cbbBot_func
 import pytz
@@ -25,7 +24,7 @@ except:
 def get_info(game_id):
   print('Getting game info for '+game_id+'..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
   try:
-    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,hour,minute,game_time,away_score,home_score)=cbbBot_func.espn(game_id)
+    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,game_time,away_score,home_score)=cbbBot_func.espn(game_id)
     ranking=cbbBot_func.get_rcbb_rank()
     away_rank,home_rank='','' #clear ESPN rank values
     if away_team in ranking: #see if Reddit ranked
@@ -39,17 +38,17 @@ def get_info(game_id):
     if home_team in teams.keys():
       home_flair=teams[home_team]
     print('Obtained game info for '+game_id+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-    return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,hour,minute,away_flair,home_flair,game_time,away_score,home_score
+    return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score
   except:
     print('Failed to get game info for '+game_id+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 
-def make_thread(game_id,permalink='http://www.reddit.com/r/CFB/comments/wn9uj/lets_discuss_game_threads_come_fall/c5esw1u'):
-  try:
-    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,hour,minute,away_flair,home_flair,game_time,away_score,home_score)=get_info(game_id)
-    print('Making thread '+game_id+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-  except:
-    print('Failed to make thread for '+game_id+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-    return ''
+def make_thread(away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score,permalink=''):
+  #try:
+  #  (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score)=get_info(game_id)
+  #  print('Making thread '+game_id+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+  #except:
+  #  print('Failed to make thread for '+game_id+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+  #  return ''
   if game_time!='':
     away_score,home_score,game_time='**'+str(away_score)+'**','**'+str(home_score)+'**','- **'+game_time+'**'
   if away_flair=='':
@@ -98,7 +97,7 @@ def make_thread(game_id,permalink='http://www.reddit.com/r/CFB/comments/wn9uj/le
   return title,thread
 
 try:
-  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v2.2") #define praw and user agent, login
+  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v3") #define praw and user agent, login
   print('Logged in to Reddit! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 except:
   print('Failed to login to Reddit. Shutting down..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
@@ -113,34 +112,16 @@ except:
 
 hour,minute=pytz.utc.localize(datetime.datetime.now()).astimezone(tz).hour,pytz.utc.localize(datetime.datetime.now()).astimezone(tz).minute
 
-if hour==5 and minute==0: #if 5:00 AM, get the games for that day
-  try:
-    os.remove('/home/ischmidt/cbbBot/games_to_write.txt')
-  except:
-    pass
+if hour==10 and minute==2: #if 10:02, automatically add top 25 games
   print('Gathering games for new day ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
   try:
-    cbbBot_newday2.part1()
+    os.system('python3 cbbBot_newday2.py')
     print('Gathered games for new day! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
   except:
     print('Failed to gather games for new day. Will continue ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-    
-if hour==10 and minute==2: #if 10:02 AM, automatically schedule Top 25 games
-  print('Scheduling Top 25 games ...... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-  try:
-    cbbBot_newday2.part2()
-    print('Scheduled any Top 25 games for today! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-  except:
-    print('Failed to schedule Top 25 games. Will continue ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-  
-with open('/home/ischmidt/cbbBot/games_to_write.txt','r') as imp_file:
-  games=imp_file.readlines() #get all games from today
 
-game_ids=[]
 requested_games=[]
 blacklist=[]
-for game in games:
-  game_ids.append(game.split(',')[0]) #get list of ESPN game IDs
 
 stoppers=['Ike348','1hive']
 try:
@@ -149,7 +130,7 @@ try:
     body=message.body
     subject=message.subject
     if isinstance(message, Message):
-      if subject.lower()=='request' and body in game_ids: #if message is a game request
+      if subject.lower()=='request' and len(body)==9: #if message is a game request
         requested_games.append(body) #add game to queue
         message.reply('Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.')
         print('Added game '+body+' to queue! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
@@ -157,7 +138,7 @@ try:
         blacklist.append(body)
         message.reply('No game thread will be created for '+body+'!')
       else:
-        message.reply('Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question about the bot, please drop u/Ike348 a message.')
+        message.reply('Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question/comment about the bot, please send to u/Ike348.')
     message.mark_read()
 
 except:
@@ -166,68 +147,62 @@ except:
 with open('/home/ischmidt/cbbBot/blacklist.txt','a') as f: #add blacklisted games to file
   for game in blacklist:
     f.write(game+'\n')
-
+    print('Bot will not write game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz))) 
+    
 with open('/home/ischmidt/cbbBot/blacklist.txt','r') as imp_file: #get all blacklisted games from file
   lines=imp_file.readlines()
 blacklist=[]
 for line in lines:
   blacklist.append(line.replace('\n',''))
-  
-os.remove('/home/ischmidt/cbbBot/games_to_write.txt') #delete file, will be re-written
-with open('/home/ischmidt/cbbBot/games_to_write.txt','w') as f:
-  for game in games:
-    if (game.split(',')[0]) not in requested_games or game.split(',')[1]=='True': #if game hasn't been newly requested, write same line
-      f.write(game)
-    if (game.split(',')[0]) in requested_games and game.split(',')[1]=='False': #if game has been newly requested, change request to True
-      f.write(game.split(',')[0]+',True,False,0\n')
-      print('Bot knows to write game '+game.split(',')[0]+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+
+with open('/home/ischmidt/cbbBot/games_to_write.txt','a') as f: #add requested games to list of games to make
+  for game in requested_games:
+    f.write(game+'\n')
+    print('Bot knows to write game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+
+print('Checking which games have already been posted..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+already_posted={}
+for post in r.redditor('cbbBot').submissions.new(limit=1000): #see which games already have threads
+  if post.subreddit=='CollegeBasketball':
+    game_id=post.selftext[post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=')+56:post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=')+65]
+    already_posted[game_id]=post.id
+
+games_over=[]
+with open('cbbBot/games_over.txt','r') as imp_file: #see which games are already over
+  lines=imp_file.readlines()
+for line in lines:
+  games_over.append(line.replace('\n','')) 
 
 with open('/home/ischmidt/cbbBot/games_to_write.txt','r') as imp_file: #get day's games from newday script
   games=imp_file.readlines()
-
-os.remove('/home/ischmidt/cbbBot/games_to_write.txt') #delete file, will be re-written
-
-with open('/home/ischmidt/cbbBot/games_to_write.txt','w') as f:
-  print('Checking games..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-  for game in games:
-    game=game.replace('\n','').split(',') #turn line into list (espn_game_id,to post,posted,thread_id)
-    if game[1]=='False':
-      f.write(game[0]+',False,False,0\n') #if the game won't be posted, write same thing
-      #print('Game '+game[0]+' is not slated to be posted. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-    if game[1]=='True':
-      if game[2]=='True': #if already posted, just write same info to file, this is where threads will be edited later
-        f.write(game[0]+',True,True,'+game[3]+'\n')
+  
+print('Checking games..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+for game in games:
+  game=game.replace('\n','')
+  if game not in games_over:
+    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score)=get_info(game)
+    sked_time=pytz.utc.localize(datetime.datetime.now()).astimezone(tz).replace(month=month,day=day,hour=hour,minute=minute)
+    if game not in already_posted.keys():
+      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>(sked_time-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+        print('Posting game '+game+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
         try:
-          thread=r.submission(id=game[3]) #find already posted thread
-          permalink='http://www.reddit-stream.com'+thread.permalink
-          (title,thread_text)=make_thread(game[0],permalink) #re-write thread
-          thread.edit(thread_text) #edit thread
-          print('Edited thread '+game[0]+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+          (title,thread_text)=make_thread(away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score)
+          thread=r.subreddit('CollegeBasketball').submit(title=title,selftext=thread_text,send_replies=False)
+          thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
+          print('Posted game thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
         except:
-          print('Failed to edit thread '+game[0]+'. Will continue..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-      if game[2]=='False': #if game not yet posted
-        try:
-          (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,hour,minute,away_flair,home_flair,game_time,away_score,home_score)=get_info(game[0])
-
-          if hour<4: #if game is early in the morning, make sure game time is next day
-            sked_time=(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)+datetime.timedelta(1)).replace(hour=hour,minute=minute)
-          else:
-            sked_time=pytz.utc.localize(datetime.datetime.now()).astimezone(tz).replace(hour=hour,minute=minute)
-          if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>(sked_time-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game[0] not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
-            print('Posting game '+game[0]+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-            try:
-              (title,thread_text)=make_thread(game[0])
-              thread=r.subreddit('CollegeBasketball').submit(title=title,selftext=thread_text,send_replies=False)
-              thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
-              thread_id=thread.id
-              f.write(game[0]+',True,True,'+thread_id+'\n')
-              print('Posted game thread '+game[0]+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-            except:
-              f.write(game[0]+',True,False,0\n')
-              print('Failed to post game '+game[0]+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-          else: #if we have to wait, write old same to file
-            f.write(game[0]+',True,False,0\n')
-            print('Game '+game[0]+' will not be posted at this time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-        except:
-          f.write(game[0]+',True,False,0\n')  
-          print('Failed to check game '+game[0]+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+          print('Failed to post game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+      else:
+        print('Game '+game+' will not be posted at this time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))  
+    else:
+      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>sked_time+datetime.timedelta(hours=6):
+        with open('cbbBot/games_over.txt','a') as f:
+          f.write(game+'\n')
+      try:
+        thread=r.submission(id=already_posted[game]) #find already posted thread
+        permalink='http://www.reddit-stream.com'+thread.permalink
+        (title,thread_text)=make_thread(away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score,permalink) #re-write thread
+        thread.edit(thread_text) #edit thread
+        print('Edited thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+      except:
+        print('Failed to edit thread '+game+'. Will continue..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))

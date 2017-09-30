@@ -132,16 +132,17 @@ def espn(game_id):
     if '</article>' in line:
       lookup=False
 
-
+  month=int(time_of_game[5:7])
+  day=int(time_of_game[8:10])
   hour=(int(time_of_game[11:13])+19)%24
   minute=int(time_of_game[14:16])
 
   game_time='' 
   for line in lines:
-    if 'class="game-time">' in line:
-      gt_begin=line.find('class="game-time">')
+    if 'class="game-time' in line:
+      gt_begin=line.find('class="game-time')
       gt_end=line.find('</span>',gt_begin)
-      game_time=line[gt_begin+18:gt_end]
+      game_time=line[gt_begin+32:gt_end]
       break
   game_time=game_time.replace(' Half','').replace(' - ',' ').upper()
   
@@ -163,4 +164,4 @@ def espn(game_id):
       break
     
   os.remove('cbbBot/'+game_id+'.html')
-  return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,hour,minute,game_time,away_score,home_score
+  return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,game_time,away_score,home_score
