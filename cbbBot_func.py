@@ -3,35 +3,21 @@ import urllib.request
 import shutil
 import os
 import re
-
-def similar(team):
-  teams=get_teams()
-  for name in teams.keys():
-    if name==team:
-      return name
-  for name in teams.keys():
-    if name.replace('State','St.')==team or name.replace('State','St')==team or team.replace('State','St.')==name or team.replace('State','St')==name or team.replace('St.','St')==name or name.replace('St.','')==team:
-      return name
-  for name in teams.keys():
-    if name.replace('-',' ')==team or team.replace(' ','-')==name:
-      return name
-  for name in teams.keys():
-    if name.replace('Saint','St.')==team or name.replace('Saint','St')==team or team.replace('Saint','St.')==name or team.replace('Saint','St')==name or team.replace('St.','St')==name or name.replace('St.','')==team:
-      return name
-  for name in teams.keys():
-    if name in team or team in name:
-      return name
-
+import datetime
+  
 def get_teams():
   with open('cbbBot/team_list.txt','r') as imp_file:
     lines=imp_file.readlines()
-  teams={}
+  flairs={}
+  rank_names={}
   for line in lines:
-    (team,flair)=line.replace('\n','').split(',')
-    teams[team]=flair
-  return teams
+    (team,flair,rank_name)=line.replace('\n','').split(',')
+    flairs[team]=flair
+    rank_names[rank_name]=team
+  return flairs,rank_names
 
 def get_rcbb_rank():
+  (flairs,rank_names)=get_teams()
   url='http://cbbpoll.com/'
   with urllib.request.urlopen(url) as response, open ('cbbBot/ranking.html', 'wb') as out_file:
     shutil.copyfileobj(response, out_file)
@@ -45,6 +31,7 @@ def get_rcbb_rank():
 
   for line in lines:
     if "<td><span class='team-name'>" in line:
+      team_rank=lines[lines.index(line)-1].replace('<td>','').replace('</td>','')
       line=line.replace('&#39;',"'").replace('&#38;','&')
       begin=line.find('></span>')
       end=line.find('</span></td>')
@@ -53,12 +40,11 @@ def get_rcbb_rank():
         if vote in team:
           team=team.replace(vote,'')
           break
-      ranking.append(team)
+      ranking.append(rank_names[team.replace('&amp;','&')]+','+str(int(team_rank)))
   os.remove('cbbBot/ranking.html')
-  teams_similar=[]
-  for team in ranking:
-    teams_similar.append(similar(team))
-  return teams_similar
+  with open('cbbBot/ranking.txt','w') as f:
+    for team in ranking:
+      f.write(team+'\n')
 
 def espn(game_id):
   url='http://www.espn.com/mens-college-basketball/game?gameId='+game_id
@@ -78,7 +64,8 @@ def espn(game_id):
   ht_begin=home_info.find('<span class="long-name">')
   ht_end=home_info.find('<',ht_begin+1)
   home_team=home_info[ht_begin+24:ht_end]
-  
+
+  #away_team,home_team=similar(away_team),similar(home_team)
   if info.find('<span class="rank">')==-1:
     away_rank,home_rank='',''
   else:
@@ -131,18 +118,16 @@ def espn(game_id):
         
     if '</article>' in line:
       lookup=False
-
-  month=int(time_of_game[5:7])
-  day=int(time_of_game[8:10])
-  hour=(int(time_of_game[11:13])+19)%24
-  minute=int(time_of_game[14:16])
-
+  
+  time_of_game=datetime.datetime.strptime(time_of_game,'%Y-%m-%dT%H:%MZ')-datetime.timedelta(hours=5)
+  
   game_time='' 
   for line in lines:
     if 'class="game-time' in line:
-      gt_begin=line.find('class="game-time')
+      gt_begin=line.find('>',line.find('<span class="game-time'))
       gt_end=line.find('</span>',gt_begin)
-      game_time=line[gt_begin+32:gt_end]
+      game_time=line[gt_begin+1:gt_end]
+      game_time=game_time.replace('<span class="status-detail">','')
       break
   game_time=game_time.replace(' Half','').replace(' - ',' ').upper()
   
@@ -164,4 +149,4 @@ def espn(game_id):
       break
     
   os.remove('cbbBot/'+game_id+'.html')
-  return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,game_time,away_score,home_score
+  return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score

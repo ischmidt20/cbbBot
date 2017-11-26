@@ -44,7 +44,11 @@ while '<tr class' in line:
 
 os.remove('schedule.html')
 
-ranking=cbbBot_func.get_rcbb_rank()
+with open('cbbBot/ranking.txt','r') as imp_file:
+  lines=imp_file.readlines()
+ranking=[]
+for line in lines:
+  ranking.append(line.replace('\n','').split(',')[0])
 
 games_added=[]
 with open('/home/ischmidt/cbbBot/games_to_write.txt','r') as f:
