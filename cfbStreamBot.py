@@ -8,7 +8,7 @@ import praw
 
 tz=pytz.timezone('US/Eastern')
 
-r=praw.Reddit(client_id='wa8L2PyY12DSHg',client_secret='yqH47YE8uHow_SpmRXTB5JbaDbo',username='cfbStreamBot',password='FuckESPN1',user_agent='CFB Stream Bot 1.0')
+r=praw.Reddit(client_id='',client_secret='',username='cfbStreamBot',password='',user_agent='CFB Stream Bot 1.0')
 
 def get_info(game_id):
   url='http://www.espn.com/college-football/game?gameId='+game_id
