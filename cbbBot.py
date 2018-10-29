@@ -1,11 +1,12 @@
 #!/Usr/bin/python3
 import urllib.request
-import shutil
 import os
-import time
 import datetime
 import cbbBot_func
 import pytz
+
+dir='/home/ischmidt/'
+#dir=''
 
 tz=pytz.timezone('US/Eastern')
 
@@ -48,7 +49,7 @@ def get_info(game_id):
   except:
     print('Failed to get game info for '+game_id+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 
-def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,permalink=''):
+def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,comment_stream_link=''):
   #try:
   #  (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score)=get_info(game_id)
   #  print('Making thread '+game_id+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
@@ -94,7 +95,7 @@ def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home
   if network in tv_stream_links.keys():
     thread=thread+tv_stream_links[network]+'\n'
   espn_link='http://www.espn.com/mens-college-basketball/game?gameId='+game_id
-  thread=thread+"r/ncaaBBallStreams\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN]("+espn_link+") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Turning comment sort to 'new' will help you see the newest posts.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [ReloadEvery](https://addons.mozilla.org/en-US/firefox/addon/115/) to auto-refresh this tab.\n\n- You may also like [reddit stream]("+permalink+") to keep up with comments.\n\n- [Follow @redditCBB](https://twitter.com/redditCBB) on twitter for news, updates, and bad attempts at humor.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
+  thread=thread+"r/ncaaBBallStreams\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN]("+espn_link+") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Turning comment sort to 'new' will help you see the newest posts.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [ReloadEvery](https://addons.mozilla.org/en-US/firefox/addon/115/) to auto-refresh this tab.\n\n- You may also like [reddit stream]("+comment_stream_link+") to keep up with comments.\n\n- [Follow @redditCBB](https://twitter.com/redditCBB) on twitter for news, updates, and bad attempts at humor.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
   #thread=thread+"\n\n\n**Subscribe to these communities** \n\n"
   #away_sub='r/AwayTeam'
   #home_sub='r/HomeTeam'
@@ -104,7 +105,7 @@ def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home
   return title,thread
 
 try:
-  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v3") #define praw and user agent, login
+  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v3.1") #define praw and user agent, login
   print('Logged in to Reddit! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 except:
   print('Failed to login to Reddit. Shutting down..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
@@ -133,7 +134,7 @@ blacklist=[]
 
 stoppers=['Ike348','1hive']
 try:
-  print('Checking mail..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz))) 
+  print('Checking mail..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
   for message in r.inbox.unread(): #look for requests
     body=message.body
     subject=message.subject
@@ -152,21 +153,21 @@ try:
 except:
   print('Could not check messages. Will continue. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 
-with open('/home/ischmidt/cbbBot/games_to_write.txt','r') as imp_file: #get day's games from newday script
+with open(dir+'cbbBot/games_to_write.txt','r') as imp_file: #get day's games from newday script
     games=imp_file.readlines()
 
-with open('/home/ischmidt/cbbBot/blacklist.txt','a') as f: #add blacklisted games to file
+with open(dir+'cbbBot/blacklist.txt','a') as f: #add blacklisted games to file
   for game in blacklist:
     f.write(game+'\n')
-    print('Bot will not write game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz))) 
-    
-with open('/home/ischmidt/cbbBot/blacklist.txt','r') as imp_file: #get all blacklisted games from file
+    print('Bot will not write game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+
+with open(dir+'cbbBot/blacklist.txt','r') as imp_file: #get all blacklisted games from file
   lines=imp_file.readlines()
 blacklist=[]
 for line in lines:
   blacklist.append(line.replace('\n',''))
 
-with open('/home/ischmidt/cbbBot/games_to_write.txt','a') as f: #add requested games to list of games to make
+with open(dir+'cbbBot/games_to_write.txt','a') as f: #add requested games to list of games to make
   for game in requested_games:
     if game+'\n' not in games:
       f.write(game+'\n')
@@ -183,8 +184,8 @@ games_over=[]
 with open('cbbBot/games_over.txt','r') as imp_file: #see which games are already over
   lines=imp_file.readlines()
 for line in lines:
-  games_over.append(line.replace('\n','')) 
-  
+  games_over.append(line.replace('\n',''))
+
 print('Checking games..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 
 for game in games:
@@ -192,7 +193,7 @@ for game in games:
   if game not in games_over:
     (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)=get_info(game)
     if game not in already_posted.keys():
-      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz).replace(tzinfo=None)>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
         print('Posting game '+game+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
         try:
           (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)
@@ -202,15 +203,15 @@ for game in games:
         except:
           print('Failed to post game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
       else:
-        print('Game '+game+' will not be posted at this time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))  
+        print('Game '+game+' will not be posted at this time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
     else:
-      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz).replace(tzinfo=None)>time_of_game+datetime.timedelta(hours=4):
+      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>time_of_game+datetime.timedelta(hours=4):
         with open('cbbBot/games_over.txt','a') as f:
           f.write(game+'\n')
       try:
         thread=r.submission(id=already_posted[game]) #find already posted thread
-        permalink='http://www.reddit-stream.com/'+thread.permalink
-        (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,permalink) #re-write thread
+        comment_stream_link='http://www.reddit-stream.com/'+thread.permalink
+        (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,comment_stream_link) #re-write thread
         thread.edit(thread_text) #edit thread
         print('Edited thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
       except:
