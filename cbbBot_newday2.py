@@ -1,28 +1,28 @@
 #!/Usr/bin/python3
 import urllib.request
-import shutil
 import os
-import time
-import re
 import datetime
-import cbbBot_func
 import pytz
 
-tz=pytz.timezone('US/Eastern')
-year=str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz).year)
-month=str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz).month)
-if pytz.utc.localize(datetime.datetime.now()).astimezone(tz).month<10:
-  month='0'+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz).month)
-day=str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz).day)
-if pytz.utc.localize(datetime.datetime.now()).astimezone(tz).day<10:
-  day='0'+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz).day)
+dir='/home/ischmidt/'
+#dir=''
 
-#year,month,day='2017','02','04'
+tz=pytz.timezone('US/Eastern')
+now=pytz.utc.localize(datetime.datetime.now()).astimezone(tz)
+year=str(now.year)
+month=str(now.month)
+if now.month<10:
+  month='0'+str(now.month)
+day=str(now.day)
+if now.day<10:
+  day='0'+str(now.day)
+
+#year,month,day='2018','11','06'
 
 url='http://www.espn.com/mens-college-basketball/schedule/_/date/'+year+month+day+'/'
-with urllib.request.urlopen(url) as response, open ('schedule.html', 'wb') as out_file:
-  shutil.copyfileobj(response, out_file)
-with open('schedule.html','r') as imp_file:
+urllib.request.urlretrieve(url,dir+'schedule.html')
+
+with open(dir+'schedule.html','r') as imp_file:
   lines=imp_file.readlines()
 for line in lines:
   if 'data-behavior="schedule"' in line:
@@ -40,25 +40,25 @@ while '<tr class' in line:
   id_end=line.find('">',id_begin)
   game_id=line[id_begin+43:id_end]
   games.append((away_team,home_team,game_id))
-  line=line[id_end:]  
+  line=line[id_end:]
 
-os.remove('schedule.html')
+os.remove(dir+'schedule.html')
 
-with open('cbbBot/ranking.txt','r') as imp_file:
+with open(dir+'cbbBot/ranking.txt','r') as imp_file:
   lines=imp_file.readlines()
 ranking=[]
 for line in lines:
   ranking.append(line.replace('\n','').split(',')[0])
 
 games_added=[]
-with open('/home/ischmidt/cbbBot/games_to_write.txt','r') as f:
+with open(dir+'cbbBot/games_to_write.txt','r') as f:
   lines=f.readlines()
-  
+
 for line in lines:
   games_added.append(line.replace('\n',''))
 #print(games_added)
 
-with open('/home/ischmidt/cbbBot/games_to_write.txt','a') as f: #create today's file
+with open(dir+'cbbBot/games_to_write.txt','a') as f: #create today's file
   for game in games:
     #print(game[0],game[1])
     if (game[0] in ranking or game[1] in ranking) and game[2] not in games_added:
