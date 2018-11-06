@@ -28,17 +28,17 @@ def get_info(game_id):
     (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score)=cbbBot_func.espn(game_id)
     with open('cbbBot/ranking.txt','r') as imp_file:
       lines=imp_file.readlines()
+    (teams,rank_names)=cbbBot_func.get_teams()
     ranking={}
     for line in lines:
       (team,rank)=line.replace('\n','').split(',')
       team=team.replace('&amp;','&')
       ranking[team]=int(rank)
     away_rank,home_rank='','' #clear ESPN rank values
-    if away_team in ranking.keys(): #see if Reddit ranked
-      away_rank='#'+str(ranking[away_team])
-    if home_team in ranking.keys(): #see if Reddit ranked
-      home_rank='#'+str(ranking[home_team])
-    (teams,rank_names)=cbbBot_func.get_teams()
+    if rank_names[away_team] in ranking.keys(): #see if Reddit ranked
+      away_rank='#'+str(ranking[rank_names[away_team]])
+    if rank_names[home_team] in ranking.keys(): #see if Reddit ranked
+      home_rank='#'+str(ranking[rank_names[home_team]])
     away_flair,home_flair='',''
     if away_team in teams.keys():
       away_flair=teams[away_team]
