@@ -106,10 +106,10 @@ def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home
 
 with open('client.txt','r') as imp_file:
   lines=imp_file.readlines()
-(client_id,client_secret,password)=lines.split('\n')
+lines=[line.replace('\n','') for line in lines]
 
 try:
-  r = praw.Reddit(client_id=client_id,client_secret=client_secret,username="cbbBot",password=password,user_agent="CBB Bot v3.1") #define praw and user agent, login
+  r = praw.Reddit(client_id=lines[0],client_secret=lines[1],username="cbbBot",password=lines[2],user_agent="CBB Bot v3.1") #define praw and user agent, login
   print('Logged in to Reddit! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 except:
   print('Failed to login to Reddit. Shutting down..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
