@@ -14,7 +14,7 @@ def get_teams():
   for line in lines:
     (team,flair,rank_name)=line.replace('\n','').split(',')
     flairs[team]=flair
-    rank_names[rank_name]=team
+    rank_names[team]=rank_name
   return flairs,rank_names
 
 def get_rcbb_rank():

@@ -8,9 +8,10 @@ import praw
 
 tz=pytz.timezone('US/Eastern')
 
-r=praw.Reddit(client_id='',client_secret='',username='cfbStreamBot',password='',user_agent='CFB Stream Bot 1.0')
+r=praw.Reddit(client_id='wa8L2PyY12DSHg',client_secret='yqH47YE8uHow_SpmRXTB5JbaDbo',username='cfbStreamBot',password='FuckESPN1',user_agent='CFB Stream Bot 1.0')
 
 def get_info(game_id):
+  #print(game_id)
   url='http://www.espn.com/college-football/game?gameId='+game_id
   with urllib.request.urlopen(url) as response, open (game_id+'.html', 'wb') as out_file:
     shutil.copyfileobj(response, out_file)
@@ -83,7 +84,7 @@ def get_info(game_id):
     if '</article>' in line:
       lookup=False
   
-  time_of_game=datetime.datetime.strptime(time_of_game,'%Y-%m-%dT%H:%MZ')-datetime.timedelta(hours=5)
+  time_of_game=datetime.datetime.strptime(time_of_game,'%Y-%m-%dT%H:%MZ')-datetime.timedelta(hours=4)
   
   game_time='' 
   for line in lines:
@@ -154,9 +155,9 @@ while '<tr class' in line:
   ht_begin=line.find('<span>',at_end)
   ht_end=line.find('</span>',ht_begin)
   home_team=line[ht_begin+6:ht_end]
-  id_begin=line.find('href="/college-football/game?gameId=')
+  id_begin=line.find('href="/college-football/game/_/')
   id_end=line.find('">',id_begin)
-  game_id=line[id_begin+36:id_end]
+  game_id=line[id_begin+38:id_end]
   games.append((away_team,home_team,game_id))
   line=line[id_end:]
 os.remove('schedule.html')
@@ -177,13 +178,14 @@ while '<tr class' in line:
   ht_begin=line.find('<span>',at_end)
   ht_end=line.find('</span>',ht_begin)
   home_team=line[ht_begin+6:ht_end]
-  id_begin=line.find('href="/college-football/game?gameId=')
+  id_begin=line.find('href="/college-football/game/_/')
   id_end=line.find('">',id_begin)
-  game_id=line[id_begin+36:id_end]
+  game_id=line[id_begin+38:id_end]
   games.append((away_team,home_team,game_id))
   line=line[id_end:]
 os.remove('schedule.html')              
 
+#print(games)
 print('Checking which games have already been posted..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 already_posted={}
 for post in r.redditor('cfbStreamBot').submissions.new(limit=1000): #see which games already have threads
