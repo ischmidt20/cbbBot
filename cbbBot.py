@@ -104,8 +104,12 @@ def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home
   print('Made thread for game '+game_id+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
   return title,thread
 
+with open('client.txt','r') as imp_file:
+  lines=imp_file.readlines()
+(client_id,client_secret,password)=lines.split('\n')
+
 try:
-  r = praw.Reddit(client_id="",client_secret="",username="cbbBot",password="",user_agent="CBB Bot v3.1") #define praw and user agent, login
+  r = praw.Reddit(client_id=client_id,client_secret=client_secret,username="cbbBot",password=password,user_agent="CBB Bot v3.1") #define praw and user agent, login
   print('Logged in to Reddit! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
 except:
   print('Failed to login to Reddit. Shutting down..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
