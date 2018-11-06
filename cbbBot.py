@@ -6,7 +6,7 @@ import cbbBot_func
 import pytz
 
 dir='/home/ischmidt/'
-#dir=''
+dir=''
 
 tz=pytz.timezone('US/Eastern')
 
@@ -23,31 +23,26 @@ except:
   quit()
 
 def get_info(game_id):
-  print('Getting game info for '+game_id+'..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-  try:
-    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score)=cbbBot_func.espn(game_id)
-    with open('cbbBot/ranking.txt','r') as imp_file:
-      lines=imp_file.readlines()
-    (teams,rank_names)=cbbBot_func.get_teams()
-    ranking={}
-    for line in lines:
-      (team,rank)=line.replace('\n','').split(',')
-      team=team.replace('&amp;','&')
-      ranking[team]=int(rank)
-    away_rank,home_rank='','' #clear ESPN rank values
-    if rank_names[away_team] in ranking.keys(): #see if Reddit ranked
+  (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score)=cbbBot_func.espn(game_id)
+  with open('cbbBot/ranking.txt','r') as imp_file:
+    lines=imp_file.readlines()
+  (teams,rank_names)=cbbBot_func.get_teams()
+  ranking={}
+  for line in lines:
+    (team,rank)=line.replace('\n','').split(',')
+    team=team.replace('&amp;','&')
+    ranking[team]=int(rank)
+  away_rank,home_rank='','' #clear ESPN rank values
+  away_flair,home_flair='',''
+  if away_team in teams.keys():
+    if rank_names[away_team] in ranking.keys():
       away_rank='#'+str(ranking[rank_names[away_team]])
-    if rank_names[home_team] in ranking.keys(): #see if Reddit ranked
+    away_flair=teams[away_team]
+  if home_team in teams.keys():
+    if rank_names[home_team] in ranking.keys():
       home_rank='#'+str(ranking[rank_names[home_team]])
-    away_flair,home_flair='',''
-    if away_team in teams.keys():
-      away_flair=teams[away_team]
-    if home_team in teams.keys():
-      home_flair=teams[home_team]
-    print('Obtained game info for '+game_id+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-    return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score
-  except:
-    print('Failed to get game info for '+game_id+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+    home_flair=teams[home_team]
+  return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score
 
 def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,comment_stream_link=''):
   #try:
@@ -195,28 +190,33 @@ print('Checking games..... '+str(pytz.utc.localize(datetime.datetime.now()).asti
 for game in games:
   game=game.replace('\n','')
   if game not in games_over:
-    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)=get_info(game)
-    if game not in already_posted.keys():
-      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
-        print('Posting game '+game+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-        try:
-          (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)
-          thread=r.subreddit('CollegeBasketball').submit(title=title,selftext=thread_text,send_replies=False)
-          thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
-          print('Posted game thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-        except:
-          print('Failed to post game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+    print('Getting game info for '+game+'..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+    try:
+      (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)=get_info(game)
+      print('Obtained game info for '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+      if game not in already_posted.keys():
+        if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+          print('Posting game '+game+' ..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+          try:
+            (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)
+            thread=r.subreddit('CollegeBasketball').submit(title=title,selftext=thread_text,send_replies=False)
+            thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
+            print('Posted game thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+          except:
+            print('Failed to post game '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+        else:
+          print('Game '+game+' will not be posted at this time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
       else:
-        print('Game '+game+' will not be posted at this time. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-    else:
-      if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>time_of_game+datetime.timedelta(hours=4):
-        with open('cbbBot/games_over.txt','a') as f:
-          f.write(game+'\n')
-      try:
-        thread=r.submission(id=already_posted[game]) #find already posted thread
-        comment_stream_link='http://www.reddit-stream.com/'+thread.permalink
-        (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,comment_stream_link) #re-write thread
-        thread.edit(thread_text) #edit thread
-        print('Edited thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
-      except:
-        print('Failed to edit thread '+game+'. Will continue..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+        if pytz.utc.localize(datetime.datetime.now()).astimezone(tz)>time_of_game+datetime.timedelta(hours=4):
+          with open('cbbBot/games_over.txt','a') as f:
+            f.write(game+'\n')
+        try:
+          thread=r.submission(id=already_posted[game]) #find already posted thread
+          comment_stream_link='http://www.reddit-stream.com/'+thread.permalink
+          (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,comment_stream_link) #re-write thread
+          thread.edit(thread_text) #edit thread
+          print('Edited thread '+game+'! '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+        except:
+          print('Failed to edit thread '+game+'. Will continue..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
+    except:
+      print('Failed to get game info for '+game+'. '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
