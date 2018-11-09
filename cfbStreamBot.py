@@ -48,8 +48,8 @@ def get_info(game_id):
         home_rank=''
       else:
         hrk_begin=home_info.find('<span class="rank">')
-        hrk_end=home_info.find('<',hrk_begin+1) 
-        home_rank=home_info[hrk_begin+19:hrk_end] 
+        hrk_end=home_info.find('<',hrk_begin+1)
+        home_rank=home_info[hrk_begin+19:hrk_end]
   if away_rank!='':
     away_rank='#'+away_rank
   if home_rank!='':
@@ -59,7 +59,7 @@ def get_info(game_id):
   arc_end=info.find('<',arc_begin+1) #fix
   away_record=info[arc_begin+20:arc_end]
   home_info=info[arc_end:]
-  hrc_begin=home_info.find('<div class="record">') 
+  hrc_begin=home_info.find('<div class="record">')
   hrc_end=home_info.find('<',hrc_begin+1) #fix
   home_record=home_info[hrc_begin+20:hrc_end]
 
@@ -75,18 +75,18 @@ def get_info(game_id):
         if '<div class="location-details">' in line and venue=='':
           venue=lines[lines.index(line)+1][9:-8]
       if '<li class="icon-font-before icon-location-solid-before">' in line:
-        city_state=lines[lines.index(line)+1].replace('\t','').replace('\n','') 
+        city_state=lines[lines.index(line)+1].replace('\t','').replace('\n','')
       if '<div class="game-network">' in line:
         network=lines[lines.index(line)+1].replace('\t','').replace('\n','').replace('Coverage: ','')
       if '<span data-date="' in line:
         time_of_game=line[22:39]
-        
+
     if '</article>' in line:
       lookup=False
-  
-  time_of_game=datetime.datetime.strptime(time_of_game,'%Y-%m-%dT%H:%MZ')-datetime.timedelta(hours=4)
-  
-  game_time='' 
+
+  time_of_game=datetime.datetime.strptime(time_of_game,'%Y-%m-%dT%H:%MZ')-datetime.timedelta(hours=5)
+
+  game_time=''
   for line in lines:
     if 'class="game-time' in line:
       gt_begin=line.find('>',line.find('<span class="game-time'))
@@ -95,7 +95,7 @@ def get_info(game_id):
       game_time=game_time.replace('<span class="status-detail">','')
       break
   game_time=game_time.replace(' Half','').replace(' - ',' ').upper()
-  
+
   away_score,home_score='',''
   for line in lines:
     if '<div class="score icon-font-' in line:
@@ -112,7 +112,7 @@ def get_info(game_id):
       if home_score!='':
         home_score=int(home_score)
       break
-    
+
   os.remove(game_id+'.html')
   return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score
 
@@ -183,7 +183,7 @@ while '<tr class' in line:
   game_id=line[id_begin+38:id_end]
   games.append((away_team,home_team,game_id))
   line=line[id_end:]
-os.remove('schedule.html')              
+os.remove('schedule.html')
 
 #print(games)
 print('Checking which games have already been posted..... '+str(pytz.utc.localize(datetime.datetime.now()).astimezone(tz)))
