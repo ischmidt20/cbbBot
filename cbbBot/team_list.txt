@@ -187,7 +187,7 @@ New Mexico,[New Mexico](#f/newmexico),New Mexico
 New Mexico State,[New Mexico State](#f/newmexicostate),New Mexico State
 New Orleans,[New Orleans](#f/neworleans),New Orleans
 Niagara,[Niagara](#f/niagara),Niagara
-Nicholls,[Nicholls State](#f/nichollsstate),Nicholls State University
+Nicholls,[Nicholls](#f/nicholls),Nicholls State University
 NJIT,[NJIT](#f/njit),NJIT
 Norfolk State,[Norfolk State](#f/norfolkstate),Norfolk State
 North Alabama,[North Alabama](#f/northalabama),North Alabama
