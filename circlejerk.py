@@ -3,11 +3,11 @@ import random
 
 teams_beaten_test={'A':['B','E','G'],'B':['C','D','E','G'],'C':['A','D'],'D':['A','E','F','G'],'E':['C','F'],'F':['A','B','C','G'],'G':['C','E']}
 
-with open('circle_list.txt','r') as imp_file:
-  lines=imp_file.readlines()
-best_circle=[]
-for line in lines:
-  best_circle.append(line.replace('\n',''))
+#with open('circle_list.txt','r') as imp_file:
+#  lines=imp_file.readlines()
+#best_circle=[]
+#for line in lines:
+#  best_circle.append(line.replace('\n',''))
 
 def get_scores():
   with open('ncaa_scores.txt','r') as imp_file:
@@ -64,12 +64,13 @@ def get_teams(best_circle):
   for team in all_teams:
     if team not in best_circle:
       print(team)
-  
+
 def circle1():
   (teams_beaten,losses)=ncaa_dict()
+  return losses
   circle=[random.choice(list(teams_beaten.keys()))] #1
-  circle_o=['Chicago St','W Illinois']
-  circle=['Chicago St','W Illinois']
+  circle_o=['UNC Asheville','SC Upstate']
+  circle=['UNC Asheville','SC Upstate']
   max_size=0
   #circle=[random.choice(list(teams_beaten.keys()))]
   bad_lists=[]
@@ -123,8 +124,8 @@ def circle1():
 def circle2():
   (teams_beaten,losses)=ncaa_dict()
   circle=[random.choice(list(teams_beaten.keys()))] #1
-  circle_o=['Chicago St','W Illinois']
-  circle=['Chicago St','W Illinois']
+  circle_o=['UNC Asheville','SC Upstate']
+  circle=['UNC Asheville','SC Upstate']
   max_size=0
   #circle=[random.choice(list(teams_beaten.keys()))]
   bad_lists=[]
@@ -137,17 +138,17 @@ def circle2():
     beaten_2,picked=[],False
     beaten_teams=teams_beaten[circle[-1]].copy()
     while not picked and len(beaten_teams)>0:
-      picked_team=random.choice(beaten_teams)                                                                                    
-      if picked_team in circle:                                                                                                  
-        beaten_teams.pop(beaten_teams.index(picked_team))                                                                        
-      if picked_team not in circle:                                                                                              
-        circle.append(picked_team)                                                                                               
-        if circle in bad_lists:                                                                                                  
-          circle=circle[:-1]                                                                                                     
-          beaten_teams.pop(beaten_teams.index(picked_team))                                                                      
-        else:                                                                                                                    
-          picked=True                                                                                                            
-    if not picked: #3                                                                                                            
+      picked_team=random.choice(beaten_teams)
+      if picked_team in circle:
+        beaten_teams.pop(beaten_teams.index(picked_team))
+      if picked_team not in circle:
+        circle.append(picked_team)
+        if circle in bad_lists:
+          circle=circle[:-1]
+          beaten_teams.pop(beaten_teams.index(picked_team))
+        else:
+          picked=True
+    if not picked: #3
       bad_lists.append(circle)
     if len(circle)==len(teams_beaten.keys()): #4
       if circle[0] in teams_beaten[circle[-1]]:
@@ -164,8 +165,8 @@ def circle2():
 def circle3():
   (teams_beaten,losses)=ncaa_dict()
   circle=[random.choice(list(teams_beaten.keys()))] #1
-  circle_o=['Chicago St','W Illinois']
-  circle=['Chicago St','W Illinois']
+  circle_o=['UNC Asheville','SC Upstate']
+  circle=['UNC Asheville','SC Upstate']
   max_size=0
   #circle=[random.choice(list(teams_beaten.keys()))]
   bad_lists=[]
@@ -191,7 +192,7 @@ def circle3():
           beaten_teams.pop(beaten_teams.index(picked_team))
         else:
           picked=True
-    if not picked: #3  
+    if not picked: #3
       bad_lists.append(circle)
 
     if len(circle)==len(teams_beaten.keys()): #4
