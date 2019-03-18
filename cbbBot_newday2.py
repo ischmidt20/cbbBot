@@ -17,7 +17,7 @@ day=str(now.day)
 if now.day<10:
   day='0'+str(now.day)
 
-#year,month,day='2018','11','06'
+#year,month,day='2019','03','21'
 
 url='http://www.espn.com/mens-college-basketball/schedule/_/date/'+year+month+day+'/'
 urllib.request.urlretrieve(url,dir+'schedule.html')
@@ -57,9 +57,9 @@ with open(dir+'cbbBot/games_to_write.txt','r') as f:
 for line in lines:
   games_added.append(line.replace('\n',''))
 #print(games_added)
-
+games.pop(-1)
 with open(dir+'cbbBot/games_to_write.txt','a') as f: #create today's file
   for game in games:
     #print(game[0],game[1])
-    if (game[0] in ranking or game[1] in ranking) and game[2] not in games_added:
-      f.write(game[2]+'\n')
+    #if (game[0] in ranking or game[1] in ranking) and game[2] not in games_added:
+    f.write(game[2]+'\n')
