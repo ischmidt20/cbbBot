@@ -71,7 +71,7 @@ Drake,[Drake](#f/drake),Drake
 Drexel,[Drexel](#f/drexel),Drexel
 Duke,[Duke](#f/duke),Duke
 Duquesne,[Duquesne](#f/duquesne),Duquesne
-East Carolina,[East Carolina](#f/eastcarolina),ECU
+East Carolina,[ECU](#f/ecu),ECU
 East Tennessee St,[East Tennessee State](#f/easttennesseestate),ETSU
 Eastern Illinois,[Eastern Illinois](#f/easternillinois),Eastern Illinois
 Eastern Kentucky,[Eastern Kentucky](#f/easternkentucky),Eastern Kentucky
@@ -100,7 +100,7 @@ Georgia Southern,[Georgia Southern](#f/georgiasouthern),Georgia Southern
 Georgia State,[Georgia State](#f/georgiastate),Georgia State
 Georgia Tech,[Georgia Tech](#f/georgiatech),Georgia Tech
 Gonzaga,[Gonzaga](#f/gonzaga),Gonzaga
-Grambling,[Grambling State](#f/gramblingstate),Grambling State
+Grambling,[Grambling](#f/grambling),Grambling State
 Grand Canyon,[Grand Canyon](#f/grandcanyon),Grand Canyon
 Green Bay,[Green Bay](#f/greenbay),Green Bay
 Hampton,[Hampton](#f/hampton),Hampton
