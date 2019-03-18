@@ -8,6 +8,7 @@ import praw
 
 tz=pytz.timezone('US/Eastern')
 
+
 r=praw.Reddit(client_id='wa8L2PyY12DSHg',client_secret='yqH47YE8uHow_SpmRXTB5JbaDbo',username='cfbStreamBot',password='FuckESPN1',user_agent='CFB Stream Bot 1.0')
 
 def get_info(game_id):
@@ -192,12 +193,14 @@ for post in r.redditor('cfbStreamBot').submissions.new(limit=1000): #see which g
   if post.subreddit=='CFBStreams':
     game_id=post.selftext[post.selftext.find('http://www.espn.com/college-football/game?gameId=')+49:post.selftext.find('http://www.espn.com/college-football/game?gameId=')+58]
     already_posted[game_id]=post.id
-print(already_posted)
-
+#print(already_posted)
 
 for game in games:
   (away_team,home_team,game_id)=game
-  (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score)=get_info(game_id)
+  try:
+    (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score)=get_info(game_id)
+  except:
+    pass
   if game_id not in already_posted.keys():
     if pytz.utc.localize(datetime.datetime.now()).astimezone(tz).replace(tzinfo=None)>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time:
       (title,thread_text)=make_thread(away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,game_time,away_score,home_score,game_id)
