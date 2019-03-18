@@ -6,7 +6,7 @@ import cbbBot_func
 import pytz
 
 dir='/home/ischmidt/'
-dir=''
+#dir=''
 
 tz=pytz.timezone('US/Eastern')
 
