@@ -193,7 +193,7 @@ Norfolk State,[Norfolk State](#f/norfolkstate),Norfolk State
 North Alabama,[North Alabama](#f/northalabama),North Alabama
 North Carolina,[North Carolina](#f/northcarolina),North Carolina
 North Carolina A&T,[North Carolina A&T](#f/northcarolinaat),NC A&T
-North Carolina Central,[North Carolina Central](#f/nccentral),NC Central
+North Carolina Central,[NCCU](#f/nccu),NC Central
 North Dakota,[North Dakota](#f/northdakota),North Dakota
 North Dakota State,[North Dakota State](#f/northdakotastate),North Dakota State
 North Florida,[North Florida](#f/northflorida),North Florida
