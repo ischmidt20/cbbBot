@@ -4,7 +4,7 @@ import os
 import datetime
 import pytz
 
-dir='/home/i/is/ischmidt/'
+dir='/home/i/is/ischmidt/cbbBot/'
 #dir=''
 
 tz=pytz.timezone('US/Eastern')
