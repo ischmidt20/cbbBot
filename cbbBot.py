@@ -5,7 +5,7 @@ import datetime
 import cbbBot_func
 import pytz
 
-dir='/home/i/is/ischmidt/'
+dir='/home/i/is/ischmidt/cbbBot/'
 #dir=''
 
 tz=pytz.timezone('US/Eastern')
