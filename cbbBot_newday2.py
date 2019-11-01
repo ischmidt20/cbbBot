@@ -17,7 +17,7 @@ day=str(now.day)
 if now.day<10:
   day='0'+str(now.day)
 
-year,month,day='2019','11','05'
+#year,month,day='2019','11','05'
 
 url='http://www.espn.com/mens-college-basketball/schedule/_/date/'+year+month+day+'/'
 urllib.request.urlretrieve(url,dir+'schedule.html')
