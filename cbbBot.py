@@ -130,7 +130,7 @@ try:
 except:
   print('Failed to edit thread with current time and date. Will continue..... '+str(datetime.datetime.now(tz)))
 
-hour,minute=pytz.utc.localize(datetime.datetime.now(tz)).hour,pytz.utc.localize(datetime.datetime.now(tz)).minute
+hour,minute=datetime.datetime.now(tz).hour,datetime.datetime.now(tz).minute
 
 if hour==10 and minute==8: #if 10:02, automatically add top 25 games
   print('Gathering games for new day ..... '+str(datetime.datetime.now(tz)))
