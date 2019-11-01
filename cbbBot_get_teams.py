@@ -4,10 +4,10 @@ import os
 import datetime
 import pytz
 
-dir='/home/ischmidt/'
+dir='/home/i/is/ischmidt/'
 dir=''
 tz=pytz.timezone('US/Eastern')
-date=pytz.utc.localize(datetime.datetime.now()).astimezone(tz)
+date=datetime.datetime.now(tz)
 teams={}
 while date.replace(tzinfo=None)<datetime.datetime(year=2018,month=12,day=1):
   year=str(date.year)

@@ -4,11 +4,11 @@ import os
 import datetime
 import pytz
 
-dir='/home/ischmidt/'
+dir='/home/i/is/ischmidt/'
 #dir=''
 
 tz=pytz.timezone('US/Eastern')
-now=pytz.utc.localize(datetime.datetime.now()).astimezone(tz)
+now=datetime.datetime.now(tz)
 year=str(now.year)
 month=str(now.month)
 if now.month<10:
