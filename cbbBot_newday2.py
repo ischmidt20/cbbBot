@@ -57,7 +57,7 @@ with open(dir+'cbbBot/games_to_write.txt','r') as f:
 for line in lines:
   games_added.append(line.replace('\n',''))
 #print(games_added)
-games.pop(-1)
+
 with open(dir+'cbbBot/games_to_write.txt','a') as f: #create today's file
   for game in games:
     #print(game[0],game[1])
