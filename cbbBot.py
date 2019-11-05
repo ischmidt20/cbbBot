@@ -208,7 +208,7 @@ for game in games:
       (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)=get_info(game)
       print('Obtained game info for '+game+'! '+str(datetime.datetime.now(tz)))
       if game not in already_posted.keys():
-        if pytz.utc.localize(datetime.datetime.now(tz))>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+        if datetime.datetime.now(tz)>(time_of_game-datetime.timedelta(minutes=60)) and 'FINAL' not in game_time and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
           print('Posting game '+game+' ..... '+str(datetime.datetime.now(tz)))
           try:
             (title,thread_text)=make_thread(game,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score)
@@ -220,7 +220,7 @@ for game in games:
         else:
           print('Game '+game+' will not be posted at this time. '+str(datetime.datetime.now(tz)))
       else:
-        if pytz.utc.localize(datetime.datetime.now(tz))>time_of_game+datetime.timedelta(hours=4):
+        if datetime.datetime.now(tz)>time_of_game+datetime.timedelta(hours=4):
           with open('cbbBot/games_over.txt','a') as f:
             f.write(game+'\n')
         try:
