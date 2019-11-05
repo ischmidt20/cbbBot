@@ -14,7 +14,7 @@ def get_teams():
   for line in lines:
     (team,flair,rank_name)=line.replace('\n','').split(',')
     flairs[team]=flair
-    rank_names[rank_name]=team
+    rank_names[team]=rank_name
   return flairs,rank_names
 
 def get_rcbb_rank():
@@ -28,7 +28,9 @@ def get_rcbb_rank():
   while i<125:
     first_place_votes.append('('+str(i)+')')
     i=i+1
-
+  rank_names_inv={}
+  for team in list(rank_names.keys()):
+    rank_names_inv[team[1]] = team[0]
   for line in lines:
     if "<td><span class='team-name'>" in line:
       team_rank=lines[lines.index(line)-1].replace('<td>','').replace('</td>','')
@@ -40,7 +42,7 @@ def get_rcbb_rank():
         if vote in team:
           team=team.replace(vote,'')
           break
-      ranking.append(rank_names[team.replace('&amp;','&')]+','+str(int(team_rank)))
+      ranking.append(rank_names_inv[team.replace('&amp;','&')]+','+str(int(team_rank)))
   os.remove('cbbBot/ranking.html')
   with open('cbbBot/ranking.txt','w') as f:
     for team in ranking:
