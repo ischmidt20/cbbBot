@@ -1,4 +1,4 @@
-Abilene Christian,[Abilene Christian](#f/abilenechristian),Abilene Christian
+﻿Abilene Christian,[Abilene Christian](#f/abilenechristian),Abilene Christian
 Air Force,[Air Force](#f/airforce),Air Force
 Akron,[Akron](#f/akron),Akron
 Alabama,[Alabama](#f/alabama),Alabama
@@ -72,7 +72,7 @@ Drexel,[Drexel](#f/drexel),Drexel
 Duke,[Duke](#f/duke),Duke
 Duquesne,[Duquesne](#f/duquesne),Duquesne
 East Carolina,[ECU](#f/ecu),ECU
-East Tennessee St,[East Tennessee State](#f/easttennesseestate),ETSU
+East Tennessee State,[East Tennessee State](#f/easttennesseestate),ETSU
 Eastern Illinois,[Eastern Illinois](#f/easternillinois),Eastern Illinois
 Eastern Kentucky,[Eastern Kentucky](#f/easternkentucky),Eastern Kentucky
 Eastern Michigan,[Eastern Michigan](#f/easternmichigan),Eastern Michigan
@@ -88,7 +88,6 @@ Florida Gulf Coast,[Florida Gulf Coast](#f/floridagulfcoast),Florida Gulf Coast
 Florida International,[FIU](#f/fiu),FIU
 Florida State,[Florida State](#f/floridastate),Florida State
 Fordham,[Fordham](#f/fordham),Fordham
-Fort Wayne,[Fort Wayne](#f/fortwayne),Fort Wayne
 Fresno State,[Fresno State](#f/fresnostate),Fresno State
 Furman,[Furman](#f/furman),Furman
 Gardner-Webb,[Gardner-Webb](#f/gardnerwebb),Gardner-Webb
@@ -140,15 +139,15 @@ Lehigh,[Lehigh](#f/lehigh),Lehigh
 Liberty,[Liberty](#f/liberty),Liberty
 Lipscomb,[Lipscomb](#f/lipscomb),Lipscomb
 Little Rock,[Little Rock](#f/ualr),Little Rock
-LIU Brooklyn,[Long Island](#f/longisland),LIU-Brooklyn
 Long Beach State,[CSU Long Beach](#f/csulongbeach),Long Beach State
+Long Island University,[Long Island](#f/longisland),LIU-Brooklyn
 Longwood,[Longwood](#f/longwood),Longwood
 Louisiana,[Louisiana](#f/louisiana),Louisiana
 Louisiana Tech,[Louisiana Tech](#f/louisianatech),Louisiana Tech
 Louisville,[Louisville](#f/louisville),Louisville
 Loyola (MD),[Loyola Maryland](#f/loyolamaryland),Loyola-MD
+Loyola Chicago,[Loyola Chicago](#f/loyolachicago),Loyola Chicago
 Loyola Marymount,[Loyola Marymount](#f/loyolamarymount),Loyola Marymount
-Loyola-Chicago,[Loyola Chicago](#f/loyolachicago),Loyola Chicago
 LSU,[LSU](#f/lsu),LSU
 Maine,[Maine](#f/maine),Maine
 Manhattan,[Manhattan](#f/manhattan),Manhattan
@@ -160,6 +159,7 @@ Maryland-Eastern Shore,[UMES](#f/umes),UMES
 McNeese,[McNeese](#f/mcneese),McNeese
 Memphis,[Memphis](#f/memphis),Memphis
 Mercer,[Mercer](#f/mercer),Mercer
+Merrimack,[Merrimack](#f/merrimack-sheet2-row17-col07),Merrimack
 Miami,[Miami](#f/miami),Miami (FL)
 Miami (OH),[Miami (OH)](#f/miamioh),Miami (OH)
 Michigan,[Michigan](#f/michigan),Michigan
@@ -230,6 +230,7 @@ Presbyterian,[Presbyterian](#f/presbyterian),Presbyterian
 Princeton,[Princeton](#f/princeton),Princeton
 Providence,[Providence](#f/providence),Providence
 Purdue,[Purdue](#f/purdue),Purdue
+Purdue Fort Wayne,[Fort Wayne](#f/fortwayne),Fort Wayne
 Quinnipiac,[Quinnipiac](#f/quinnipiac),Quinnipiac
 Radford,[Radford](#f/radford),Radford
 Rhode Island,[Rhode Island](#f/rhodeisland),URI
@@ -242,17 +243,17 @@ Sacramento State,[Sacramento State](#f/sacramentostate),Sacramento State
 Sacred Heart,[Sacred Heart](#f/sacredheart),Sacred Heart
 Saint Joseph's,[St. Joseph's (PA)](#f/stjosephspa),St. Joseph's
 Saint Louis,[Saint Louis](#f/saintlouis),St. Louis
-St. Mary's,[St. Mary's (CA)](#f/stmarys),St. Mary's
+Saint Mary's,[St. Mary's (CA)](#f/stmarys),St. Mary's
 Saint Peter's,[St. Peter's](#f/stpeters),St. Peter's
 Sam Houston State,[Sam Houston State](#f/samhoustonstate),Sam Houston State
 Samford,[Samford](#f/samford),Samford
 San Diego,[San Diego](#f/sandiego),San Diego
 San Diego State,[San Diego State](#f/sandiegostate),San Diego State
 San Francisco,[San Francisco](#f/sanfrancisco),San Francisco
-San José St,[San Jos� State](#f/sanjosestate),San Jose State
+San José St,[San JosÔøΩ State](#f/sanjosestate),San Jose State
 Santa Clara,[Santa Clara](#f/santaclara),Santa Clara
-Savannah St,[Savannah State](#f/savannahstate),Savannah State University
 SE Louisiana,[Southeastern Louisiana](#f/southeasternlouisiana),Southeastern Louisiana
+SE Missouri St,[Southeast Missouri State](#f/southeastmissouristate),SE Missouri State
 Seattle,[Seattle](#f/seattle),Seattle
 Seton Hall,[Seton Hall](#f/setonhall),Seton Hall
 Siena,[Siena](#f/siena),Siena
@@ -265,7 +266,6 @@ South Carolina Upstate,[USC Upstate](#f/uscupstate),SC Upstate
 South Dakota,[South Dakota](#f/southdakota),South Dakota
 South Dakota State,[South Dakota State](#f/southdakotastate),South Dakota State
 South Florida,[USF](#f/usf),USF
-Southeast Missouri State,[Southeast Missouri State](#f/southeastmissouristate),SE Missouri State
 Southern,[Southern University](#f/southern),Southern
 Southern Illinois,[Southern Illinois](#f/southernillinois),Southern Illinois
 Southern Miss,[Southern Miss](#f/southernmiss),Southern Miss
@@ -350,4 +350,4 @@ Wright State,[Wright State](#f/wrightstate),Wright State
 Wyoming,[Wyoming](#f/wyoming),Wyoming
 Xavier,[Xavier](#f/xavier),Xavier
 Yale,[Yale](#f/yale),Yale
-Youngstown State,[Youngstown State](#f/youngstownstate),Youngstown State
+Youngstown St,[Youngstown State](#f/youngstownstate),Youngstown State

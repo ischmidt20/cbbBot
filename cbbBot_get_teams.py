@@ -9,7 +9,7 @@ dir=''
 tz=pytz.timezone('US/Eastern')
 date=datetime.datetime.now(tz)
 teams={}
-while date.replace(tzinfo=None)<datetime.datetime(year=2018,month=12,day=1):
+while date.replace(tzinfo=None)<datetime.datetime(year=2019,month=12,day=1):
   year=str(date.year)
   month=str(date.month)
   if date.month<10:
