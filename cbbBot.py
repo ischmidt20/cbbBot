@@ -132,14 +132,14 @@ except:
 
 hour,minute=datetime.datetime.now(tz).hour,datetime.datetime.now(tz).minute
 
-if hour==10 and minute==8: #if 10:02, automatically add top 25 games
-  print('Gathering games for new day ..... '+str(datetime.datetime.now(tz)))
+if hour==10 and minute==8: #if 10:08, update cbbpoll rankings
+  print('Updating cbbpoll ranking ..... '+str(datetime.datetime.now(tz)))
   try:
     cbbBot_func.get_rcbb_rank()
-    os.system('python3 cbbBot_newday2.py')
-    print('Gathered games for new day! '+str(datetime.datetime.now(tz)))
+    #os.system('python3 cbbBot_newday2.py')
+    print('Updated cbbpoll ranking! '+str(datetime.datetime.now(tz)))
   except:
-    print('Failed to gather games for new day. Will continue ..... '+str(datetime.datetime.now(tz)))
+    print('Failed to update cbbpoll ranking. Will continue ..... '+str(datetime.datetime.now(tz)))
 
 requested_games=[]
 blacklist=[]
