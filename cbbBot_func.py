@@ -29,7 +29,7 @@ def get_rcbb_rank():
     first_place_votes.append('('+str(i)+')')
     i=i+1
   rank_names_inv={}
-  for team in list(rank_names.keys()):
+  for team in list(rank_names.items()):
     rank_names_inv[team[1]] = team[0]
   for line in lines:
     if "<td><span class='team-name'>" in line:
