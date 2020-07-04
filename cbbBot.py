@@ -44,17 +44,6 @@ def get_info(game_id):
     home_flair=teams[home_team]
   return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score
 
-def get_stream(game_id):
-  with open('cbbBot/streams.txt','r',encoding='utf-8-sig') as imp_file:
-    lines=imp_file.readlines()
-  streams={}
-  for line in lines:
-    (espn,ncaa)=line.replace('\n','').split(',')
-    streams[espn]=ncaa
-  if game_id in streams.keys():
-    return '[March Madness Live](https://smart.link/58c2fa27d6415?cid=mml_partner_reddit&game='+streams[game_id]+')'
-  return ''
-
 def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,time_of_game,away_flair,home_flair,game_time,away_score,home_score,comment_stream_link=''):
   #try:
   #  (away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city_state,network,month,day,hour,minute,away_flair,home_flair,game_time,away_score,home_score)=get_info(game_id)
@@ -101,7 +90,6 @@ def make_thread(game_id,away_rank,away_team,away_record,home_rank,home_team,home
   if network in tv_stream_links.keys():
     thread=thread+tv_stream_links[network]+'\n'
   espn_link='http://www.espn.com/mens-college-basketball/game?gameId='+game_id
-  stream_link=get_stream(game_id)
   thread=thread+stream_link+"\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN]("+espn_link+") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [AutoReload](https://addons.mozilla.org/en-US/firefox/addon/auto-reload-tab/) to auto-refresh this tab.\n\n- You may also like [reddit stream]("+comment_stream_link+") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
   #thread=thread+"r/ncaaBBallStreams\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN]("+espn_link+") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Turning comment sort to 'new' will help you see the newest posts.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [AutoReload](https://addons.mozilla.org/en-US/firefox/addon/auto-reload-tab/) to auto-refresh this tab.\n\n- You may also like [reddit stream]("+comment_stream_link+") to keep up with comments.\n\n- [Follow @redditCBB](https://twitter.com/redditCBB) on twitter for news, updates, and bad attempts at humor.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
   #thread=thread+"\n\n\n**Subscribe to these communities** \n\n"
