@@ -1,52 +1,48 @@
 #!/Usr/bin/python3
-import urllib.request
-import os
+import requests
 import datetime
 import pytz
 
-tz=pytz.timezone('US/Eastern')
+tz = pytz.timezone('US/Eastern')
 
 def get_teams():
-  with open('cbbBot/team_list.txt','r') as imp_file:
-    lines=imp_file.readlines()
-  flairs={}
-  rank_names={}
-  for line in lines:
-    (team,flair,rank_name)=line.replace('\n','').split(',')
-    flairs[team]=flair
-    rank_names[team]=rank_name
-  return flairs,rank_names
+    with open('./data/team_list.txt','r') as imp_file:
+        lines=imp_file.readlines()
+    flairs = {}
+    rank_names = {}
+    for line in lines:
+        (team,flair,rank_name) = line.replace('\n','').split(',')
+        flairs[team] = flair
+        rank_names[team] = rank_name
+    return flairs,rank_names
 
 def get_rcbb_rank():
-  (flairs,rank_names)=get_teams()
-  url='http://cbbpoll.com/'
-  urllib.request.urlretrieve(url,'cbbBot/ranking.html')
-  with open('cbbBot/ranking.html','r') as imp_file:
-    lines=imp_file.readlines()
-  ranking,first_place_votes=[],[]
-  i=1
-  while i<125:
-    first_place_votes.append('('+str(i)+')')
-    i=i+1
-  rank_names_inv={}
-  for team in list(rank_names.items()):
-    rank_names_inv[team[1]] = team[0]
-  for line in lines:
-    if "<td><span class='team-name'>" in line:
-      team_rank=lines[lines.index(line)-1].replace('<td>','').replace('</td>','')
-      line=line.replace('&#39;',"'").replace('&#38;','&')
-      begin=line.find('></span>')
-      end=line.find('</span></td>')
-      team=line[begin+9:end]
-      for vote in first_place_votes:
-        if vote in team:
-          team=team.replace(vote,'')
-          break
-      ranking.append(rank_names_inv[team.replace('&amp;','&')]+','+str(int(team_rank)))
-  os.remove('cbbBot/ranking.html')
-  with open('cbbBot/ranking.txt','w') as f:
-    for team in ranking:
-      f.write(team+'\n')
+    (flairs,rank_names) = get_teams()
+    url = 'http://cbbpoll.com/'
+    lines = requests.get(url).content.decode('utf-8').split('\n')
+    ranking, first_place_votes = [], []
+    i = 1
+    while i < 125:
+        first_place_votes.append('('+str(i)+')')
+        i = i + 1
+    rank_names_inv={}
+    for team in list(rank_names.items()):
+        rank_names_inv[team[1]] = team[0]
+    for line in lines:
+        if "<td><span class='team-name'>" in line:
+            team_rank = lines[lines.index(line)-1].replace('<td>','').replace('</td>','')
+            line = line.replace('&#39;',"'").replace('&#38;','&')
+            begin = line.find('></span>')
+            end = line.find('</span></td>')
+            team = line[(begin+9):end]
+            for vote in first_place_votes:
+                if vote in team:
+                    team = team.replace(vote,'')
+                    break
+            ranking.append(rank_names_inv[team.replace('&amp;','&')] + ',' + str(int(team_rank)))
+    with open('./data/ranking.txt','w') as f:
+        for team in ranking:
+            f.write(team + '\n')
 
 def espn(game_id):
   url='http://www.espn.com/mens-college-basketball/game?gameId='+game_id

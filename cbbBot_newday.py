@@ -27,20 +27,20 @@ for game in schedule['events']:
     away_team, home_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
     games.append((game_id,away_team,home_team))
 
-with open('./cbbBot/ranking.txt','r') as imp_file:
+with open('./data/ranking.txt','r') as imp_file:
     lines = imp_file.readlines()
 ranking = []
 for line in lines:
     ranking.append(line.replace('\n','').split(',')[0])
 
 games_added = []
-with open('./cbbBot/games_to_write.txt','r') as f:
+with open('./data/games_to_write.txt','r') as f:
     lines = f.readlines()
 
 for line in lines:
     games_added.append(line.replace('\n',''))
 
-with open('./cbbBot/games_to_write.txt','a') as f: #create today's file
+with open('./data/games_to_write.txt','a') as f: #create today's file
     for game in games:
         if (game[1] in ranking or game[2] in ranking) and game[0] not in games_added:
             f.write(game[0]+'\n')
