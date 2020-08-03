@@ -1,6 +1,5 @@
 #!/Usr/bin/python3
 import requests
-import os
 import datetime
 import pytz
 import json
@@ -9,11 +8,11 @@ tz = pytz.timezone('US/Eastern')
 now = datetime.datetime.now(tz)
 year = str(now.year)
 month = str(now.month)
-if now.month<10:
-    month='0'+str(now.month)
+if now.month < 10:
+    month='0' + str(now.month)
 day = str(now.day)
-if now.day<10:
-    day='0'+str(now.day)
+if now.day < 10:
+    day='0' + str(now.day)
 
 #year,month,day='2020','03','10'
 
@@ -29,14 +28,14 @@ for game in schedule['events']:
     games.append((game_id,away_team,home_team))
 
 with open('./cbbBot/ranking.txt','r') as imp_file:
-    lines=imp_file.readlines()
-ranking=[]
+    lines = imp_file.readlines()
+ranking = []
 for line in lines:
     ranking.append(line.replace('\n','').split(',')[0])
 
-games_added=[]
+games_added = []
 with open('./cbbBot/games_to_write.txt','r') as f:
-    lines=f.readlines()
+    lines = f.readlines()
 
 for line in lines:
     games_added.append(line.replace('\n',''))
