@@ -5,14 +5,14 @@ import datetime
 import cbbBot_func
 import pytz
 
-dir='/home/i/is/ischmidt/cbbBot/'
+dir = '/home/i/is/ischmidt/cbbBot/'
 #dir=''
 
-tz=pytz.timezone('US/Eastern')
+tz = pytz.timezone('US/Eastern')
 
-tv_flairs={'BTN':'[Big Ten Network](#l/btn)','CBS':'[CBS](#l/cbs)','CBSSN':'[CBS Sports Network](#l/cbssn)','ESPN':'[ESPN](#l/espn)','ESPN2':'[ESPN2](#l/espn2)','ESPN3':'[ESPN3](#l/espn3)','ESPNU':'[ESPNU](#l/espnu)','FOX':'[Fox](#l/fox)','FS1':'[Fox Sports 1](#l/fs1)','FSN':'[Fox Sports Network](#l/fsn)','Longhorn Network':'[Longhorn Network](#l/lhn)','NBC':'[NBC](#l/nbc)','NBCSN':'[NBC Sports Network](#l/nbcsn)','PAC12':'[Pac-12 Network](#l/p12n)','SECN':'[SEC Network](#l/secn)','TBS':'[TBS](#l/tbs)','TNT':'[TNT](#l/tnt)','truTV':'[truTV](#l/trutv)','ACCN':'[ACC Network](#l/accn)','ACCNE':'[ACC Network Extra](#l/accne)','ESPNN':'[ESPNews](#l/espnews)','FS2':'[Fox Sports 2](#l/fs2)'}
+tv_flairs = {'BTN':'[Big Ten Network](#l/btn)','CBS':'[CBS](#l/cbs)','CBSSN':'[CBS Sports Network](#l/cbssn)','ESPN':'[ESPN](#l/espn)','ESPN2':'[ESPN2](#l/espn2)','ESPN3':'[ESPN3](#l/espn3)','ESPNU':'[ESPNU](#l/espnu)','FOX':'[Fox](#l/fox)','FS1':'[Fox Sports 1](#l/fs1)','FSN':'[Fox Sports Network](#l/fsn)','Longhorn Network':'[Longhorn Network](#l/lhn)','NBC':'[NBC](#l/nbc)','NBCSN':'[NBC Sports Network](#l/nbcsn)','PAC12':'[Pac-12 Network](#l/p12n)','SECN':'[SEC Network](#l/secn)','TBS':'[TBS](#l/tbs)','TNT':'[TNT](#l/tnt)','truTV':'[truTV](#l/trutv)','ACCN':'[ACC Network](#l/accn)','ACCNE':'[ACC Network Extra](#l/accne)','ESPNN':'[ESPNews](#l/espnews)','FS2':'[Fox Sports 2](#l/fs2)'}
 
-tv_stream_links={'BTN':'[FOX Sports GO](https://www.foxsportsgo.com/)','CBSSN':'[CBSSN](http://www.cbssports.com/watch/cbssportsnetwork/)','ESPN':'[WatchESPN](http://www.espn.com/watchespn/)','ESPN2':'[WatchESPN](http://www.espn.com/watchespn/)','ESPN3':'[WatchESPN](http://www.espn.com/watchespn/)','ESPNU':'[WatchESPN](http://www.espn.com/watchespn/)','ESPNN':'[WatchESPN](http://www.espn.com/watchespn/)','FOX':'[FOX Sports GO](https://www.foxsportsgo.com/)','FS1':'[FOX Sports GO](https://www.foxsportsgo.com/)','FSN':'[FOX Sports GO](https://www.foxsportsgo.com/)','Longhorn Network':'[WatchESPN](http://www.espn.com/watchespn/)','NBC':'[NBC Sports Live Extra](http://www.nbcsports.com/live)','NBCSN':'[NBC Sports Live Extra](http://www.nbcsports.com/live)','PAC12':'[PAC12](http://pac-12.com/live)','SECN':'[WatchESPN](http://www.espn.com/watchespn/)','ACCN':'[WatchESPN](http://www.espn.com/watchespn/)','ACCNE':'[WatchESPN](http://www.espn.com/watchespn/)','ESPN+':'[ESPN+](https://plus.espn.com/)','FS2':'[FOX Sports GO](https://www.foxsportsgo.com/)'}
+tv_stream_links = {'BTN':'[BTN](https://www.fox.com/live/channel/BTN/)','CBSSN':'[CBSSN](https://www.cbssports.com/cbs-sports-network/)','ESPN':'[WatchESPN](http://www.espn.com/watchespn/)','ESPN2':'[WatchESPN](http://www.espn.com/watchespn/)','ESPN3':'[WatchESPN](http://www.espn.com/watchespn/)','ESPNU':'[WatchESPN](http://www.espn.com/watchespn/)','ESPNN':'[WatchESPN](http://www.espn.com/watchespn/)','FOX':'[FOX](https://www.fox.com/live/)','FS1':'[FS1](https://www.fox.com/live/channel/FS1/)','FSN':'[FOX Sports](https://www.foxsports.com/live)','Longhorn Network':'[WatchESPN](http://www.espn.com/watchespn/)','NBC':'[NBC Sports](http://www.nbcsports.com/live)','NBCSN':'[NBC Sports](http://www.nbcsports.com/live)','PAC12':'[PAC12](http://pac-12.com/live)','SECN':'[WatchESPN](http://www.espn.com/watchespn/)','ACCN':'[WatchESPN](http://www.espn.com/watchespn/)','ACCNE':'[WatchESPN](http://www.espn.com/watchespn/)','ESPN+':'[ESPN+](https://plus.espn.com/)','FS2':'[FS2](https://www.fox.com/live/channel/fs2/)'}
 
 try: #import if praw is happy, quit this cycle if not
   import praw
