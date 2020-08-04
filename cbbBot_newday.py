@@ -3,20 +3,16 @@ import requests
 import datetime
 import pytz
 import json
+import cbbBot_func
+
+cbbBot_func.get_rcbb_rank()
 
 tz = pytz.timezone('US/Eastern')
 now = datetime.datetime.now(tz)
-year = str(now.year)
-month = str(now.month)
-if now.month < 10:
-    month='0' + str(now.month)
-day = str(now.day)
-if now.day < 10:
-    day='0' + str(now.day)
 
 #year,month,day='2020','03','10'
 
-url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + year + month + day + '&groups=50&limit=353'
+url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=353'
 obj = requests.get(url)
 schedule = json.loads(obj.content)
 

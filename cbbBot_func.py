@@ -69,6 +69,8 @@ def espn(game_id):
         network = game['header']['competitions'][0]['broadcasts'][0]['media']['shortName']
 
     start_time = pytz.utc.localize(datetime.datetime.strptime(game['header']['competitions'][0]['date'],'%Y-%m-%dT%H:%MZ')).astimezone(tz)
-    game_clock = game['header']['competitions'][0]['status']['type']['detail'] #check this pointer works during live action
+    game_clock = game['header']['competitions'][0]['status']['type']['detail']
+    if game['header']['competitions'][0]['status']['type']['id'] == '1':
+        game_clock = ''
 
-    return away_rank,away_team,away_record,home_rank,home_team,home_record,venue,city,state,network,start_time,game_clock,away_score,home_score
+    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score]
