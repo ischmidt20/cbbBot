@@ -84,7 +84,7 @@ with open('./client.txt', 'r') as imp_file:
 lines = [line.replace('\n', '') for line in lines]
 
 try:
-    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username="cbbBot", password = lines[2], user_agent="CBB Bot v4") #define praw and user agent, login
+    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent="CBB Bot v4") #define praw and user agent, login
     print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
 except:
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
@@ -150,7 +150,7 @@ for post in r.redditor('cbbBot').submissions.new(limit = 1000): #see which games
         already_posted[game_id] = post.id
 
 games_over = []
-with open('cbbBot/games_over.txt', 'r') as imp_file: #see which games are already over
+with open('./data/games_over.txt', 'r') as imp_file: #see which games are already over
     lines = imp_file.readlines()
 for line in lines:
     games_over.append(line.replace('\n', ''))
@@ -179,7 +179,7 @@ for game in games:
                     print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
             else:
                 if datetime.datetime.now(tz) > (time_of_game + datetime.timedelta(hours = 4)):
-                    with open('cbbBot/games_over.txt', 'a') as f:
+                    with open('./data/games_over.txt', 'a') as f:
                         f.write(game + '\n')
                 try:
                     thread = r.submission(id = already_posted[game]) #find already posted thread
