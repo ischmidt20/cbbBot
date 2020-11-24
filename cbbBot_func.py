@@ -58,8 +58,8 @@ def espn(game_id):
 
     (home_rank, away_rank) = [if_exists(team, 'rank', '') for team in teams]
     (home_team, away_team) = [team['team']['location'] for team in teams]
-    (home_record, away_record) = [team['record'][0]['summary'] for team in teams]
-    (home_score, away_score) = [int(team['score']) for team in teams]
+    (home_record, away_record) = [team['record'][0]['summary'] if team['record'] else '--' for team in teams]
+    (home_score, away_score) = [int(if_exists(team, 'score', 0)) for team in teams]
 
     venue = game['gameInfo']['venue']['fullName']
     city = game['gameInfo']['venue']['address']['city']
