@@ -168,7 +168,7 @@ for game in games:
             game_info = get_info(game)
             (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score) = game_info
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-            if any([desc in game_clock.lower() for desc in ['final', 'cancelled', 'postponed']]):
+            if any([desc in game_clock.lower() for desc in ['cancelled', 'postponed']]):
                 with open('./data/games_over.txt', 'a') as f:
                     f.write(game + '\n')
                 continue
@@ -185,6 +185,9 @@ for game in games:
                 else:
                     print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
             else:
+                if datetime.datetime.now(tz) > (start_time + datetime.timedelta(hours = 4)) and 'final' in game_clock.lower():
+                    with open('./data/games_over.txt', 'a') as f:
+                        f.write(game + '\n')
                 try:
                     thread = r.submission(id = already_posted[game]) #find already posted thread
                     comment_stream_link = 'http://www.reddit-stream.com/' + thread.permalink
