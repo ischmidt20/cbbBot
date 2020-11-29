@@ -12,12 +12,13 @@ Arizona,[Arizona](#f/arizona),Arizona
 Arizona State,[Arizona State](#f/arizonastate),Arizona State
 Arkansas,[Arkansas](#f/arkansas),Arkansas
 Arkansas State,[Arkansas State](#f/arkansasstate),Arkansas State
-Arkansas-Pine Bluff,[Arkansas-Pine Bluff](#f/arkansaspinebluff),Arkansas-Pine Bluff
+Arkansas-Pine Bluff,[UAPB](#f/uapb),Arkansas-Pine Bluff
 Army,[Army](#f/army),Army
 Auburn,[Auburn](#f/auburn),Auburn
 Austin Peay,[Austin Peay](#f/austinpeay),Austin Peay
 Ball State,[Ball State](#f/ballstate),Ball State
 Baylor,[Baylor](#f/baylor),Baylor
+Bellarmine,[Bellarmine](#f/bellarmine),Bellarmine
 Belmont,[Belmont](#f/belmont),Belmont
 Bethune-Cookman,[Bethune-Cookman](#f/bethunecookman),Bethune Cookman
 Binghamton,[Binghamton](#f/binghamton),Binghamton
@@ -38,9 +39,9 @@ California Baptist,[California Baptist](#f/californiabaptist),Cal Baptist
 Campbell,[Campbell](#f/campbell),Campbell
 Canisius,[Canisius](#f/canisius),Canisius
 Central Arkansas,[Central Arkansas](#f/centralarkansas),University of Central Arkansas
-Central Connecticut,[Central Connecticut State](#f/centralconnecticutstate),Central Connecticut State
+Central Connecticut,[CCSU](#f/ccsu),Central Connecticut State
 Central Michigan,[Central Michigan](#f/centralmichigan),Central Michigan
-Charleston,[Charleston (SC)](#f/collegecharleston),College of Charleston
+Charleston,[Charleston](#f/collegecharleston),College of Charleston
 Charleston Southern,[Charleston Southern](#f/charlestonsouthern),Charleston Southern
 Charlotte,[Charlotte](#f/charlotte),Charlotte
 Chattanooga,[Chattanooga](#f/chattanooga),Chattanooga
@@ -57,8 +58,8 @@ Coppin State,[Coppin State](#f/coppinstate),Coppin State
 Cornell,[Cornell](#f/cornell),Cornell
 Creighton,[Creighton](#f/creighton),Creighton
 CSU Bakersfield,[CSU Bakersfield](#f/csubakersfield),Cal State Bakersfield
-CSU Fullerton,[CSU Fullerton](#f/csufullerton),Cal State Fullerton
-CSU Northridge,[CSU Northridge](#f/csunorthridge),Cal State Northridge
+CSU Fullerton,[Cal State Fullerton](#f/csufullerton),Cal State Fullerton
+CSU Northridge,[CSUN](#f/csunorthridge),Cal State Northridge
 Dartmouth,[Dartmouth](#f/dartmouth),Dartmouth
 Davidson,[Davidson](#f/davidson),Davidson
 Dayton,[Dayton](#f/dayton),Dayton
@@ -67,6 +68,7 @@ Delaware State,[Delaware State](#f/delawarestate),Delaware State
 Denver,[Denver](#f/denver),Denver
 DePaul,[DePaul](#f/depaul),DePaul
 Detroit Mercy,[Detroit](#f/detroitmercy),Detroit
+Dixie State,[Dixie State](#f/dixiestate),Dixie State
 Drake,[Drake](#f/drake),Drake
 Drexel,[Drexel](#f/drexel),Drexel
 Duke,[Duke](#f/duke),Duke
@@ -129,7 +131,7 @@ Jacksonville State,[Jacksonville State](#f/jacksonvillestate),Jacksonville State
 James Madison,[James Madison](#f/jamesmadison),James Madison
 Kansas,[Kansas](#f/kansas),Kansas
 Kansas State,[Kansas State](#f/kansasstate),Kansas State
-Kennesaw State,[Kennesaw](#f/kennesaw),Kennesaw State
+Kennesaw State,[Kennesaw State](#f/kennesawstate),Kennesaw State
 Kent State,[Kent State](#f/kentstate),Kent State
 Kentucky,[Kentucky](#f/kentucky),Kentucky
 La Salle,[La Salle](#f/lasalle),La Salle
@@ -139,8 +141,8 @@ Lehigh,[Lehigh](#f/lehigh),Lehigh
 Liberty,[Liberty](#f/liberty),Liberty
 Lipscomb,[Lipscomb](#f/lipscomb),Lipscomb
 Little Rock,[Little Rock](#f/ualr),Little Rock
-Long Beach State,[CSU Long Beach](#f/csulongbeach),Long Beach State
-Long Island University,[Long Island](#f/longisland),LIU-Brooklyn
+Long Beach State,[Long Beach State](#f/csulongbeach),Long Beach State
+Long Island University,[LIU](#f/liu),LIU-Brooklyn
 Longwood,[Longwood](#f/longwood),Longwood
 Louisiana,[Louisiana](#f/louisiana),Louisiana
 Louisiana Tech,[Louisiana Tech](#f/louisianatech),Louisiana Tech
@@ -159,7 +161,7 @@ Maryland-Eastern Shore,[UMES](#f/umes),UMES
 McNeese,[McNeese](#f/mcneese),McNeese
 Memphis,[Memphis](#f/memphis),Memphis
 Mercer,[Mercer](#f/mercer),Mercer
-Merrimack,[Merrimack](#f/merrimack-sheet2-row17-col07),Merrimack
+Merrimack,[Merrimack](#f/merrimack),Merrimack
 Miami,[Miami](#f/miami),Miami (FL)
 Miami (OH),[Miami (OH)](#f/miamioh),Miami (OH)
 Michigan,[Michigan](#f/michigan),Michigan
@@ -168,7 +170,7 @@ Middle Tennessee,[Middle Tennessee](#f/middletennessee),MT
 Milwaukee,[Milwaukee](#f/milwaukee),Milwaukee
 Minnesota,[Minnesota](#f/minnesota),Minnesota
 Mississippi State,[Mississippi State](#f/mississippistate),Mississippi State
-Mississippi Valley State,[Mississippi Valley State](#f/mississippivalleystate),Mississippi Valley State
+Mississippi Valley State,[MVSU](#f/mvsu),Mississippi Valley State
 Missouri,[Missouri](#f/missouri),Missouri
 Missouri State,[Missouri State](#f/missouristate),Missouri State
 Monmouth,[Monmouth](#f/monmouth),Monmouth
@@ -176,7 +178,7 @@ Montana,[Montana](#f/montana),Montana
 Montana State,[Montana State](#f/montanastate),Montana State
 Morehead State,[Morehead State](#f/moreheadstate),Morehead State
 Morgan State,[Morgan State](#f/morganstate),Morgan State
-Mt. St. Mary's,[Mount St. Mary's](#f/mountstmarys),Mt. St. Mary's
+Mount St. Mary's,[Mount St. Mary's](#f/mountstmarys),Mt. St. Mary's
 Murray State,[Murray State](#f/murraystate),Murray State
 Navy,[Navy](#f/navy),Navy
 NC State,[NC State](#f/ncstate),NC State
@@ -230,7 +232,7 @@ Presbyterian,[Presbyterian](#f/presbyterian),Presbyterian
 Princeton,[Princeton](#f/princeton),Princeton
 Providence,[Providence](#f/providence),Providence
 Purdue,[Purdue](#f/purdue),Purdue
-Purdue Fort Wayne,[Fort Wayne](#f/fortwayne),Fort Wayne
+Purdue Fort Wayne,[Purdue Fort Wayne](#f/fortwayne),Fort Wayne
 Quinnipiac,[Quinnipiac](#f/quinnipiac),Quinnipiac
 Radford,[Radford](#f/radford),Radford
 Rhode Island,[Rhode Island](#f/rhodeisland),URI
@@ -241,23 +243,22 @@ Robert Morris,[Robert Morris](#f/robertmorris),Robert Morris
 Rutgers,[Rutgers](#f/rutgers),Rutgers
 Sacramento State,[Sacramento State](#f/sacramentostate),Sacramento State
 Sacred Heart,[Sacred Heart](#f/sacredheart),Sacred Heart
-Saint Joseph's,[St. Joseph's (PA)](#f/stjosephspa),St. Joseph's
+Saint Joseph's,[St. Joseph's](#f/stjosephspa),St. Joseph's
 Saint Louis,[Saint Louis](#f/saintlouis),St. Louis
-Saint Mary's,[St. Mary's (CA)](#f/stmarys),St. Mary's
+Saint Mary's,[St. Mary's](#f/stmarys),St. Mary's
 Saint Peter's,[St. Peter's](#f/stpeters),St. Peter's
 Sam Houston State,[Sam Houston State](#f/samhoustonstate),Sam Houston State
 Samford,[Samford](#f/samford),Samford
 San Diego,[San Diego](#f/sandiego),San Diego
 San Diego State,[San Diego State](#f/sandiegostate),San Diego State
 San Francisco,[San Francisco](#f/sanfrancisco),San Francisco
-San José St,[San JosÔøΩ State](#f/sanjosestate),San Jose State
+San Jos� State,[San José State](#f/sanjosestate),San Jose State
 Santa Clara,[Santa Clara](#f/santaclara),Santa Clara
 SE Louisiana,[Southeastern Louisiana](#f/southeasternlouisiana),Southeastern Louisiana
-SE Missouri St,[Southeast Missouri State](#f/southeastmissouristate),SE Missouri State
-Seattle,[Seattle](#f/seattle),Seattle
+Seattle U,[Seattle](#f/seattle),Seattle
 Seton Hall,[Seton Hall](#f/setonhall),Seton Hall
 Siena,[Siena](#f/siena),Siena
-SIU-Edwardsville,[SIUE](#f/siue),SIU Edwardsville
+SIU Edwardsville,[SIUE](#f/siue),SIU Edwardsville
 SMU,[SMU](#f/smu),SMU
 South Alabama,[South Alabama](#f/southalabama),South Alabama
 South Carolina,[South Carolina](#f/southcarolina),South Carolina
@@ -266,19 +267,21 @@ South Carolina Upstate,[USC Upstate](#f/uscupstate),SC Upstate
 South Dakota,[South Dakota](#f/southdakota),South Dakota
 South Dakota State,[South Dakota State](#f/southdakotastate),South Dakota State
 South Florida,[USF](#f/usf),USF
-Southern,[Southern University](#f/southern),Southern
+Southeast Missouri State,[Southeast Missouri](#f/southeastmissouri),SE Missouri State
+Southern,[Southern](#f/southern),Southern
 Southern Illinois,[Southern Illinois](#f/southernillinois),Southern Illinois
 Southern Miss,[Southern Miss](#f/southernmiss),Southern Miss
 Southern Utah,[Southern Utah](#f/southernutah),Southern Utah
 St. Bonaventure,[St. Bonaventure](#f/stbonaventure),St. Bonaventure
 St. Francis (BKN),[St. Francis Brooklyn](#f/stfrancisbrooklyn),St. Francis Brooklyn
 St. Francis (PA),[St. Francis](#f/stfrancis),St. Francis PA
-St. John's,[St. John's (NY)](#f/stjohnsny),St. John's
+St. John's,[St. John's](#f/stjohnsny),St. John's
 Stanford,[Stanford](#f/stanford),Stanford
 Stephen F. Austin,[Stephen F. Austin](#f/stephenfaustin),Stephen F. Austin
 Stetson,[Stetson](#f/stetson),Stetson
 Stony Brook,[Stony Brook](#f/stonybrook),Stony Brook
 Syracuse,[Syracuse](#f/syracuse),Syracuse
+Tarleton,[Tarleton State](#f/tarletonstate),Tarleton
 TCU,[TCU](#f/tcu),TCU
 Temple,[Temple](#f/temple),Temple
 Tennessee,[Tennessee](#f/tennessee),Tennessee
@@ -300,23 +303,24 @@ UAB,[UAB](#f/uab),UAB
 UC Davis,[UC Davis](#f/ucdavis),UC Davis
 UC Irvine,[UC Irvine](#f/ucirvine),UC Irvine
 UC Riverside,[UC Riverside](#f/ucriverside),UC Riverside
+UC San Diego,[UCSD](#f/ucsd),UC San Diego
 UC Santa Barbara,[UCSB](#f/ucsb),UC Santa Barbara
 UCF,[UCF](#f/ucf),UCF
 UCLA,[UCLA](#f/ucla),UCLA
 UConn,[Connecticut](#f/connecticut),UConn
 UIC,[UIC](#f/uic),UIC
 UL Monroe,[ULM](#f/ulm),ULM
+UM Kansas City,[Kansas City](#f/umkc),UMKC
 UMass,[UMass](#f/umass),UMass
-UMass Lowell,[Massachusetts Lowell](#f/massachusettslowell),UMass Lowell
+UMass Lowell,[UMass Lowell](#f/massachusettslowell),UMass Lowell
 UMBC,[UMBC](#f/umbc),UMBC
-UMKC,[UMKC](#f/umkc),UMKC
 UNC Asheville,[UNC Asheville](#f/uncasheville),UNC Asheville
 UNC Greensboro,[UNC Greensboro](#f/uncgreensboro),UNC Greensboro
 UNC Wilmington,[UNC Wilmington](#f/uncwilmington),UNC Wilmington
 UNLV,[UNLV](#f/unlv),UNLV
 USC,[USC](#f/usc),USC
 UT Arlington,[UT Arlington](#f/utarlington),UT-Arlington
-UT Martin,[Tennessee-Martin](#f/tennesseemartin),Tennessee-Martin
+UT Martin,[UT Martin](#f/utmartin),Tennessee-Martin
 UT Rio Grande Valley,[UTRGV](#f/texasriograndevalley),UTRGV
 Utah,[Utah](#f/utah),Utah
 Utah State,[Utah State](#f/utahstate),Utah State
@@ -350,4 +354,4 @@ Wright State,[Wright State](#f/wrightstate),Wright State
 Wyoming,[Wyoming](#f/wyoming),Wyoming
 Xavier,[Xavier](#f/xavier),Xavier
 Yale,[Yale](#f/yale),Yale
-Youngstown St,[Youngstown State](#f/youngstownstate),Youngstown State
+Youngstown State,[Youngstown State](#f/youngstownstate),Youngstown State
