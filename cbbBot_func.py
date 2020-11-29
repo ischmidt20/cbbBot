@@ -50,6 +50,15 @@ def if_exists(dct, key, value):
         return dct[key]
     return value
 
+def check_game(game_id):
+    url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=' + str(game_id)
+    obj = requests.get(url)
+    game = json.loads(obj.content)
+    if 'code' in game:
+        if game['code'] == 404:
+            return False
+    return True
+
 def espn(game_id):
     url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=' + str(game_id)
     obj = requests.get(url)

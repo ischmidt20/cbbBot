@@ -110,9 +110,12 @@ try:
         subject = message.subject
         if isinstance(message, Message):
             if subject.lower() == 'request' and len(body) == 9: #if message is a game request
-                requested_games.append(body) #add game to queue
-                message.reply('Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.')
-                print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
+                if cbbBot_func.check_game(body):
+                    requested_games.append(body) #add game to queue
+                    message.reply('Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.')
+                    print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
+                else:
+                    message.reply('Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question or comment about the bot, please send to u/Ike348.')
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
                 blacklist.append(body)
                 message.reply('No game thread will be created for ' + body + '!')
