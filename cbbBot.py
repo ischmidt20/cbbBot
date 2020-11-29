@@ -49,7 +49,7 @@ def make_thread(game_id, game_info, comment_stream_link = ''):
         thread = away_team
     else:
         thread = away_flair
-    thread = thread + ' ' + away_score + ' @ ' + home_score + ' '
+    thread = thread + ' ' + str(away_score) + ' @ ' + str(home_score) + ' '
     if home_flair == '':
         thread = thread + home_team
     else:
