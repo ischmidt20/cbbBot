@@ -169,7 +169,7 @@ for game in games:
             (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score) = game_info
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
             if game not in already_posted.keys():
-                if datetime.datetime.now(tz) > (start_time - datetime.timedelta(minutes = 60)) and 'FINAL' not in game_clock and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+                if datetime.datetime.now(tz) > (start_time - datetime.timedelta(minutes = 60)) and 'Final' not in game_clock and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
                     print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
                     try:
                         (title, thread_text) = make_thread(game, game_info)
