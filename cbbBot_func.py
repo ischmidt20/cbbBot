@@ -7,7 +7,7 @@ import json
 tz = pytz.timezone('US/Eastern')
 
 def get_teams():
-    with open('./data/team_list.txt','r') as imp_file:
+    with open('./data/team_list.csv','r') as imp_file:
         lines=imp_file.readlines()
     flairs = {}
     rank_names = {}
