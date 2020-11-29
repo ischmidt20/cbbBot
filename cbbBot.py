@@ -168,7 +168,7 @@ for game in games:
             game_info = get_info(game)
             (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score) = game_info
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-            if 'final' in game_clock.lower():
+            if any([desc in game_clock.lower() for desc in ['final', 'cancelled', 'postponed']]):
                 with open('./data/games_over.txt', 'a') as f:
                     f.write(game + '\n')
                 continue
