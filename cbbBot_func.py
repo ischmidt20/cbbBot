@@ -116,7 +116,9 @@ def create_boxscore(home_team, away_team, boxscore_data):
         boxscore_string += '\n'
         boxscore_line = [team]
         for stat in game_stats:
-            boxscore_line.append(stats[stat])
+            has_stat = stat in stats.keys()
+            value = stats[stat] if has_stat else ' '
+            boxscore_line.append(value)
         boxscore_string += ' | '.join(boxscore_line)
     
     return boxscore_string
