@@ -73,6 +73,8 @@ def espn(game_id):
     venue = game['gameInfo']['venue']['fullName']
     city = game['gameInfo']['venue']['address']['city']
     state = game['gameInfo']['venue']['address']['state']
+    boxscore = game['boxscore']
+
     network = ''
     if len(game['header']['competitions'][0]['broadcasts']) > 0:
         network = game['header']['competitions'][0]['broadcasts'][0]['media']['shortName']
@@ -82,4 +84,39 @@ def espn(game_id):
     if game['header']['competitions'][0]['status']['type']['id'] == '1':
         game_clock = ''
 
-    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score]
+    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score, boxscore]
+
+def create_boxscore(home_team, away_team, boxscore_data):
+    is_pregame = False
+    boxscore = dict()
+    
+    for team in boxscore_data['teams']:
+        name = team['team']['shortDisplayName']
+        boxscore[name] = dict()
+        for data_point in team['statistics']:
+            stat = data_point['label']
+            value = data_point['displayValue']
+            boxscore[name][stat] = value
+        # Not sure if there's a better way to check if this is pre-game or not, but it definitely works!
+        is_pregame = 'Streak' in boxscore[name].keys()
+
+    pre_game_stats = ['Streak', 'Points Per Game', 'Field Goal %', 'Three Point %', 'Rebounds Per Game', 'Assists Per Game', 'Blocks Per Game', 'Steals Per Game', 'Total Turnovers Per Game', 'Points Against']
+    in_game_stats = ['FG', 'Field Goal %', '3PT', 'Three Point %', 'FT', 'Free Throw %', 'Rebounds', 'Offensive Rebounds', 'Defensive Rebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'Technical Fouls', 'Flagrant Fouls', 'Fouls', 'Largest Lead']
+    game_stats = pre_game_stats if is_pregame else in_game_stats
+    
+    boxscore_string = '\n\n'
+    # Add 'Team' column to beginning of list
+    boxscore_string += 'Team | ' + ' | '.join(game_stats) + '\n'
+    # Add the reddit table separator, length of stats + 1 due to manually adding 'Team'
+    boxscore_string += '----|' * (len(game_stats) + 1)
+
+    # Doing it this way allows us to keep home/away in order
+    for team in [home_team, away_team]:
+        stats = boxscore[team]
+        boxscore_string += '\n'
+        boxscore_line = [team]
+        for stat in game_stats:
+            boxscore_line.append(stats[stat])
+        boxscore_string += ' | '.join(boxscore_line)
+    
+    return boxscore_string
