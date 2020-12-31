@@ -90,7 +90,7 @@ except:
 
 try:
     thread = r.submission(id = '5ctg2v') #get thread to edit
-    thread.edit(datetime.datetime.now(tz)) #edit same thread with current timestamp; let's me know that the bot is running
+    thread.edit(datetime.datetime.now(tz)) #edit same thread with current timestamp; lets me know that the bot is running
     print('Edited check thread with current time and date! ' + str(datetime.datetime.now(tz)))
 except:
     print('Failed to edit thread with current time and date. Will continue..... ' + str(datetime.datetime.now(tz)))
@@ -199,5 +199,5 @@ for game in games:
             print('Failed to get game info for ' + game + '. ' + str(datetime.datetime.now(tz)))
 
 thread = r.submission(id = '5ctg2v') #get thread to edit
-thread.edit(str(datetime.datetime.now(tz)) + '\n\n' + 'bot concluded script') #edit same thread with current timestamp; let's me know that the bot is running
+thread.edit(str(datetime.datetime.now(tz)) + '\n\n' + 'bot concluded script') #edit same thread with current timestamp; lets me know that the bot has finished without issues
 print('Concluded script without issues. ' + str(datetime.datetime.now(tz)))
