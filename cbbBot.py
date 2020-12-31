@@ -148,7 +148,7 @@ print('Checking which games have already been posted..... ' + str(datetime.datet
 already_posted = {}
 for post in r.redditor('cbbBot').submissions.new(limit = 1000): #see which games already have threads
     if post.subreddit == 'CollegeBasketball':
-        game_id = post.selftext[(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=')+56):(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=')+65)]
+        game_id = post.selftext[(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=') + 56):(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=') + 65)]
         already_posted[game_id] = post.id
 
 games_over = []
@@ -197,3 +197,7 @@ for game in games:
                     print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
         else:
             print('Failed to get game info for ' + game + '. ' + str(datetime.datetime.now(tz)))
+
+thread = r.submission(id = '5ctg2v') #get thread to edit
+thread.edit(str(datetime.datetime.now(tz)) + '\n\n' + 'bot concluded script') #edit same thread with current timestamp; let's me know that the bot is running
+print('Concluded script without issues. ' + str(datetime.datetime.now(tz)))
