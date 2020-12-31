@@ -111,7 +111,8 @@ try:
         if isinstance(message, Message):
             if subject.lower() == 'request' and len(body) == 9: #if message is a game request
                 if cbbBot_func.check_game(body):
-                    requested_games.append(body) #add game to queue
+                    if body not in requested_games:
+                        requested_games.append(body) #add game to queue
                     message.reply('Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.')
                     print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                 else:
@@ -168,7 +169,7 @@ for game in games:
             game_info = get_info(game)
             (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score) = game_info
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-            if any([desc in game_clock.lower() for desc in ['canceled', 'postponed']]):
+            if any([desc in game_clock.lower() for desc in ['canceled', 'postponed', 'final']]):
                 with open('./data/games_over.txt', 'a') as f:
                     f.write(game + '\n')
                 continue
