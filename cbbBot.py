@@ -1,9 +1,7 @@
 #!/Usr/bin/python3
-import urllib.request
-import os
 import datetime
-import cbbBot_func
 import pytz
+import cbbBot_func
 
 tz = pytz.timezone('US/Eastern')
 
