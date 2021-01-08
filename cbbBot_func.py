@@ -103,7 +103,7 @@ def create_boxscore(home_team, home_flair, away_team, away_flair, boxscore_data)
         is_pregame = 'Streak' in boxscore[name].keys()
 
     if is_pregame:
-        game_stats = ['Streak', 'Points Per Game', 'Field Goal %', 'Three Point %', 'Rebounds Per Game', 'Assists Per Game', 'Blocks Per Game', 'Steals Per Game', 'Total Turnovers Per Game', 'Points Against']
+        game_stats = ['STRK', 'PTS', 'PA', 'FG%', '3P%', 'REB', 'AST', 'BLK', 'STL', 'ToTO']
     else:
         game_stats = ['FG%', '3P%', 'FT%', 'REB', 'OR', 'AST', 'STL', 'BLK', 'TO', 'PF']
 

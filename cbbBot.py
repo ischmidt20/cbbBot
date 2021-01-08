@@ -53,7 +53,7 @@ def make_thread(game_id, game_info, comment_stream_link = ''):
     else:
         thread = thread + home_flair
 
-    thread = thread + ' ' + game_clock.upper() + cbbBot_func.create_boxscore(home_team, home_flair, away_team, away_flair, boxscore)
+    thread = thread + ' ' + game_clock.upper()
     thread = thread + '\n\n\n###NCAA Basketball\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
     if away_record == '':
         away_record = '--'
@@ -74,6 +74,7 @@ def make_thread(game_id, game_info, comment_stream_link = ''):
     if network in tv_stream_links.keys():
         thread = thread + tv_stream_links[network] + '\n'
     espn_link = 'http://www.espn.com/mens-college-basketball/game?gameId='+game_id
+    thread = thread + "\n\n-----------------------------------------------------------------" + cbbBot_func.create_boxscore(home_team, home_flair, away_team, away_flair, boxscore)
     thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN](" + espn_link + ") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [AutoReload](https://addons.mozilla.org/en-US/firefox/addon/auto-reload-tab/) to auto-refresh this tab.\n\n- You may also like [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
     title = '[Game Thread] ' + away_rank + away_team + ' @ ' + home_rank + home_team + ' (' + time + ')'
     print('Made thread for game ' + game_id + '! ' + str(datetime.datetime.now(tz)))
