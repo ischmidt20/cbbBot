@@ -88,22 +88,24 @@ def espn(game_id):
 
 def create_boxscore(home_team, away_team, boxscore_data):
     is_pregame = False
-    boxscore = dict()
+    boxscore = {}
 
     for team in boxscore_data['teams']:
         name = team['team']['shortDisplayName']
-        boxscore[name] = dict()
+        boxscore[name] = {}
         for data_point in team['statistics']:
-            stat = data_point['label']
-            value = data_point['displayValue']
-            boxscore[name][stat] = value
+            if 'label' in data_point:
+                boxscore[name][data_point['label']] = data_point['displayValue']
+            if 'abbreviation' in data_point:
+                boxscore[name][data_point['abbreviation']] = data_point['displayValue']
+
         # Not sure if there's a better way to check if this is pre-game or not, but it definitely works!
         is_pregame = 'Streak' in boxscore[name].keys()
 
     if is_pregame:
         game_stats = ['Streak', 'Points Per Game', 'Field Goal %', 'Three Point %', 'Rebounds Per Game', 'Assists Per Game', 'Blocks Per Game', 'Steals Per Game', 'Total Turnovers Per Game', 'Points Against']
     else:
-        game_stats = ['FG', 'Field Goal %', '3PT', 'Three Point %', 'FT', 'Free Throw %', 'Rebounds', 'Offensive Rebounds', 'Defensive Rebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'Technical Fouls', 'Flagrant Fouls', 'Fouls', 'Largest Lead']
+        game_stats = ['FG%', '3P%', 'FT%', 'REB', 'OR', 'AST', 'STL', 'BLK', 'TO', 'PF']
 
     boxscore_string = '\n\n'
     # Add 'Team' column to beginning of list
@@ -117,7 +119,6 @@ def create_boxscore(home_team, away_team, boxscore_data):
         boxscore_string = boxscore_string + '\n'
         boxscore_line = [team]
         for stat in game_stats:
-            has_stat = stat in stats.keys()
             value = if_exists(stats, stat, '')
             boxscore_line.append(value)
         boxscore_string = boxscore_string + ' | '.join(boxscore_line)
