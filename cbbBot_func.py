@@ -100,10 +100,6 @@ def create_boxscore(home_team, away_team, boxscore_data):
         # Not sure if there's a better way to check if this is pre-game or not, but it definitely works!
         is_pregame = 'Streak' in boxscore[name].keys()
 
-    #pregame_stats = ['Streak', 'Points Per Game', 'Field Goal %', 'Three Point %', 'Rebounds Per Game', 'Assists Per Game', 'Blocks Per Game', 'Steals Per Game', 'Total Turnovers Per Game', 'Points Against']
-    #in_game_stats = ['FG', 'Field Goal %', '3PT', 'Three Point %', 'FT', 'Free Throw %', 'Rebounds', 'Offensive Rebounds', 'Defensive Rebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'Technical Fouls', 'Flagrant Fouls', 'Fouls', 'Largest Lead']
-
-    #game_stats = in_game_stats
     if is_pregame:
         game_stats = ['Streak', 'Points Per Game', 'Field Goal %', 'Three Point %', 'Rebounds Per Game', 'Assists Per Game', 'Blocks Per Game', 'Steals Per Game', 'Total Turnovers Per Game', 'Points Against']
     else:
