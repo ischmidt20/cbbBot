@@ -53,8 +53,8 @@ def make_thread(game_id, game_info, comment_stream_link = ''):
     else:
         thread = thread + home_flair
 
-    thread = thread + cbbBot_func.create_boxscore(home_team, away_team, boxscore)
-    thread = thread + ' ' + game_clock.upper() + '\n\n\n###NCAA Basketball\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
+    thread = thread + ' ' + game_clock.upper() + cbbBot_func.create_boxscore(home_team, away_team, boxscore)
+    thread = thread + '\n\n\n###NCAA Basketball\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
     if away_record == '':
         away_record = '--'
     if home_record == '':
