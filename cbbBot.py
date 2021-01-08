@@ -52,8 +52,8 @@ def make_thread(game_id, game_info, comment_stream_link = ''):
         thread = thread + home_team
     else:
         thread = thread + home_flair
-    
-    thread = thread + create_boxscore(home_team, away_team, boxscore)
+
+    thread = thread + cbbBot_func.create_boxscore(home_team, away_team, boxscore)
     thread = thread + ' ' + game_clock.upper() + '\n\n\n###NCAA Basketball\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
     if away_record == '':
         away_record = '--'
@@ -167,7 +167,7 @@ for game in games:
         print('Getting game info for ' + game + '..... ' + str(datetime.datetime.now(tz)))
         if cbbBot_func.check_game(game):
             game_info = get_info(game)
-            (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score) = game_info
+            (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score, boxscore) = game_info
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
             if game not in already_posted.keys():
                 if any([desc in game_clock.lower() for desc in ['canceled', 'postponed', 'final']]):
