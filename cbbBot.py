@@ -20,7 +20,7 @@ except:
     quit()
 
 def get_info(game_id):
-    (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score) = cbbBot_func.espn(game_id)
+    (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score, boxscore) = cbbBot_func.espn(game_id)
     with open('./data/ranking.txt', 'r') as imp_file:
         lines = imp_file.readlines()
     (teams, rank_names) = cbbBot_func.get_teams()
@@ -39,7 +39,7 @@ def get_info(game_id):
         if rank_names[home_team] in ranking.keys():
             home_rank = str(ranking[rank_names[home_team]])
         home_flair = teams[home_team]
-    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score]
+    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score, boxscore]
 
 def make_thread(game_id, game_info, comment_stream_link = ''):
     (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score, boxscore) = game_info
