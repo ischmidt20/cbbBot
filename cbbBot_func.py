@@ -15,7 +15,7 @@ def get_teams():
         (team,flair,rank_name) = line.replace('\n','').split(',')
         flairs[team] = flair
         rank_names[team] = rank_name
-    return flairs,rank_names
+    return flairs, rank_names
 
 def get_rcbb_rank():
     (flairs,rank_names) = get_teams()
@@ -86,7 +86,7 @@ def espn(game_id):
 
     return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score, boxscore]
 
-def create_boxscore(home_team, away_team, boxscore_data):
+def create_boxscore(home_team, home_flair, away_team, away_flair, boxscore_data):
     is_pregame = False
     boxscore = {}
 
@@ -114,13 +114,18 @@ def create_boxscore(home_team, away_team, boxscore_data):
     boxscore_string = boxscore_string + '----|' * (len(game_stats) + 1)
 
     # Doing it this way allows us to keep home/away in order
-    for team in [home_team, away_team]:
-        stats = boxscore[team]
-        boxscore_string = boxscore_string + '\n'
-        boxscore_line = [team]
-        for stat in game_stats:
-            value = if_exists(stats, stat, '')
-            boxscore_line.append(value)
-        boxscore_string = boxscore_string + ' | '.join(boxscore_line)
+    boxscore_string = boxscore_string + '\n'
+
+    boxscore_line = [away_flair]
+    for stat in game_stats:
+        value = if_exists(boxscore[away_team], stat, '')
+        boxscore_line.append(value)
+    boxscore_string = boxscore_string + ' | '.join(boxscore_line) + '\n'
+
+    boxscore_line = [home_flair]
+    for stat in game_stats:
+        value = if_exists(boxscore[home_team], stat, '')
+        boxscore_line.append(value)
+    boxscore_string = boxscore_string + ' | '.join(boxscore_line)
 
     return boxscore_string
