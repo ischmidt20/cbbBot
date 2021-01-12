@@ -18,7 +18,9 @@ except:
     quit()
 
 def get_info(game_id):
-    (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score, boxscore) = cbbBot_func.espn(game_id)
+
+    game_data = cbbBot_func.espn(game_id)
+
     with open('./data/ranking.txt', 'r') as imp_file:
         lines = imp_file.readlines()
     (teams, rank_names) = cbbBot_func.get_teams()
@@ -27,58 +29,63 @@ def get_info(game_id):
         (team, rank) = line.replace('\n', '').split(',')
         team = team.replace('&amp;', '&')
         ranking[team] = int(rank)
-    away_rank, home_rank = '', '' #clear ESPN rank values
-    away_flair, home_flair = '', ''
-    if away_team in teams.keys():
-        if rank_names[away_team] in ranking.keys():
-            away_rank = str(ranking[rank_names[away_team]])
-        away_flair = teams[away_team]
-    if home_team in teams.keys():
-        if rank_names[home_team] in ranking.keys():
-            home_rank = str(ranking[rank_names[home_team]])
-        home_flair = teams[home_team]
-    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score, boxscore]
+    game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
+    game_data['awayFlair'], game_data['homeFlair'] = '', ''
+    if game_data['awayTeam'] in teams.keys():
+        if rank_names[game_data['awayTeam']] in ranking.keys():
+            game_data['awayRank'] = str(ranking[rank_names[game_data['awayTeam']]])
+        game_data['awayFlair'] = teams[game_data['awayTeam']]
+    if game_data['homeTeam'] in teams.keys():
+        if rank_names[game_data['homeTeam']] in ranking.keys():
+            game_data['homeRank'] = str(ranking[rank_names[game_data['homeTeam']]])
+        game_data['homeFlair'] = teams[game_data['homeTeam']]
+    return game_data
 
-def make_thread(game_id, game_info, comment_stream_link = ''):
-    (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score, boxscore) = game_info
-    if game_clock != '':
-        away_score, home_score, game_clock = '**' + str(away_score) + '**', '**' + str(home_score) + '**', '- **' + game_clock + '**'
-    if away_flair == '':
-        thread = away_team
+def make_thread(game_id, game_data, comment_stream_link = ''):
+    if game_data['awayFlair'] == '':
+        thread = game_data['awayTeam']
     else:
-        thread = away_flair
-    thread = thread + ' ' + str(away_score) + ' @ ' + str(home_score) + ' '
-    if home_flair == '':
-        thread = thread + home_team
-    else:
-        thread = thread + home_flair
+        thread = game_data['awayFlair']
 
-    thread = thread + ' ' + game_clock.upper()
+    if game_data['gameClock'] != '':
+        thread = thread + ' ' + '**' + str(game_data['awayScore']) + '**' + ' @ **' + str(game_data['homeScore']) + '** '
+    else:
+        thread = thread + ' @ '
+
+    if game_data['homeFlair'] == '':
+        thread = thread + game_data['homeTeam']
+    else:
+        thread = thread + game_data['homeFlair']
+
+    if game_data['gameClock'] != '':
+        thread = thread + ' - **' + game_data['gameClock'].upper() + '**'
+
     thread = thread + '\n\n\n###NCAA Basketball\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
-    if away_record == '':
-        away_record = '--'
-    if home_record == '':
-        home_record = '--'
-    if away_rank != '':
-        away_rank = '#' + away_rank + ' '
-    if home_rank != '':
-        home_rank = '#' + home_rank + ' '
-    thread = thread + away_flair + ' **' + away_rank + away_team + '** (' + away_record + ') @ ' + home_flair + ' **' + home_rank + home_team + '** (' + home_record + ')\n\nTip-Off: '
-    time = start_time.strftime('%I:%M %p') + ' ET'
-    if network == '':
-        network = 'Check your local listings.'
-    network_flair = network
-    if network in tv_flairs.keys():
-        network_flair = tv_flairs[network]
-    thread = thread + time + '\n\nVenue: ' + venue + ', ' + city + ', ' + state + '\n\n-----------------------------------------------------------------\n\n###[](#l/discord) [Join Our Discord](https://discord.gg/redditcbb)\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb) \n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
-    if network in tv_stream_links.keys():
-        thread = thread + tv_stream_links[network] + '\n'
-    espn_link = 'http://www.espn.com/mens-college-basketball/game?gameId='+game_id
-    thread = thread + "\n\n-----------------------------------------------------------------" + cbbBot_func.create_boxscore(home_team, home_flair, away_team, away_flair, boxscore)
+    if game_data['awayRecord'] == '':
+        game_data['awayRecord'] = '--'
+    if game_data['homeRecord'] == '':
+        game_data['homeRecord'] = '--'
+    if game_data['awayRank'] != '':
+        game_data['awayRank'] = '#' + game_data['awayRank'] + ' '
+    if game_data['homeRank'] != '':
+        game_data['homeRank'] = '#' + game_data['homeRank'] + ' '
+    thread = thread + game_data['awayFlair'] + ' **' + game_data['awayRank'] + game_data['awayTeam'] + '** (' + game_data['awayRecord'] + ') @ ' + game_data['homeFlair'] + ' **' + game_data['homeRank'] + game_data['homeTeam'] + '** (' + game_data['homeRecord'] + ')\n\nTip-Off: '
+    time = game_data['startTime'].strftime('%I:%M %p') + ' ET'
+    if game_data['network'] == '':
+        game_data['network'] = 'Check your local listings.'
+    network_flair = game_data['network']
+    if game_data['network'] in tv_flairs.keys():
+        network_flair = tv_flairs[game_data['network']]
+    thread = thread + time + '\n\nVenue: ' + game_data['venue'] + ', ' + game_data['city'] + ', ' + game_data['state'] + '\n\n-----------------------------------------------------------------\n\n###[](#l/discord) [Join Our Discord](https://discord.gg/redditcbb)\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb) \n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
+    if game_data['network'] in tv_stream_links.keys():
+        thread = thread + tv_stream_links[game_data['network']] + '\n'
+    thread = thread + "\n\n-----------------------------------------------------------------" + cbbBot_func.create_boxscore(game_data)
+    espn_link = 'http://www.espn.com/mens-college-basketball/game?gameId=' + game_id
     thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN](" + espn_link + ") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [AutoReload](https://addons.mozilla.org/en-US/firefox/addon/auto-reload-tab/) to auto-refresh this tab.\n\n- You may also like [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
-    title = '[Game Thread] ' + away_rank + away_team + ' @ ' + home_rank + home_team + ' (' + time + ')'
+
+    title = '[Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' @ ' + game_data['homeRank'] + game_data['homeTeam'] + ' (' + time + ')'
     print('Made thread for game ' + game_id + '! ' + str(datetime.datetime.now(tz)))
-    return title,thread
+    return title, thread
 
 with open('./client.txt', 'r') as imp_file:
     lines = imp_file.readlines()
@@ -167,18 +174,17 @@ for game in games:
     if game not in games_over:
         print('Getting game info for ' + game + '..... ' + str(datetime.datetime.now(tz)))
         if cbbBot_func.check_game(game):
-            game_info = get_info(game)
-            (away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, away_flair, home_flair, game_clock, away_score, home_score, boxscore) = game_info
+            game_data = get_info(game)
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
             if game not in already_posted.keys():
-                if any([desc in game_clock.lower() for desc in ['canceled', 'postponed', 'final']]):
+                if any([desc in game_data['gameClock'].lower() for desc in ['canceled', 'postponed', 'final']]):
                     with open('./data/games_over.txt', 'a') as f:
                         f.write(game + '\n')
                     continue
-                elif datetime.datetime.now(tz) > (start_time - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+                elif datetime.datetime.now(tz) > (game_data['startTime'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
                     print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
                     try:
-                        (title, thread_text) = make_thread(game, game_info)
+                        (title, thread_text) = make_thread(game, game_data)
                         thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False)
                         thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
                         print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
@@ -187,13 +193,13 @@ for game in games:
                 else:
                     print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
             else:
-                if datetime.datetime.now(tz) > (start_time + datetime.timedelta(hours = 4)) and 'final' in game_clock.lower():
+                if datetime.datetime.now(tz) > (game_data['startTime'] + datetime.timedelta(hours = 4)) and 'final' in game_data['gameClock'].lower():
                     with open('./data/games_over.txt', 'a') as f:
                         f.write(game + '\n')
                 try:
                     thread = r.submission(id = already_posted[game]) #find already posted thread
                     comment_stream_link = 'http://www.reddit-stream.com/' + thread.permalink
-                    (title, thread_text) = make_thread(game, game_info, comment_stream_link) #re-write thread
+                    (title, thread_text) = make_thread(game, game_data, comment_stream_link) #re-write thread
                     thread.edit(thread_text) #edit thread
                     print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
                 except:

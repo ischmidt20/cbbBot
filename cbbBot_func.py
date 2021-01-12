@@ -65,33 +65,34 @@ def espn(game_id):
     game = json.loads(obj.content)
     teams = game['header']['competitions'][0]['competitors']
 
-    (home_rank, away_rank) = [if_exists(team, 'rank', '') for team in teams]
-    (home_team, away_team) = [team['team']['location'] for team in teams]
-    (home_record, away_record) = [team['record'][0]['summary'] if team['record'] else '--' for team in teams]
-    (home_score, away_score) = [int(if_exists(team, 'score', 0)) for team in teams]
+    return_data = {}
 
-    venue = game['gameInfo']['venue']['fullName']
-    city = game['gameInfo']['venue']['address']['city']
-    state = game['gameInfo']['venue']['address']['state']
-    boxscore = game['boxscore']
+    (return_data['homeRank'], return_data['awayRank']) = [if_exists(team, 'rank', '') for team in teams]
+    (return_data['homeTeam'], return_data['awayTeam']) = [team['team']['location'] for team in teams]
+    (return_data['homeRecord'], return_data['awayRecord']) = [team['record'][0]['summary'] if team['record'] else '--' for team in teams]
+    (return_data['homeScore'], return_data['awayScore']) = [int(if_exists(team, 'score', 0)) for team in teams]
 
-    network = ''
+    return_data['venue'] = game['gameInfo']['venue']['fullName']
+    return_data['city'] = game['gameInfo']['venue']['address']['city']
+    return_data['state'] = game['gameInfo']['venue']['address']['state']
+    return_data['boxscore'] = game['boxscore']
+
+    return_data['network'] = ''
     if len(game['header']['competitions'][0]['broadcasts']) > 0:
-        network = game['header']['competitions'][0]['broadcasts'][0]['media']['shortName']
+        return_data['network']  = game['header']['competitions'][0]['broadcasts'][0]['media']['shortName']
 
-    start_time = pytz.utc.localize(datetime.datetime.strptime(game['header']['competitions'][0]['date'],'%Y-%m-%dT%H:%MZ')).astimezone(tz)
-    game_clock = game['header']['competitions'][0]['status']['type']['detail']
+    return_data['startTime'] = pytz.utc.localize(datetime.datetime.strptime(game['header']['competitions'][0]['date'],'%Y-%m-%dT%H:%MZ')).astimezone(tz)
+    return_data['gameClock'] = game['header']['competitions'][0]['status']['type']['detail']
     if game['header']['competitions'][0]['status']['type']['id'] == '1':
-        game_clock = ''
+        return_data['gameClock'] = ''
+    return return_data
 
-    return [away_rank, away_team, away_record, home_rank, home_team, home_record, venue, city, state, network, start_time, game_clock, away_score, home_score, boxscore]
-
-def create_boxscore(home_team, home_flair, away_team, away_flair, boxscore_data):
+def create_boxscore(game_data):
     is_pregame = False
     boxscore = {}
 
-    for team in boxscore_data['teams']:
-        name = team['team']['shortDisplayName']
+    for team in game_data['boxscore']['teams']:
+        name = team['team']['location']
         boxscore[name] = {}
         for data_point in team['statistics']:
             if 'label' in data_point:
@@ -116,15 +117,15 @@ def create_boxscore(home_team, home_flair, away_team, away_flair, boxscore_data)
     # Doing it this way allows us to keep home/away in order
     boxscore_string = boxscore_string + '\n'
 
-    boxscore_line = [away_flair]
+    boxscore_line = [game_data['awayFlair']]
     for stat in game_stats:
-        value = if_exists(boxscore[away_team], stat, '')
+        value = if_exists(boxscore[game_data['awayTeam']], stat, '')
         boxscore_line.append(value)
     boxscore_string = boxscore_string + ' | '.join(boxscore_line) + '\n'
 
-    boxscore_line = [home_flair]
+    boxscore_line = [game_data['homeFlair']]
     for stat in game_stats:
-        value = if_exists(boxscore[home_team], stat, '')
+        value = if_exists(boxscore[game_data['homeTeam']], stat, '')
         boxscore_line.append(value)
     boxscore_string = boxscore_string + ' | '.join(boxscore_line)
 
