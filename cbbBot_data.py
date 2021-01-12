@@ -77,6 +77,10 @@ def espn(game_id):
     return_data['state'] = game['gameInfo']['venue']['address']['state']
     return_data['boxscore'] = game['boxscore']
 
+    return_data['plays'] = []
+    if 'plays' in game:
+        return_data['plays'] = game['plays'][:-6:-1]
+
     return_data['network'] = ''
     if len(game['header']['competitions'][0]['broadcasts']) > 0:
         return_data['network']  = game['header']['competitions'][0]['broadcasts'][0]['media']['shortName']
@@ -85,6 +89,7 @@ def espn(game_id):
     return_data['gameClock'] = game['header']['competitions'][0]['status']['type']['detail']
     if game['header']['competitions'][0]['status']['type']['id'] == '1':
         return_data['gameClock'] = ''
+
     return return_data
 
 def create_boxscore(game_data):

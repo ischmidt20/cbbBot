@@ -3,9 +3,9 @@ import requests
 import datetime
 import pytz
 import json
-import cbbBot_func
+import cbbBot_data
 
-cbbBot_func.get_rcbb_rank()
+cbbBot_data.get_rcbb_rank()
 
 tz = pytz.timezone('US/Eastern')
 now = datetime.datetime.now(tz)

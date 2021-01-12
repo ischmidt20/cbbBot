@@ -1,7 +1,7 @@
 #!/Usr/bin/python3
 import datetime
 import pytz
-import cbbBot_func
+import cbbBot_data
 
 tz = pytz.timezone('US/Eastern')
 
@@ -19,11 +19,11 @@ except:
 
 def get_info(game_id):
 
-    game_data = cbbBot_func.espn(game_id)
+    game_data = cbbBot_data.espn(game_id)
 
     with open('./data/ranking.txt', 'r') as imp_file:
         lines = imp_file.readlines()
-    (teams, rank_names) = cbbBot_func.get_teams()
+    (teams, rank_names) = cbbBot_data.get_teams()
     ranking = {}
     for line in lines:
         (team, rank) = line.replace('\n', '').split(',')
@@ -79,7 +79,7 @@ def make_thread(game_id, game_data, comment_stream_link = ''):
     thread = thread + time + '\n\nVenue: ' + game_data['venue'] + ', ' + game_data['city'] + ', ' + game_data['state'] + '\n\n-----------------------------------------------------------------\n\n###[](#l/discord) [Join Our Discord](https://discord.gg/redditcbb)\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb) \n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
     if game_data['network'] in tv_stream_links.keys():
         thread = thread + tv_stream_links[game_data['network']] + '\n'
-    thread = thread + "\n\n-----------------------------------------------------------------" + cbbBot_func.create_boxscore(game_data)
+    thread = thread + "\n\n-----------------------------------------------------------------" + cbbBot_data.create_boxscore(game_data)
     espn_link = 'http://www.espn.com/mens-college-basketball/game?gameId=' + game_id
     thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN](" + espn_link + ") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [AutoReload](https://addons.mozilla.org/en-US/firefox/addon/auto-reload-tab/) to auto-refresh this tab.\n\n- You may also like [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
 
@@ -118,7 +118,7 @@ try:
         subject = message.subject
         if isinstance(message, Message):
             if subject.lower() == 'request' and len(body) == 9: #if message is a game request
-                if cbbBot_func.check_game(body):
+                if cbbBot_data.check_game(body):
                     if body not in requested_games:
                         requested_games.append(body) #add game to queue
                     message.reply('Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.')
@@ -173,7 +173,7 @@ for game in games:
     game = game.replace('\n', '')
     if game not in games_over:
         print('Getting game info for ' + game + '..... ' + str(datetime.datetime.now(tz)))
-        if cbbBot_func.check_game(game):
+        if cbbBot_data.check_game(game):
             game_data = get_info(game)
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
             if game not in already_posted.keys():
