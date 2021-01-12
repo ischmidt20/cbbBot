@@ -13,20 +13,14 @@ def if_exists(dct, key, value):
     return value
 
 def make_thread(game_id, game_data, comment_stream_link = ''):
-    if game_data['awayFlair'] == '':
-        thread = game_data['awayTeam']
-    else:
-        thread = game_data['awayFlair']
+    thread = game_data['awayFlair']
 
     if game_data['gameClock'] != '':
         thread = thread + ' ' + '**' + str(game_data['awayScore']) + '**' + ' @ **' + str(game_data['homeScore']) + '** '
     else:
         thread = thread + ' @ '
 
-    if game_data['homeFlair'] == '':
-        thread = thread + game_data['homeTeam']
-    else:
-        thread = thread + game_data['homeFlair']
+    thread = thread + game_data['homeFlair']
 
     if game_data['gameClock'] != '':
         thread = thread + ' - **' + game_data['gameClock'].upper() + '**'
@@ -40,7 +34,17 @@ def make_thread(game_id, game_data, comment_stream_link = ''):
         game_data['awayRank'] = '#' + game_data['awayRank'] + ' '
     if game_data['homeRank'] != '':
         game_data['homeRank'] = '#' + game_data['homeRank'] + ' '
-    thread = thread + game_data['awayFlair'] + ' **' + game_data['awayRank'] + game_data['awayTeam'] + '** (' + game_data['awayRecord'] + ') @ ' + game_data['homeFlair'] + ' **' + game_data['homeRank'] + game_data['homeTeam'] + '** (' + game_data['homeRecord'] + ')\n\nTip-Off: '
+
+    if game_data['awayFlair'] == game_data['awayTeam']:
+        thread = thread + ' **' + game_data['awayRank'] + game_data['awayTeam'] + '** (' + game_data['awayRecord'] + ') @ '
+    else:
+        thread = thread + game_data['awayFlair'] + ' **' + game_data['awayRank'] + game_data['awayTeam'] + '** (' + game_data['awayRecord'] + ') @ '
+
+    if game_data['homeFlair'] == game_data['homeTeam']:
+        thread = thread + ' **' + game_data['homeRank'] + game_data['homeTeam'] + '** (' + game_data['homeRecord'] + ')\n\nTip-Off: '
+    else:
+        thread = thread + game_data['homeFlair'] + ' **' + game_data['homeRank'] + game_data['homeTeam'] + '** (' + game_data['homeRecord'] + ')\n\nTip-Off: '
+        
     time = game_data['startTime'].strftime('%I:%M %p') + ' ET'
     if game_data['network'] == '':
         game_data['network'] = 'Check your local listings.'
@@ -50,14 +54,45 @@ def make_thread(game_id, game_data, comment_stream_link = ''):
     thread = thread + time + '\n\nVenue: ' + game_data['venue'] + ', ' + game_data['city'] + ', ' + game_data['state'] + '\n\n-----------------------------------------------------------------\n\n###[](#l/discord) [Join Our Discord](https://discord.gg/redditcbb)\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb) \n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
     if game_data['network'] in tv_stream_links.keys():
         thread = thread + tv_stream_links[game_data['network']] + '\n'
-    thread = thread + "\n\n-----------------------------------------------------------------" + create_boxscore(game_data)
+
+    thread = thread + "\n\n-----------------------------------------------------------------"
+
+    if game_data['plays']:
+        thread = thread + '\n**Recent Plays:**\n\n' + format_plays(game_data)
+
+    thread = thread + format_boxscore(game_data)
     espn_link = 'http://www.espn.com/mens-college-basketball/game?gameId=' + game_id
     thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN](" + espn_link + ") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [Chrome Refresh](https://chrome.google.com/extensions/detail/aifhnlnghddfdaccgbbpbhjfkmncekmn) or Firefox's [AutoReload](https://addons.mozilla.org/en-US/firefox/addon/auto-reload-tab/) to auto-refresh this tab.\n\n- You may also like [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
 
     title = '[Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' @ ' + game_data['homeRank'] + game_data['homeTeam'] + ' (' + time + ')'
     return title, thread
 
-def create_boxscore(game_data):
+def format_plays(game_data):
+    away_id = game_data['boxscore']['teams'][0]['team']['id']
+    home_id = game_data['boxscore']['teams'][1]['team']['id']
+
+    plays_string = '\n\n'
+
+    plays_header = ['Time', game_data['awayFlair'], game_data['homeFlair'], 'Play']
+
+    plays_string = plays_string + ' | '.join(plays_header) + '\n'
+    plays_string = plays_string + '----|' * (len(plays_header)) + '\n'
+
+    for play in game_data['plays']:
+        text = play['text']
+        away_score = str(play['awayScore'])
+        home_score = str(play['homeScore'])
+        game_clock = play['clock']['displayValue']
+
+        team_id, flair = '', ''
+        if 'team' in play:
+            team_id = play['team']['id']
+
+        plays_string = plays_string + ' | '.join([game_clock, away_score, home_score, text]) + '\n'
+
+    return plays_string
+
+def format_boxscore(game_data):
     is_pregame = False
     boxscore = {}
 
@@ -82,11 +117,9 @@ def create_boxscore(game_data):
     # Add 'Team' column to beginning of list
     boxscore_string = boxscore_string + 'Team | ' + ' | '.join(game_stats) + '\n'
     # Add the reddit table separator, length of stats + 1 due to manually adding 'Team'
-    boxscore_string = boxscore_string + '----|' * (len(game_stats) + 1)
+    boxscore_string = boxscore_string + '----|' * (len(game_stats) + 1) + '\n'
 
     # Doing it this way allows us to keep home/away in order
-    boxscore_string = boxscore_string + '\n'
-
     boxscore_line = [game_data['awayFlair']]
     for stat in game_stats:
         value = if_exists(boxscore[game_data['awayTeam']], stat, '')
