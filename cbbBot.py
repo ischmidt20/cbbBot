@@ -8,7 +8,7 @@ tz = pytz.timezone('US/Eastern')
 
 try: #import if praw is happy, quit this cycle if not
     import praw
-    from praw.models import Message
+    import praw.models
     print('Imported praw! ' + str(datetime.datetime.now(tz)))
 except:
     print('Failed to import praw. Shutting down..... ' + str(datetime.datetime.now(tz)))
@@ -65,7 +65,7 @@ try:
     for message in r.inbox.unread(): #look for requests
         body = message.body
         subject = message.subject
-        if isinstance(message, Message):
+        if isinstance(message, praw.models.Message):
             if subject.lower() == 'request' and len(body) == 9: #if message is a game request
                 if cbbBot_data.check_game(body):
                     if body not in requested_games:
