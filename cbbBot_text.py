@@ -44,7 +44,7 @@ def make_thread(game_id, game_data, comment_stream_link = ''):
         thread = thread + ' **' + game_data['homeRank'] + game_data['homeTeam'] + '** (' + game_data['homeRecord'] + ')\n\nTip-Off: '
     else:
         thread = thread + game_data['homeFlair'] + ' **' + game_data['homeRank'] + game_data['homeTeam'] + '** (' + game_data['homeRecord'] + ')\n\nTip-Off: '
-        
+
     time = game_data['startTime'].strftime('%I:%M %p') + ' ET'
     if game_data['network'] == '':
         game_data['network'] = 'Check your local listings.'
@@ -133,3 +133,19 @@ def format_boxscore(game_data):
     boxscore_string = boxscore_string + ' | '.join(boxscore_line)
 
     return boxscore_string
+
+def index_thread(games):
+    index_string = 'Time (ET) | ' + ' | '.join(['Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
+    index_string = index_string + '----|' * (6) + '\n'
+
+    for index, game in games.iterrows():
+        time = game['date'].strftime('%H:%M')
+
+        network_flair = game['network'].replace('|','')
+        if game['network'] in tv_flairs.keys():
+            network_flair = tv_flairs[game['network']]
+
+        request_link = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game['id'] + ')'
+        index_string = index_string + ' | '.join([time, game['away'], game['home'], network_flair, request_link, '']) + '\n'
+
+    return index_string

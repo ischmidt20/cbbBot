@@ -4,11 +4,22 @@ import datetime
 import pytz
 import json
 import cbbBot_data
+import cbbBot_text
 
-cbbBot_data.get_rcbb_rank()
+import pandas as pd
 
 tz = pytz.timezone('US/Eastern')
 now = datetime.datetime.now(tz)
+
+try:
+    import praw
+    import praw.models
+    print('Imported praw! ' + str(datetime.datetime.now(tz)))
+except:
+    print('Failed to import praw. Shutting down..... ' + str(datetime.datetime.now(tz)))
+    quit()
+
+cbbBot_data.get_rcbb_rank()
 
 #year,month,day='2020','03','10'
 
@@ -16,12 +27,19 @@ url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-bask
 obj = requests.get(url)
 schedule = json.loads(obj.content)
 
-games = []
+games = pd.DataFrame(columns = ['id', 'away', 'home', 'date'])
 
 for game in schedule['events']:
     game_id = game['id']
     away_team, home_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
-    games.append((game_id,away_team,home_team))
+    date = pytz.utc.localize(datetime.datetime.strptime(game['date'], '%Y-%m-%dT%H:%MZ')).astimezone(tz)
+    network = ''
+    if len(game['competitions'][0]['broadcasts']) > 0:
+        network = game['competitions'][0]['broadcasts'][0]['names'][0]
+
+    games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network}, ignore_index = True)
+
+games = games.sort_values('date')
 
 with open('./data/ranking.txt','r') as imp_file:
     lines = imp_file.readlines()
@@ -32,11 +50,25 @@ for line in lines:
 games_added = []
 with open('./data/games_to_write.txt','r') as f:
     lines = f.readlines()
-
 for line in lines:
     games_added.append(line.replace('\n',''))
 
 with open('./data/games_to_write.txt','a') as f: #create today's file
-    for game in games:
-        if (game[1] in ranking or game[2] in ranking) and game[0] not in games_added:
-            f.write(game[0]+'\n')
+    for row, game in games.iterrows():
+        if (game['away'] in ranking or game['home'] in ranking) and game['id'] not in games_added:
+            f.write(game['id'] + '\n')
+
+with open('./client.txt', 'r') as imp_file:
+    lines = imp_file.readlines()
+lines = [line.replace('\n', '') for line in lines]
+try:
+    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent="CBB Bot v5") #define praw and user agent, login
+    r.validate_on_submit = True
+    print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
+except:
+    print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
+    quit()
+
+title = now.strftime('%B %d, %Y') + ' Index Thread'
+
+thread = r.subreddit('cbbBotTest').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False)
