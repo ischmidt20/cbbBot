@@ -53,6 +53,7 @@ for game in schedule['events']:
     games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
 
 games = games.sort_values(['top25', 'date'], ascending = [False, True])
+games.to_csv('data/games_today.csv', index = False)
 
 games_added = []
 with open('./data/games_to_write.txt','r') as f:
