@@ -23,12 +23,17 @@ cbbBot_data.get_rcbb_rank()
 
 #year,month,day='2020','03','10'
 
+with open('./data/ranking.txt','r') as imp_file:
+    lines = imp_file.readlines()
+ranking = []
+for line in lines:
+    ranking.append(line.replace('\n','').split(',')[0])
+
 url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
 obj = requests.get(url)
 schedule = json.loads(obj.content)
 
-games = pd.DataFrame(columns = ['id', 'away', 'home', 'date'])
-
+games = pd.DataFrame()
 for game in schedule['events']:
     game_id = game['id']
     away_team, home_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
@@ -37,15 +42,17 @@ for game in schedule['events']:
     if len(game['competitions'][0]['broadcasts']) > 0:
         network = game['competitions'][0]['broadcasts'][0]['names'][0]
 
-    games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network}, ignore_index = True)
+    away_rank = ''
+    if away_team in ranking:
+        away_rank = '#' + str(ranking.index(away_team) + 1) + ' '
+    home_rank = ''
+    if home_team in ranking:
+        home_rank = '#' + str(ranking.index(home_team) + 1) + ' '
+    top25 = (away_rank != '' or home_rank != '')
 
-games = games.sort_values('date')
+    games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
 
-with open('./data/ranking.txt','r') as imp_file:
-    lines = imp_file.readlines()
-ranking = []
-for line in lines:
-    ranking.append(line.replace('\n','').split(',')[0])
+games = games.sort_values(['top25', 'date'], ascending = [False, True])
 
 games_added = []
 with open('./data/games_to_write.txt','r') as f:

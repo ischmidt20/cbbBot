@@ -146,6 +146,6 @@ def index_thread(games):
             network_flair = tv_flairs[game['network']]
 
         request_link = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game['id'] + ')'
-        index_string = index_string + ' | '.join([time, game['away'], game['home'], network_flair, request_link, '']) + '\n'
+        index_string = index_string + ' | '.join([time, game['arank'] + game['away'], game['hrank'] + game['home'], network_flair, request_link, '']) + '\n'
 
     return index_string
