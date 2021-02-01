@@ -4,6 +4,9 @@ import pytz
 import cbbBot_data
 import cbbBot_text
 
+import pandas as pd
+import numpy as np
+
 tz = pytz.timezone('US/Eastern')
 
 try: #import if praw is happy, quit this cycle if not
@@ -42,6 +45,7 @@ lines = [line.replace('\n', '') for line in lines]
 
 try:
     r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent="CBB Bot v5") #define praw and user agent, login
+    r.validate_on_submit = True
     print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
 except:
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
@@ -56,8 +60,17 @@ except:
 
 hour, minute = datetime.datetime.now(tz).hour, datetime.datetime.now(tz).minute
 
+with open('./data/games_to_write.txt', 'r') as imp_file: #get games already requested
+    lines = imp_file.readlines()
 requested_games = []
+for line in lines:
+    requested_games.append(line.replace('\n', ''))
+
+with open('./data/blacklist.txt', 'r') as imp_file: #get all blacklisted games from file
+    lines = imp_file.readlines()
 blacklist = []
+for line in lines:
+    blacklist.append(line.replace('\n', ''))
 
 stoppers = ['Ike348', '1hive']
 try:
@@ -66,49 +79,38 @@ try:
         body = message.body
         subject = message.subject
         if isinstance(message, praw.models.Message):
-            if subject.lower() == 'request' and len(body) == 9: #if message is a game request
+            if subject.lower() == 'request' and len(body) == 9 and body.isnumeric(): #if message is a game request
                 if cbbBot_data.check_game(body):
                     if body not in requested_games:
-                        requested_games.append(body) #add game to queue
-                    message.reply('Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.')
+                        requested_games.append(body)
+                        with open('./data/games_to_write.txt', 'a') as f:
+                            f.write(body + '\n') #add game to queue
+                    message.reply(cbbBot_text.msg_success)
                     print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                 else:
-                    message.reply('Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question or comment about the bot, please send to u/Ike348.')
+                    message.reply(cbbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
                 blacklist.append(body)
-                message.reply('No game thread will be created for ' + body + '!')
+                with open('./data/blacklist.txt', 'a') as f:
+                    f.write(body + '\n')
+                print('Bot will not write game ' + game + '. ' + str(datetime.datetime.now(tz)))
+                message.reply(cbbBot_text.msg_stopped)
             else:
-                message.reply('Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question or comment about the bot, please send to u/Ike348.')
+                message.reply(cbbBot_text.msg_fail)
             message.mark_read()
 except:
     print('Could not check messages. Will continue. ' + str(datetime.datetime.now(tz)))
 
-with open('./data/blacklist.txt', 'a') as f: #add blacklisted games to file
-    for game in blacklist:
-        f.write(game + '\n')
-        print('Bot will not write game ' + game + '. ' + str(datetime.datetime.now(tz)))
+games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
 
-with open('./data/blacklist.txt', 'r') as imp_file: #get all blacklisted games from file
-    lines = imp_file.readlines()
-blacklist = []
-for line in lines:
-    blacklist.append(line.replace('\n', ''))
+games.loc[[game for game in requested_games if game in games.index], 'requested'] = 1
 
-with open('./data/games_to_write.txt', 'r') as imp_file: #get day's games from newday script
-    games = imp_file.readlines()
-
-with open('./data/games_to_write.txt', 'a') as f: #add requested games to list of games to make
-    for game in requested_games:
-        if game + '\n' not in games:
-            f.write(game + '\n')
-            print('Bot knows to write game ' + game + '. ' + str(datetime.datetime.now(tz)))
-
-print('Checking which games have already been posted..... ' + str(datetime.datetime.now(tz)))
+"""print('Checking which games have already been posted..... ' + str(datetime.datetime.now(tz)))
 already_posted = {}
 for post in r.redditor('cbbBot').submissions.new(limit = 1000): #see which games already have threads
     if post.subreddit == 'CollegeBasketball':
         game_id = post.selftext[(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=') + 56):(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=') + 65)]
-        already_posted[game_id] = post.id
+        already_posted[game_id] = post.id"""
 
 games_over = []
 with open('./data/games_over.txt', 'r') as imp_file: #see which games are already over
@@ -118,28 +120,28 @@ for line in lines:
 
 print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
-for game in games:
-    game = game.replace('\n', '')
-    if game not in games_over:
+for game, row in games.iterrows():
+    if game not in games_over and row['requested'] == 1:
         print('Getting game info for ' + game + '..... ' + str(datetime.datetime.now(tz)))
         if cbbBot_data.check_game(game):
             game_data = get_info(game)
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-            if game not in already_posted.keys():
+            if row['gamethread'] == '':
                 if any([desc in game_data['gameClock'].lower() for desc in ['canceled', 'postponed', 'final']]):
                     with open('./data/games_over.txt', 'a') as f:
                         f.write(game + '\n')
                     continue
                 elif datetime.datetime.now(tz) > (game_data['startTime'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
                     print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
-                    try:
-                        (title, thread_text) = cbbBot_text.make_thread(game, game_data)
-                        print('Made thread for game ' + game_id + '! ' + str(datetime.datetime.now(tz)))
-                        thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False)
-                        thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
-                        print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
-                    except:
-                        print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
+                    #try:
+                    (title, thread_text) = cbbBot_text.make_thread(game, game_data)
+                    print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+                    thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
+                    thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
+                    games.loc[game, 'gamethread'] = thread.id
+                    print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+                    #except:
+                    #    print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
                 else:
                     print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
             else:
@@ -147,16 +149,21 @@ for game in games:
                     with open('./data/games_over.txt', 'a') as f:
                         f.write(game + '\n')
                 try:
-                    thread = r.submission(id = already_posted[game]) #find already posted thread
+                    thread = r.submission(id = row['gamethread']) #find already posted thread
                     comment_stream_link = 'http://www.reddit-stream.com/' + thread.permalink
                     (title, thread_text) = cbbBot_text.make_thread(game, game_data, comment_stream_link) #re-write thread
-                    print('Made thread for game ' + game_id + '! ' + str(datetime.datetime.now(tz)))
+                    print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                     thread.edit(thread_text) #edit thread
                     print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
                 except:
                     print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
         else:
             print('Failed to get game info for ' + game + '. ' + str(datetime.datetime.now(tz)))
+
+games.to_csv('./data/games_today.csv')
+with open('./data/index_thread.txt', 'r') as f:
+    index_thread = f.read()
+r.submission(id = index_thread).edit(cbbBot_text.index_thread(games))
 
 thread = r.submission(id = '5ctg2v') #get thread to edit
 thread.edit(str(datetime.datetime.now(tz)) + '\n\n' + 'bot concluded script') #edit same thread with current timestamp; lets me know that the bot has finished without issues
