@@ -7,6 +7,10 @@ tv_flairs = {'BTN':'[Big Ten Network](#l/btn)', 'CBS':'[CBS](#l/cbs)', 'CBSSN':'
 
 tv_stream_links = {'BTN':'[BTN](https://www.fox.com/live/channel/BTN/)', 'CBS':'[CBS](https://www.cbssports.com/college-basketball/cbk-live/)', 'CBSSN':'[CBSSN](https://www.cbssports.com/cbs-sports-network/)', 'ESPN':'[WatchESPN](https://www.espn.com/watch/)', 'ESPN2':'[WatchESPN](https://www.espn.com/watch/)', 'ESPN3':'[WatchESPN](https://www.espn.com/watch/)', 'ESPNU':'[WatchESPN](https://www.espn.com/watch/)', 'ESPNN':'[WatchESPN](https://www.espn.com/watch/)', 'FOX':'[FOX](https://www.fox.com/live/)', 'FS1':'[FS1](https://www.fox.com/live/channel/FS1/)', 'FSN':'[FOX Sports](https://www.foxsports.com/live)', 'LHN':'[WatchESPN](https://www.espn.com/watch/)', 'NBC':'[NBC Sports](http://www.nbcsports.com/live)', 'NBCSN':'[NBC Sports](http://www.nbcsports.com/live)', 'PAC12':'[PAC12](http://pac-12.com/live)', 'SECN':'[WatchESPN](https://www.espn.com/watch/)', 'ACCN':'[WatchESPN](https://www.espn.com/watch/)', 'ACCNE':'[WatchESPN](https://www.espn.com/watch/)', 'ACCNX':'[WatchESPN](https://www.espn.com/watch/)', 'ESPN+':'[ESPN+](https://plus.espn.com/)', 'FS2':'[FS2](https://www.fox.com/live/channel/fs2/)'}
 
+msg_success = 'Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.'
+msg_fail = 'Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question or comment about the bot, please send to u/Ike348.'
+msg_stopped = 'Successfully blocked this game thread!'
+
 def if_exists(dct, key, value):
     if key in dct:
         return dct[key]
@@ -140,14 +144,17 @@ def index_thread(games):
     index_string = 'Time (ET) | ' + ' | '.join(['Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
     index_string = index_string + '----|' * (6) + '\n'
 
-    for index, game in games.iterrows():
-        time = game['date'].strftime('%H:%M')
+    for game, row in games.iterrows():
+        time = row['date'].strftime('%H:%M')
 
-        network_flair = game['network'].replace('|','')
-        if game['network'] in tv_flairs.keys():
-            network_flair = tv_flairs[game['network']]
+        network_flair = row['network'].replace('|','')
+        if row['network'] in tv_flairs.keys():
+            network_flair = tv_flairs[row['network']]
 
-        request_link = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game['id'] + ')'
-        index_string = index_string + ' | '.join([time, game['arank'] + game['away'], game['hrank'] + game['home'], network_flair, request_link, '']) + '\n'
+        if row['gamethread'] == '':
+            gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
+        else:
+            gamethread = '[Thread](https://www.reddit.com/' + row['gamethread'] + ')'
+        index_string = index_string + ' | '.join([time, row['arank'] + row['away'], row['hrank'] + row['home'], network_flair, gamethread, '']) + '\n'
 
     return index_string
