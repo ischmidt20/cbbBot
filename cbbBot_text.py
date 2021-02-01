@@ -51,7 +51,9 @@ def make_thread(game_id, game_data, comment_stream_link = ''):
     network_flair = game_data['network']
     if game_data['network'] in tv_flairs.keys():
         network_flair = tv_flairs[game_data['network']]
-    thread = thread + time + '\n\nVenue: ' + game_data['venue'] + ', ' + game_data['city'] + ', ' + game_data['state'] + '\n\n-----------------------------------------------------------------\n\n###[](#l/discord) [Join Our Discord](https://discord.gg/redditcbb)\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb) \n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
+
+    #\n\n###[](#l/discord) [Join Our Discord](https://discord.gg/redditcbb)
+    thread = thread + time + '\n\nVenue: ' + game_data['venue'] + ', ' + game_data['city'] + ', ' + game_data['state'] + '\n\n-----------------------------------------------------------------\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb) \n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
     if game_data['network'] in tv_stream_links.keys():
         thread = thread + tv_stream_links[game_data['network']] + '\n'
 
