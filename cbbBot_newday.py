@@ -80,7 +80,6 @@ except:
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
-print(games)
 title = now.strftime('%B %d, %Y') + ' Index Thread'
 
 thread = r.subreddit('cbbBotTest').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False)
