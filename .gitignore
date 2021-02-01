@@ -1,10 +1,6 @@
 .DS_Store
 *.xlsx
-client.txt
-ranking.txt
 __pycache__
-games_over.txt
-games_to_write.txt
 games_today.csv
-log.txt
 forks
+*.txt
