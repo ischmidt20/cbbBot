@@ -21,7 +21,7 @@ except:
 
 cbbBot_data.get_rcbb_rank()
 
-#year,month,day='2020','03','10'
+#year, month, day = '2021', '01', '31'
 
 with open('./data/ranking.txt','r') as imp_file:
     lines = imp_file.readlines()
@@ -36,7 +36,7 @@ schedule = json.loads(obj.content)
 games = pd.DataFrame()
 for game in schedule['events']:
     game_id = game['id']
-    away_team, home_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
+    home_team, away_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
     date = pytz.utc.localize(datetime.datetime.strptime(game['date'], '%Y-%m-%dT%H:%MZ')).astimezone(tz)
     network = ''
     if len(game['competitions'][0]['broadcasts']) > 0:
@@ -52,8 +52,11 @@ for game in schedule['events']:
 
     games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
 
-games = games.sort_values(['top25', 'date'], ascending = [False, True])
-games.to_csv('data/games_today.csv', index = False)
+games['requested'] = games['top25']
+games['gamethread'] = [''] * len(games)
+games['pgthread'] = [''] * len(games)
+games = games.sort_values(['top25', 'date'], ascending = [False, True]).set_index('id')
+games.to_csv('data/games_today.csv')
 
 games_added = []
 with open('./data/games_to_write.txt','r') as f:
@@ -62,9 +65,9 @@ for line in lines:
     games_added.append(line.replace('\n',''))
 
 with open('./data/games_to_write.txt','a') as f: #create today's file
-    for row, game in games.iterrows():
-        if (game['away'] in ranking or game['home'] in ranking) and game['id'] not in games_added:
-            f.write(game['id'] + '\n')
+    for game, row in games.iterrows():
+        if (row['away'] in ranking or row['home'] in ranking) and game not in games_added:
+            f.write(game + '\n')
 
 with open('./client.txt', 'r') as imp_file:
     lines = imp_file.readlines()
@@ -77,6 +80,9 @@ except:
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
+print(games)
 title = now.strftime('%B %d, %Y') + ' Index Thread'
 
 thread = r.subreddit('cbbBotTest').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False)
+with open('./data/index_thread.txt', 'w') as f:
+    f.write(thread.id)
