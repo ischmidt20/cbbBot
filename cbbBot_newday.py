@@ -56,7 +56,7 @@ games['requested'] = games['top25']
 games['gamethread'] = [''] * len(games)
 games['pgthread'] = [''] * len(games)
 games = games.sort_values(['top25', 'date'], ascending = [False, True]).set_index('id')
-games.to_csv('data/games_today.csv')
+games.to_csv('./data/games_today.csv')
 
 games_added = []
 with open('./data/games_to_write.txt','r') as f:
