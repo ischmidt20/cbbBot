@@ -105,13 +105,6 @@ games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates =
 
 games.loc[[game for game in requested_games if game in games.index], 'requested'] = 1
 
-"""print('Checking which games have already been posted..... ' + str(datetime.datetime.now(tz)))
-already_posted = {}
-for post in r.redditor('cbbBot').submissions.new(limit = 1000): #see which games already have threads
-    if post.subreddit == 'CollegeBasketball':
-        game_id = post.selftext[(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=') + 56):(post.selftext.find('http://www.espn.com/mens-college-basketball/game?gameId=') + 65)]
-        already_posted[game_id] = post.id"""
-
 games_over = []
 with open('./data/games_over.txt', 'r') as imp_file: #see which games are already over
     lines = imp_file.readlines()
