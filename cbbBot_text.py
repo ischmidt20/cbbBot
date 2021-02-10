@@ -151,7 +151,7 @@ def make_pg_thread(game_id, game_data, row):
     home_won = game_data['homeScore'] > game_data['awayScore']
     ot = ''
     if '/' in row['status']:
-        ot = ' in ' + row['status'].split('/')[:-1]
+        ot = ' in ' + row['status'].split('/')[-1]
 
     if home_won:
         title = '[Post Game Thread] ' + game_data['homeRank'] + game_data['homeTeam'] + ' defeats ' + game_data['awayRank'] + game_data['awayTeam'] + ', ' + str(game_data['homeScore']) + '-' + str(game_data['awayScore']) + ot
