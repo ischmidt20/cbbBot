@@ -69,7 +69,8 @@ def get_schedule(games):
         game_id = game['id']
         status = game['status']['type']['detail'].replace(' - ', ' ').replace(' Half', '').upper()
         if game['status']['type']['id'] != '1':
-            games.loc[game_id, 'status'] = status
+            if game_id in games.index:
+                games.loc[game_id, 'status'] = status
     return games
 
 def espn(game_id):
