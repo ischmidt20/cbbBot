@@ -105,50 +105,49 @@ games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates =
 
 games.loc[[game for game in requested_games if game in games.index], 'requested'] = 1
 
-games_over = []
-with open('./data/games_over.txt', 'r') as imp_file: #see which games are already over
-    lines = imp_file.readlines()
-for line in lines:
-    games_over.append(line.replace('\n', ''))
-
 print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
 for game, row in games.iterrows():
-    if game not in games_over and row['requested'] == 1:
+    if row['pgthread'] == '' and row['status'] == 'FINAL':
+        try:
+            game_data = get_info(game)
+            (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data)
+            print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+            pgthread = r.subreddit('cbbBotTest').submit(title = title, selftext = thread_text, send_replies = False)
+            games.loc[game, 'pgthread'] = pgthread.id
+            print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+        except:
+            print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
+
+    if not any([desc in row['status'].lower() for desc in ['canceled', 'postponed']]) and row['requested'] == 1 and row['pgthread'] == '':
         game_data = get_info(game)
         print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
         if row['gamethread'] == '':
-            if any([desc in game_data['gameClock'].lower() for desc in ['canceled', 'postponed', 'final']]):
-                with open('./data/games_over.txt', 'a') as f:
-                    f.write(game + '\n')
-                continue
-            elif datetime.datetime.now(tz) > (game_data['startTime'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+            if datetime.datetime.now(tz) > (game_data['startTime'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
                 print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
-                #try:
-                (title, thread_text) = cbbBot_text.make_thread(game, game_data)
-                print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
-                thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
-                games.loc[game, 'gamethread'] = thread.id
-                print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
-                #except:
-                #    print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
+                try:
+                    (title, thread_text) = cbbBot_text.make_game_thread(game, game_data)
+                    print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+                    thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
+                    thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
+                    games.loc[game, 'gamethread'] = thread.id
+                    print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+                except:
+                    print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
             else:
                 print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
         else:
-            if datetime.datetime.now(tz) > (game_data['startTime'] + datetime.timedelta(hours = 4)) and 'final' in game_data['gameClock'].lower():
-                with open('./data/games_over.txt', 'a') as f:
-                    f.write(game + '\n')
             try:
                 thread = r.submission(id = row['gamethread']) #find already posted thread
                 comment_stream_link = 'http://www.reddit-stream.com/' + thread.permalink
-                (title, thread_text) = cbbBot_text.make_thread(game, game_data, comment_stream_link) #re-write thread
+                (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
                 print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                 thread.edit(thread_text) #edit thread
                 print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
                 print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
 
+games = cbbBot_data.get_schedule(games)
 games.to_csv('./data/games_today.csv')
 with open('./data/index_thread.txt', 'r') as f:
     index_thread = f.read()

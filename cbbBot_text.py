@@ -16,7 +16,7 @@ def if_exists(dct, key, value):
         return dct[key]
     return value
 
-def make_thread(game_id, game_data, comment_stream_link = ''):
+def make_game_thread(game_id, game_data, comment_stream_link = ''):
     thread = game_data['awayFlair']
 
     if game_data['gameClock'] != '':
@@ -142,8 +142,25 @@ def format_boxscore(game_data):
 
     return boxscore_string
 
+def make_pg_thread(game_id, game_data):
+    if game_data['awayRank'] != '':
+        game_data['awayRank'] = '#' + game_data['awayRank'] + ' '
+    if game_data['homeRank'] != '':
+        game_data['homeRank'] = '#' + game_data['homeRank'] + ' '
+
+    home_won = game_data['homeScore'] > game_data['awayScore']
+
+    if home_won:
+        title = '[Post Game Thread] ' + game_data['homeRank'] + game_data['homeTeam'] + ' defeats ' + game_data['awayRank'] + game_data['awayTeam'] + ', ' + str(game_data['homeScore']) + '-' + str(game_data['awayScore'])
+    else:
+        title = '[Post Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' defeats ' + game_data['homeRank'] + game_data['homeTeam'] + ', ' + str(game_data['awayScore']) + '-' + str(game_data['homeScore'])
+
+    thread = '[Box Score](https://www.espn.com/mens-college-basketball/boxscore?gameId=' + str(game_id) + ')'
+
+    return title, thread
+
 def index_thread(games):
-    index_string = 'Time (ET) | ' + ' | '.join(['Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
+    index_string = ' | ' + ' | '.join(['Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
     index_string = index_string + '----|' * (6) + '\n'
 
     for game, row in games.iterrows():
@@ -157,6 +174,10 @@ def index_thread(games):
             gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
         else:
             gamethread = '[Thread](https://www.reddit.com/' + row['gamethread'] + ')'
-        index_string = index_string + ' | '.join([time, row['arank'] + row['away'], row['hrank'] + row['home'], network_flair, gamethread, '']) + '\n'
+
+        pgthread = ''
+        if row['pgthread'] != '':
+            pgthread = '[Thread](https://www.reddit.com/' + row['pgthread'] + ')'
+        index_string = index_string + ' | '.join([row['status'], row['arank'] + row['away'], row['hrank'] + row['home'], network_flair, gamethread, pgthread]) + '\n'
 
     return index_string
