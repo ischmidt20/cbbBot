@@ -64,7 +64,6 @@ def get_schedule(games):
     url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
     obj = requests.get(url)
     schedule = json.loads(obj.content)
-    games['status'] = games['date'].dt.strftime('%I:%M %p')
     for game in schedule['events']:
         game_id = game['id']
         status = game['status']['type']['detail'].replace(' - ', ' ').replace(' Half', '').upper()

@@ -55,6 +55,7 @@ for game in schedule['events']:
 games['requested'] = games['top25']
 games['gamethread'] = [''] * len(games)
 games['pgthread'] = [''] * len(games)
+games['status'] = games['date'].dt.strftime('%I:%M %p')
 games = games.sort_values(['top25', 'date'], ascending = [False, True]).set_index('id')
 games.to_csv('./data/games_today.csv')
 
