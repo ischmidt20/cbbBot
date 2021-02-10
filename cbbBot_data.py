@@ -59,6 +59,19 @@ def check_game(game_id):
             return False
     return True
 
+def get_schedule(games):
+    now = datetime.datetime.now(tz)
+    url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
+    obj = requests.get(url)
+    schedule = json.loads(obj.content)
+    games['game_status'] = games['date'].dt.strftime('%I:%M %p')
+    for game in schedule['events']:
+        game_id = game['id']
+        status = game['status']['type']['detail'].replace(' - ', ' ').replace(' Half', '').upper()
+        if game['status']['type']['id'] != '1':
+            games.loc[game_id, 'game_status'] = status
+    return games
+
 def espn(game_id):
     url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=' + str(game_id)
     obj = requests.get(url)
