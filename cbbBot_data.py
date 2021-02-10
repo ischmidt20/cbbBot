@@ -60,7 +60,7 @@ def check_game(game_id):
     return True
 
 def get_schedule(games):
-    now = datetime.datetime.now(tz)
+    now = datetime.datetime.now(tz) - datetime.timedelta(hours = 10)
     url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
     obj = requests.get(url)
     schedule = json.loads(obj.content)
