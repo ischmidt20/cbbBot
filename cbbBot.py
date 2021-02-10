@@ -108,10 +108,10 @@ games.loc[[game for game in requested_games if game in games.index], 'requested'
 print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
 for game, row in games.iterrows():
-    if row['pgthread'] == '' and row['status'] == 'FINAL':
+    if row['pgthread'] == '' and 'FINAL' in row['status']:
         try:
             game_data = get_info(game)
-            (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data)
+            (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data, row)
             print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
             pgthread = r.subreddit('cbbBotTest').submit(title = title, selftext = thread_text, send_replies = False)
             games.loc[game, 'pgthread'] = pgthread.id

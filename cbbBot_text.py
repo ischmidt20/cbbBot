@@ -142,18 +142,21 @@ def format_boxscore(game_data):
 
     return boxscore_string
 
-def make_pg_thread(game_id, game_data):
+def make_pg_thread(game_id, game_data, row):
     if game_data['awayRank'] != '':
         game_data['awayRank'] = '#' + game_data['awayRank'] + ' '
     if game_data['homeRank'] != '':
         game_data['homeRank'] = '#' + game_data['homeRank'] + ' '
 
     home_won = game_data['homeScore'] > game_data['awayScore']
+    ot = ''
+    if '/' in row['status']:
+        ot = ' in ' + row['status'].split('/')[:-1]
 
     if home_won:
-        title = '[Post Game Thread] ' + game_data['homeRank'] + game_data['homeTeam'] + ' defeats ' + game_data['awayRank'] + game_data['awayTeam'] + ', ' + str(game_data['homeScore']) + '-' + str(game_data['awayScore'])
+        title = '[Post Game Thread] ' + game_data['homeRank'] + game_data['homeTeam'] + ' defeats ' + game_data['awayRank'] + game_data['awayTeam'] + ', ' + str(game_data['homeScore']) + '-' + str(game_data['awayScore']) + ot
     else:
-        title = '[Post Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' defeats ' + game_data['homeRank'] + game_data['homeTeam'] + ', ' + str(game_data['awayScore']) + '-' + str(game_data['homeScore'])
+        title = '[Post Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' defeats ' + game_data['homeRank'] + game_data['homeTeam'] + ', ' + str(game_data['awayScore']) + '-' + str(game_data['homeScore']) + ot
 
     thread = '[Box Score](https://www.espn.com/mens-college-basketball/boxscore?gameId=' + str(game_id) + ')'
 
