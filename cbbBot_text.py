@@ -173,14 +173,16 @@ def index_thread(games):
         if row['network'] in tv_flairs.keys():
             network_flair = tv_flairs[row['network']]
 
+        request_url = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
         if row['gamethread'] == '':
-            gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
+            gamethread = request_url
         else:
             gamethread = '[Thread](https://www.reddit.com/' + row['gamethread'] + ')'
-
-        pgthread = ''
-        if row['pgthread'] != '':
+        if row['pgthread'] == '':
+            pgthread = request_url
+        else:
             pgthread = '[Thread](https://www.reddit.com/' + row['pgthread'] + ')'
+
         index_string = index_string + ' | '.join([row['status'], row['arank'] + row['away'], row['hrank'] + row['home'], network_flair, gamethread, pgthread]) + '\n'
 
     return index_string
