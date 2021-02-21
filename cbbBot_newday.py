@@ -53,6 +53,7 @@ for game in schedule['events']:
     games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
 
 games['requested'] = games['top25']
+games['pgrequested'] = games['top25']
 games['gamethread'] = [''] * len(games)
 games['pgthread'] = [''] * len(games)
 games['status'] = games['date'].dt.strftime('%I:%M %p')
