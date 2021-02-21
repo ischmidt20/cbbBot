@@ -79,14 +79,17 @@ try:
         body = message.body
         subject = message.subject
         if isinstance(message, praw.models.Message):
-            if subject.lower() == 'request' and len(body) == 9 and body.isnumeric(): #if message is a game request
-                if cbbBot_data.check_game(body):
-                    if body not in requested_games:
-                        requested_games.append(body)
-                        with open('./data/games_to_write.txt', 'a') as f:
-                            f.write(body + '\n') #add game to queue
-                    message.reply(cbbBot_text.msg_success)
-                    print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
+            if len(body) == 9 and body.isnumeric(): #if message is 9-digit ID
+                if cbbBot_data.check_game(body): #if message is valid game
+                    if subject.lower() == 'request':
+                        if body not in requested_games:
+                            requested_games.append(body)
+                            with open('./data/games_to_write.txt', 'a') as f:
+                                f.write(body + '\n') #add game to queue
+                        message.reply(cbbBot_text.msg_success)
+                        print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
+                    if subject.lower() == 'pgrequest':
+                        message.reply(cbbBot_text.msg_success_pg)
                 else:
                     message.reply(cbbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
