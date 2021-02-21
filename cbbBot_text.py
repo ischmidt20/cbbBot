@@ -174,13 +174,12 @@ def index_thread(games):
         if row['network'] in tv_flairs.keys():
             network_flair = tv_flairs[row['network']]
 
-        request_url = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
         if row['gamethread'] == '':
-            gamethread = request_url
+            gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
         else:
             gamethread = '[Thread](https://www.reddit.com/' + row['gamethread'] + ')'
         if row['pgthread'] == '':
-            pgthread = request_url
+            pgthread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=pgrequest&message=' + game + ')'
         else:
             pgthread = '[Thread](https://www.reddit.com/' + row['pgthread'] + ')'
 
