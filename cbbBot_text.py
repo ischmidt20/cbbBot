@@ -164,7 +164,7 @@ def make_pg_thread(game_id, game_data, row):
     return title, thread
 
 def index_thread(games):
-    index_string = ' | ' + ' | '.join(['Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
+    index_string = ' | '.join(['Time', 'Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
     index_string = index_string + '----|' * (6) + '\n'
 
     for game, row in games.iterrows():
