@@ -90,6 +90,7 @@ try:
                         print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                     if subject.lower() == 'pgrequest':
                         message.reply(cbbBot_text.msg_success_pg)
+                        games.loc[body, 'pgrequest'] = 1
                 else:
                     message.reply(cbbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
@@ -117,7 +118,7 @@ for game, row in games.iterrows():
                 game_data = get_info(game)
                 (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data, row)
                 print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                pgthread = r.subreddit('cbbBotTest').submit(title = title, selftext = thread_text, send_replies = False)
+                pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False)
                 games.loc[game, 'pgthread'] = pgthread.id
                 print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:

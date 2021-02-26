@@ -84,6 +84,6 @@ except:
 
 title = now.strftime('%B %d, %Y') + ' Index Thread'
 
-thread = r.subreddit('cbbBotTest').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False)
+thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False)
 with open('./data/index_thread.txt', 'w') as f:
     f.write(thread.id)
