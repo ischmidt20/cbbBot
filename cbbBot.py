@@ -118,7 +118,7 @@ for game, row in games.iterrows():
                 game_data = get_info(game)
                 (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data, row)
                 print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False)
+                pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '323a5f80-872b-11e6-ac0e-0e5318091097')
                 games.loc[game, 'pgthread'] = pgthread.id
                 print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
