@@ -178,6 +178,8 @@ def index_thread(games):
             gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
             if row['requested'] == 1:
                 gamethread = 'Requested'
+            if 'FINAL' in row['status']:
+                gamethread = ''
         else:
             gamethread = '[Thread](https://www.reddit.com/' + row['gamethread'] + ')'
         if row['pgthread'] == '':
