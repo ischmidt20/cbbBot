@@ -72,6 +72,8 @@ blacklist = []
 for line in lines:
     blacklist.append(line.replace('\n', ''))
 
+games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
+
 stoppers = ['Ike348', '1hive']
 try:
     print('Checking mail..... ' + str(datetime.datetime.now(tz)))
@@ -86,6 +88,10 @@ try:
                             requested_games.append(body)
                             with open('./data/games_to_write.txt', 'a') as f:
                                 f.write(body + '\n') #add game to queue
+                        if body in games.index:
+                            if games.loc[body, 'requested'] == 0:
+                                games.loc[body, 'requested'] = 1
+                                games.loc[body, 'user'] = message.author
                         message.reply(cbbBot_text.msg_success)
                         print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                     if subject.lower() == 'pgrequest':
@@ -105,7 +111,7 @@ try:
 except:
     print('Could not check messages. Will continue. ' + str(datetime.datetime.now(tz)))
 
-games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
+#games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
 
 games.loc[[game for game in requested_games if game in games.index], 'requested'] = 1
 
