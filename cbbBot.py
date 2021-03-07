@@ -92,7 +92,7 @@ try:
                                 f.write(body + '\n') #add game to queue
                         if body in games.index:
                             if games.loc[body, 'requested'] == 0:
-                                if ((games['user'] == message.author).sum() >= 2) and (message.author not in mods):
+                                if ((games['user'] == message.author).sum() < 2) or (message.author in mods):
                                     games.loc[body, 'requested'] = 1
                                     games.loc[body, 'user'] = message.author
                                     message.reply(cbbBot_text.msg_success)
