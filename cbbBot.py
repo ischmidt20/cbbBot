@@ -90,10 +90,18 @@ try:
                                 f.write(body + '\n') #add game to queue
                         if body in games.index:
                             if games.loc[body, 'requested'] == 0:
-                                games.loc[body, 'requested'] = 1
-                                games.loc[body, 'user'] = message.author
-                        message.reply(cbbBot_text.msg_success)
-                        print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
+                                if (games['user'] == message.author).sum() >= 100:
+                                    games.loc[body, 'requested'] = 1
+                                    games.loc[body, 'user'] = message.author
+                                    message.reply(cbbBot_text.msg_success)
+                                    print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
+                                else:
+                                    message.reply(cbbBot_text.msg_spam)
+                            else:
+                                message.reply(cbbBot_text.msg_duplicate)
+                        else:
+                            message.reply(cbbBot_text.msg_success)
+                            print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                     if subject.lower() == 'pgrequest':
                         message.reply(cbbBot_text.msg_success_pg)
                         games.loc[body, 'pgrequest'] = 1

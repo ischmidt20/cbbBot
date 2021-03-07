@@ -11,6 +11,8 @@ msg_success = 'Thanks for your message. The game you requested has been successf
 msg_fail = 'Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question or comment about the bot, please send to u/Ike348.'
 msg_stopped = 'Successfully blocked this game thread!'
 msg_success_pg = 'Thanks for your message. A post-game thread will be created for this game upon its conclusion.'
+msg_spam = 'Thanks for your message. Unfortunately, you have already requested the maximum of 2 game threads today, so the bot will not consider any additional requests from this account until tomorrow.'
+msg_duplicate = 'Thanks for your message. This game has already been added to the queue, so a game thread will be posted one hour prior to tipoff, if one has not been posted already.'
 
 def if_exists(dct, key, value):
     if key in dct:
