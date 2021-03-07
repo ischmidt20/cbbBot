@@ -75,6 +75,8 @@ for line in lines:
 games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
 
 stoppers = ['Ike348', '1hive']
+mods = ['Ike348', 'peanutsfan1995', 'Kllian', 'Concision', 'homemade_mayo', 'ztrobin5', 'AutoModerator', 'rCBB_Mod', 'Forestl', 'cbbflairwizard', '1hive', 'cinciforthewin', 'glass_bottle', 'OutlawsHeels', 'IrishBall', 'Nebraska_Actually', 'AlekRivard', 'cbbscorebot', 'Wicked_UMD', 'ouguy2017', 'DEP61', 'grubberbeb', 'cbbpollbot', 'NowWithVitamin_R', '44TheKid', 'SleveMcDichael4', 'jjstatman', 'jloose128', 'tldRAWR', 'BurrShotFirst1804', 's-sea', 'yakovgolyadkin', 'SnareShot', 'Purdue49OSU20']
+
 try:
     print('Checking mail..... ' + str(datetime.datetime.now(tz)))
     for message in r.inbox.unread(): #look for requests
@@ -90,7 +92,7 @@ try:
                                 f.write(body + '\n') #add game to queue
                         if body in games.index:
                             if games.loc[body, 'requested'] == 0:
-                                if (games['user'] == message.author).sum() >= 100:
+                                if ((games['user'] == message.author).sum() >= 2) and (message.author not in mods):
                                     games.loc[body, 'requested'] = 1
                                     games.loc[body, 'user'] = message.author
                                     message.reply(cbbBot_text.msg_success)
