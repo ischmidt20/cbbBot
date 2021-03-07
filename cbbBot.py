@@ -86,19 +86,19 @@ try:
             if len(body) == 9 and body.isnumeric(): #if message is 9-digit ID
                 if cbbBot_data.check_game(body): #if message is valid game
                     if subject.lower() == 'request':
+                        if ((games['user'] == message.author).sum() >= 2) and (message.author not in mods):
+                            message.reply(cbbBot_text.msg_spam)
+                            continue
                         if body not in requested_games:
                             requested_games.append(body)
                             with open('./data/games_to_write.txt', 'a') as f:
                                 f.write(body + '\n') #add game to queue
                         if body in games.index:
                             if games.loc[body, 'requested'] == 0:
-                                if ((games['user'] == message.author).sum() < 2) or (message.author in mods):
-                                    games.loc[body, 'requested'] = 1
-                                    games.loc[body, 'user'] = message.author
-                                    message.reply(cbbBot_text.msg_success)
-                                    print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
-                                else:
-                                    message.reply(cbbBot_text.msg_spam)
+                                games.loc[body, 'requested'] = 1
+                                games.loc[body, 'user'] = message.author
+                                message.reply(cbbBot_text.msg_success)
+                                print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                             else:
                                 message.reply(cbbBot_text.msg_duplicate)
                         else:
