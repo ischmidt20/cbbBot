@@ -88,6 +88,7 @@ try:
                     if subject.lower() == 'request':
                         if ((games['user'] == message.author).sum() >= 2) and (message.author not in mods):
                             message.reply(cbbBot_text.msg_spam)
+                            message.mark_read()
                             continue
                         if body not in requested_games:
                             requested_games.append(body)
