@@ -29,12 +29,19 @@ ranking = []
 for line in lines:
     ranking.append(line.replace('\n','').split(',')[0])
 
+
 url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
 obj = requests.get(url)
 schedule = json.loads(obj.content)
 
+url2 = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + (now + datetime.timedelta(days = 1)).strftime('%Y%m%d') + '&groups=50&limit=357'
+obj2 = requests.get(url2)
+schedule2 = json.loads(obj2.content)
+
+full_events = schedule['events'] + schedule2['events']
+
 games = pd.DataFrame()
-for game in schedule['events']:
+for game in full_events:
     game_id = game['id']
     home_team, away_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
     date = pytz.utc.localize(datetime.datetime.strptime(game['date'], '%Y-%m-%dT%H:%MZ')).astimezone(tz)
@@ -50,7 +57,8 @@ for game in schedule['events']:
         home_rank = '#' + str(ranking.index(home_team) + 1) + ' '
     top25 = (away_rank != '' or home_rank != '')
 
-    games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
+    if date.day == now.day:
+        games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
 
 games['requested'] = games['top25']
 games['pgrequested'] = games['top25']
