@@ -93,6 +93,7 @@ except:
 
 title = 'Game Thread Index - ' + now.strftime('%B %d, %Y')
 
-thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
-with open('./data/index_thread.txt', 'w') as f:
-    f.write(thread.id)
+if len(games) > 0:
+    thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
+    with open('./data/index_thread.txt', 'w') as f:
+        f.write(thread.id)
