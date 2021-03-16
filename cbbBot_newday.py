@@ -21,7 +21,7 @@ except:
 
 cbbBot_data.get_rcbb_rank()
 
-#year, month, day = '2021', '01', '31'
+#now = now.replace(month = 3, year = 2021, day = 18)
 
 with open('./data/ranking.txt','r') as imp_file:
     lines = imp_file.readlines()
@@ -38,7 +38,14 @@ url2 = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-bas
 obj2 = requests.get(url2)
 schedule2 = json.loads(obj2.content)
 
-full_events = schedule['events'] + schedule2['events']
+full_events = []
+
+groups = ['100', '98', '55', '56']
+for group in groups:
+    url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=' + group + '&limit=357'
+    obj = requests.get(url)
+    schedule = json.loads(obj.content)
+    full_events = full_events + schedule['events']
 
 games = pd.DataFrame()
 for game in full_events:
@@ -59,6 +66,9 @@ for game in full_events:
 
     if date.day == now.day:
         games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
+
+if len(games) == 0:
+    quit()
 
 games['requested'] = games['top25']
 games['pgrequested'] = games['top25']
@@ -93,7 +103,7 @@ except:
 
 title = 'Game Thread Index - ' + now.strftime('%B %d, %Y')
 
-if len(games) > 0:
-    thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
-    with open('./data/index_thread.txt', 'w') as f:
-        f.write(thread.id)
+
+thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
+with open('./data/index_thread.txt', 'w') as f:
+    f.write(thread.id)
