@@ -38,9 +38,9 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
     if game_data['homeRecord'] == '':
         game_data['homeRecord'] = '--'
     if game_data['awayRank'] != '':
-        game_data['awayRank'] = '#' + game_data['awayRank'] + ' '
+        game_data['awayRank'] = '#' + str(game_data['awayRank']) + ' '
     if game_data['homeRank'] != '':
-        game_data['homeRank'] = '#' + game_data['homeRank'] + ' '
+        game_data['homeRank'] = '#' + str(game_data['homeRank']) + ' '
 
     if game_data['awayFlair'] == game_data['awayTeam']:
         thread = thread + ' **' + game_data['awayRank'] + game_data['awayTeam'] + '** (' + game_data['awayRecord'] + ') @ '
