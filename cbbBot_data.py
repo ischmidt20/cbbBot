@@ -59,12 +59,20 @@ def check_game(game_id):
             return False
     return True
 
-def get_schedule(games):
+def get_events():
     now = datetime.datetime.now(tz) - datetime.timedelta(hours = 10)
-    url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
-    obj = requests.get(url)
-    schedule = json.loads(obj.content)
-    for game in schedule['events']:
+    groups = ['100', '98', '55', '56']
+    full_events = []
+    for group in groups:
+        url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=' + group + '&limit=357'
+        obj = requests.get(url)
+        schedule = json.loads(obj.content)
+        full_events = full_events + schedule['events']
+    return full_events
+
+def get_schedule(games):
+    events = get_events()
+    for game in events:
         game_id = game['id']
         status = game['status']['type']['detail'].replace(' - ', ' ').replace(' Half', '').upper()
         if game['status']['type']['id'] != '1':

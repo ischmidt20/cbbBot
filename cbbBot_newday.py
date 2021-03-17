@@ -40,12 +40,7 @@ schedule2 = json.loads(obj2.content)
 
 full_events = []
 
-groups = ['100', '98', '55', '56']
-for group in groups:
-    url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=' + group + '&limit=357'
-    obj = requests.get(url)
-    schedule = json.loads(obj.content)
-    full_events = full_events + schedule['events']
+full_events = cbbBot_data.get_events()
 
 games = pd.DataFrame()
 for game in full_events:
@@ -102,7 +97,6 @@ except:
     quit()
 
 title = 'Game Thread Index - ' + now.strftime('%B %d, %Y')
-
 
 thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = cbbBot_text.index_thread(games), send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
 with open('./data/index_thread.txt', 'w') as f:
