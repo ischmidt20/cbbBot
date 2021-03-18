@@ -147,9 +147,9 @@ def format_boxscore(game_data):
 
 def make_pg_thread(game_id, game_data, row):
     if game_data['awayRank'] != '':
-        game_data['awayRank'] = '#' + game_data['awayRank'] + ' '
+        game_data['awayRank'] = '#' + str(game_data['awayRank']) + ' '
     if game_data['homeRank'] != '':
-        game_data['homeRank'] = '#' + game_data['homeRank'] + ' '
+        game_data['homeRank'] = '#' + str(game_data['homeRank']) + ' '
 
     home_won = game_data['homeScore'] > game_data['awayScore']
     ot = ''
