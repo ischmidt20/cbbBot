@@ -57,6 +57,17 @@ for game in full_events:
     home_rank = ''
     if home_team in ranking:
         home_rank = '#' + str(ranking.index(home_team) + 1) + ' '
+
+    ranks = []
+    for team in game['competitions'][0]['competitors']:
+        rank = ''
+        if 'curatedRank' in team:
+            if 'current' in team['curatedRank']:
+                rank = '#' + str(team['curatedRank']['current']) + ' '
+        ranks.append(rank)
+
+    home_rank, away_rank = ranks
+
     top25 = (away_rank != '' or home_rank != '')
 
     if date.day == now.day:
