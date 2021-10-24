@@ -29,7 +29,6 @@ ranking = []
 for line in lines:
     ranking.append(line.replace('\n','').split(',')[0])
 
-
 url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
 obj = requests.get(url)
 schedule = json.loads(obj.content)
@@ -58,15 +57,15 @@ for game in full_events:
     if home_team in ranking:
         home_rank = '#' + str(ranking.index(home_team) + 1) + ' '
 
-    ranks = []
-    for team in game['competitions'][0]['competitors']:
-        rank = ''
-        if 'curatedRank' in team:
-            if 'current' in team['curatedRank']:
-                rank = '#' + str(team['curatedRank']['current']) + ' '
-        ranks.append(rank)
-
-    home_rank, away_rank = ranks
+    # ranks = []
+    # for team in game['competitions'][0]['competitors']:
+    #     rank = ''
+    #     if 'curatedRank' in team:
+    #         if 'current' in team['curatedRank']:
+    #             rank = '#' + str(team['curatedRank']['current']) + ' '
+    #     ranks.append(rank)
+    #
+    # home_rank, away_rank = ranks
 
     top25 = (away_rank != '' or home_rank != '')
 
@@ -100,7 +99,7 @@ with open('./client.txt', 'r') as imp_file:
     lines = imp_file.readlines()
 lines = [line.replace('\n', '') for line in lines]
 try:
-    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent="CBB Bot v5") #define praw and user agent, login
+    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent = "CBB Bot v5") #define praw and user agent, login
     r.validate_on_submit = True
     print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
 except:

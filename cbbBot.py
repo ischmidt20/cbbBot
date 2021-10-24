@@ -167,7 +167,7 @@ for game, row in games.iterrows():
             except:
                 print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
 
-games = cbbBot_data.get_schedule(games)
+games = cbbBot_data.update_schedule(games)
 games.to_csv('./data/games_today.csv')
 with open('./data/index_thread.txt', 'r') as f:
     index_thread = f.read()
