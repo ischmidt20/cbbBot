@@ -116,7 +116,7 @@ try:
                     f.write(body + '\n')
                 print('Bot will not write game ' + game + '. ' + str(datetime.datetime.now(tz)))
                 message.reply(cbbBot_text.msg_stopped)
-            elif 'Your submission has been given' not in subject:
+            elif message.author != 'reddit':
                 message.reply(cbbBot_text.msg_fail)
             message.mark_read()
 except:
