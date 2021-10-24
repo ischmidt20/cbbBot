@@ -111,4 +111,11 @@ def espn(game_id):
     if game['header']['competitions'][0]['status']['type']['id'] == '1':
         return_data['gameClock'] = ''
 
+    return_data['spread'], return_data['overUnder'] = '', ''
+    if game['pickcenter']:
+        for provider in game['pickcenter']:
+            if provider['provider']['name'] == 'consensus':
+                return_data['spread'] = provider['details']
+                return_data['overUnder'] = provider['overUnder']
+
     return return_data
