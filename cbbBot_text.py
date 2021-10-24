@@ -168,8 +168,23 @@ def make_pg_thread(game_id, game_data, row):
         title = '[Post Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' defeats ' + game_data['homeRank'] + game_data['homeTeam'] + ', ' + str(game_data['awayScore']) + '-' + str(game_data['homeScore']) + ot
 
     thread = '[Box Score](https://www.espn.com/mens-college-basketball/boxscore?gameId=' + str(game_id) + ')'
+    thread = thread + format_linescores(game_data)
 
     return title, thread
+
+def format_linescores(game_data):
+    periods = ['1H', '2H'] + [str(i) + 'OT' for i in range(1, len(game_data['awayLinescore']) - 1)] + ['Total']
+
+    linescore_string = '\n\n'
+    # Add 'Team' column to beginning of list
+    linescore_string = linescore_string + 'Team | ' + ' | '.join(periods) + '\n'
+    # Add the reddit table separator, length of stats + 1 due to manually adding 'Team'
+    linescore_string = linescore_string + '----|' * (len(periods) + 1) + '\n'
+
+    linescore_string = linescore_string + game_data['awayFlair'] + ' | ' + ' | '.join(game_data['awayLinescore']) + ' | ' + str(sum([int(x) for x in game_data['awayLinescore']])) + '\n'
+    linescore_string = linescore_string + game_data['homeFlair'] + ' | ' + ' | '.join(game_data['homeLinescore']) + ' | ' + str(sum([int(x) for x in game_data['homeLinescore']]))
+
+    return linescore_string
 
 def index_thread(games):
     index_string = ' | '.join(['Time', 'Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'

@@ -92,6 +92,7 @@ def espn(game_id):
     (return_data['homeTeam'], return_data['awayTeam']) = [team['team']['location'] for team in teams]
     (return_data['homeRecord'], return_data['awayRecord']) = [team['record'][0]['summary'] if team['record'] else '' for team in teams]
     (return_data['homeScore'], return_data['awayScore']) = [int(if_exists(team, 'score', 0)) for team in teams]
+    (return_data['homeLinescore'], return_data['awayLinescore']) = [[x['displayValue'] for x in if_exists(team, 'linescores', [])] for team in teams]  
 
     return_data['venue'] = game['gameInfo']['venue']['fullName']
     return_data['city'] = game['gameInfo']['venue']['address']['city']
