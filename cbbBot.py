@@ -136,7 +136,7 @@ for game, row in games.iterrows():
                 (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data, row)
                 print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                 pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '323a5f80-872b-11e6-ac0e-0e5318091097')
-                games.loc[game, 'pgthread'] = pgthread.id
+                games.loc[game, 'pgthread'] = pgthread.permalink
                 print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
                 print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
@@ -150,7 +150,7 @@ for game, row in games.iterrows():
                     print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                     thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
                     thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
-                    games.loc[game, 'gamethread'] = thread.id
+                    games.loc[game, 'gamethread'] = thread.permalink
                     print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
                 except:
                     print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
@@ -158,7 +158,7 @@ for game, row in games.iterrows():
                 print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
         else:
             try:
-                thread = r.submission(id = row['gamethread']) #find already posted thread
+                thread = r.submission(id = row['gamethread'].split('/')[4]) #find already posted thread
                 comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
                 (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
                 print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))

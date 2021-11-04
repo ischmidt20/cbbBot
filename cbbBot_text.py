@@ -204,12 +204,12 @@ def index_thread(games):
             if any([desc in row['status'] for desc in ['FINAL', 'CANCELED', 'POSTPONED']]):
                 gamethread = ''
         else:
-            gamethread = '[Thread](https://www.reddit.com/' + row['gamethread'] + ')'
+            gamethread = '[Thread](https://www.reddit.com' + row['gamethread'] + ')'
         if row['pgthread'] == '':
             pgthread = ''
             #pgthread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=pgrequest&message=' + game + ')'
         else:
-            pgthread = '[Thread](https://www.reddit.com/' + row['pgthread'] + ')'
+            pgthread = '[Thread](https://www.reddit.com' + row['pgthread'] + ')'
 
         index_string = index_string + ' | '.join([row['status'], row['arank'] + row['away'], row['hrank'] + row['home'], network_flair, gamethread, pgthread]) + '\n'
 
