@@ -159,7 +159,7 @@ for game, row in games.iterrows():
         else:
             try:
                 thread = r.submission(id = row['gamethread']) #find already posted thread
-                comment_stream_link = 'http://www.reddit-stream.com/' + thread.permalink
+                comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
                 (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
                 print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                 thread.edit(thread_text) #edit thread
