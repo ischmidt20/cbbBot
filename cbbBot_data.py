@@ -4,20 +4,16 @@ import datetime
 import pytz
 import json
 
+import pandas as pd
+
 tz = pytz.timezone('US/Eastern')
 
 def get_teams():
-    with open('./data/team_list.csv', 'r') as imp_file:
-        lines = imp_file.readlines()
-    flairs, cbbpoll_names, kenpom_names = {}, {}, {}
-    for line in lines:
-        (team, flair, cbbpoll_name, kenpom_name) = line.replace('\n', '').split(',')
-        flairs[team] = flair
-        cbbpoll_names[team] = cbbpoll_name
-        kenpom_names[team] = kenpom_name
-    return flairs, cbbpoll_names
+    teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPoll', 'Kenpom']).set_index('Team')
+    return teams
 
 def download_kenpom():
+    teams = get_teams()
     url = 'https://kenpom.com/'
     lines = requests.get(url).content.decode('utf-8').split('\n')
     ranking = []
@@ -27,10 +23,13 @@ def download_kenpom():
             begin = line.find('>', line.find(search_str) + len(search_str))
             end = line.find('</a>')
             team = line[(begin + 1):end]
-            ranking.append(team)
+            ranking.append(teams.loc[teams['Kenpom'] == team].index[0])
+    with open('./data/kenpom.txt', 'w') as f:
+        for team in ranking:
+            f.write(team + '\n')
 
 def download_rcbb_rank():
-    (flairs, cbbpoll_names) = get_teams()
+    teams = get_teams()
     url = 'http://cbbpoll.com/'
     lines = requests.get(url).content.decode('utf-8').split('\n')
     ranking, first_place_votes = [], []
@@ -38,9 +37,7 @@ def download_rcbb_rank():
     while i < 125:
         first_place_votes.append('(' + str(i) + ')')
         i = i + 1
-    cbbpoll_names_inv = {}
-    for team in list(cbbpoll_names.items()):
-        cbbpoll_names_inv[team[1]] = team[0]
+
     for line in lines:
         if "<td><span class='team-name'>" in line:
             team_rank = lines[lines.index(line) - 1].replace('<td>', '').replace('</td>', '')
@@ -52,7 +49,7 @@ def download_rcbb_rank():
                 if vote in team:
                     team = team.replace(vote, '')
                     break
-            ranking.append(cbbpoll_names_inv[team.replace('&amp;', '&')] + ',' + str(int(team_rank)))
+            ranking.append(teams.loc[teams['CBBPoll'] == team].index[0] + ',' + str(int(team_rank)))
     with open('./data/cbbpoll.txt', 'w') as f:
         for team in ranking:
             f.write(team + '\n')

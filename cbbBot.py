@@ -21,22 +21,24 @@ def get_info(game_id):
     game_data = cbbBot_data.espn(game_id)
     with open('./data/cbbpoll.txt', 'r') as imp_file:
         lines = imp_file.readlines()
-    (teams, cbbpoll_names) = cbbBot_data.get_teams()
+    teams = cbbBot_data.get_teams()
+
     ranking = {}
     for line in lines:
         (team, rank) = line.replace('\n', '').split(',')
         team = team.replace('&amp;', '&')
         ranking[team] = int(rank)
-    #game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
+        
+    game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
     game_data['awayFlair'], game_data['homeFlair'] = game_data['awayTeam'], game_data['homeTeam']
-    if game_data['awayTeam'] in teams.keys():
-        #if cbbpoll_names[game_data['awayTeam']] in ranking.keys():
-        #    game_data['awayRank'] = str(ranking[cbbpoll_names[game_data['awayTeam']]])
-        game_data['awayFlair'] = teams[game_data['awayTeam']]
-    if game_data['homeTeam'] in teams.keys():
-        #if cbbpoll_names[game_data['homeTeam']] in ranking.keys():
-    #        game_data['homeRank'] = str(ranking[cbbpoll_names[game_data['homeTeam']]])
-        game_data['homeFlair'] = teams[game_data['homeTeam']]
+    if game_data['awayTeam'] in teams.index:
+        if game_data['awayTeam'] in ranking.keys():
+            game_data['awayRank'] = str(ranking[teams.loc[game_data['homeTeam']])
+        game_data['awayFlair'] = teams.loc[game_data['awayTeam'], 'Flair']
+    if game_data['homeTeam'] in teams.index:
+        if game_data['homeTeam'] in ranking.keys():
+            game_data['homeRank'] = str(ranking[game_data['homeTeam']])
+        game_data['homeFlair'] = teams.loc[game_data['homeTeam'], 'Flair']
     return game_data
 
 with open('./client.txt', 'r') as imp_file:
