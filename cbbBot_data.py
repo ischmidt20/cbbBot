@@ -9,13 +9,25 @@ tz = pytz.timezone('US/Eastern')
 def get_teams():
     with open('./data/team_list.csv', 'r') as imp_file:
         lines = imp_file.readlines()
-    flairs = {}
-    cbbpoll_names = {}
+    flairs, cbbpoll_names, kenpom_names = {}, {}, {}
     for line in lines:
         (team, flair, cbbpoll_name, kenpom_name) = line.replace('\n', '').split(',')
         flairs[team] = flair
         cbbpoll_names[team] = cbbpoll_name
+        kenpom_names[team] = kenpom_name
     return flairs, cbbpoll_names
+
+def download_kenpom():
+    url = 'https://kenpom.com/'
+    lines = requests.get(url).content.decode('utf-8').split('\n')
+    ranking = []
+    search_str = '<a href="team.php'
+    for line in lines:
+        if search_str in line:
+            begin = line.find('>', line.find(search_str) + len(search_str))
+            end = line.find('</a>')
+            team = line[(begin + 1):end]
+            ranking.append(team)
 
 def download_rcbb_rank():
     (flairs, cbbpoll_names) = get_teams()
