@@ -7,12 +7,12 @@ import json
 tz = pytz.timezone('US/Eastern')
 
 def get_teams():
-    with open('./data/team_list.csv','r') as imp_file:
-        lines=imp_file.readlines()
+    with open('./data/team_list.csv', 'r') as imp_file:
+        lines = imp_file.readlines()
     flairs = {}
     rank_names = {}
     for line in lines:
-        (team,flair,rank_name) = line.replace('\n','').split(',')
+        (team, flair, rank_name) = line.replace('\n', '').split(',')
         flairs[team] = flair
         rank_names[team] = rank_name
     return flairs, rank_names
@@ -92,7 +92,7 @@ def espn(game_id):
     (return_data['homeTeam'], return_data['awayTeam']) = [team['team']['location'] for team in teams]
     (return_data['homeRecord'], return_data['awayRecord']) = [team['record'][0]['summary'] if team['record'] else '' for team in teams]
     (return_data['homeScore'], return_data['awayScore']) = [int(if_exists(team, 'score', 0)) for team in teams]
-    (return_data['homeLinescore'], return_data['awayLinescore']) = [[x['displayValue'] for x in if_exists(team, 'linescores', [])] for team in teams]  
+    (return_data['homeLinescore'], return_data['awayLinescore']) = [[x['displayValue'] for x in if_exists(team, 'linescores', [])] for team in teams]
 
     return_data['venue'] = game['gameInfo']['venue']['fullName']
     return_data['city'] = game['gameInfo']['venue']['address']['city']
