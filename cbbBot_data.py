@@ -17,7 +17,7 @@ def get_teams():
         rank_names[team] = rank_name
     return flairs, rank_names
 
-def get_rcbb_rank():
+def download_rcbb_rank():
     (flairs, rank_names) = get_teams()
     url = 'http://cbbpoll.com/'
     lines = requests.get(url).content.decode('utf-8').split('\n')

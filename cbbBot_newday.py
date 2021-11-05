@@ -19,7 +19,7 @@ except:
     print('Failed to import praw. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
-cbbBot_data.get_rcbb_rank()
+cbbBot_data.download_rcbb_rank()
 
 #now = now.replace(month = 3, year = 2021, day = 18)
 
