@@ -23,7 +23,7 @@ cbbBot_data.download_rcbb_rank()
 
 #now = now.replace(month = 3, year = 2021, day = 18)
 
-with open('./data/ranking.txt','r') as imp_file:
+with open('./data/cbbpoll.txt','r') as imp_file:
     lines = imp_file.readlines()
 ranking = []
 for line in lines:

@@ -19,7 +19,7 @@ except:
 
 def get_info(game_id):
     game_data = cbbBot_data.espn(game_id)
-    with open('./data/ranking.txt', 'r') as imp_file:
+    with open('./data/cbbpoll.txt', 'r') as imp_file:
         lines = imp_file.readlines()
     (teams, rank_names) = cbbBot_data.get_teams()
     ranking = {}

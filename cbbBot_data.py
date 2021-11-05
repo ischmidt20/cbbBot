@@ -41,7 +41,7 @@ def download_rcbb_rank():
                     team = team.replace(vote, '')
                     break
             ranking.append(rank_names_inv[team.replace('&amp;', '&')] + ',' + str(int(team_rank)))
-    with open('./data/ranking.txt', 'w') as f:
+    with open('./data/cbbpoll.txt', 'w') as f:
         for team in ranking:
             f.write(team + '\n')
 
