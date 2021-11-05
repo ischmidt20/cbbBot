@@ -148,7 +148,6 @@ for game, row in games.iterrows():
                     (title, thread_text) = cbbBot_text.make_game_thread(game, game_data)
                     print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                     thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
-                    thread.flair.select('2be569e0-872b-11e6-a895-0e2ab20e1f97')
                     games.loc[game, 'gamethread'] = thread.permalink
                     print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
                 except:
