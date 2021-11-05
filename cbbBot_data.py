@@ -10,15 +10,15 @@ def get_teams():
     with open('./data/team_list.csv', 'r') as imp_file:
         lines = imp_file.readlines()
     flairs = {}
-    rank_names = {}
+    cbbpoll_names = {}
     for line in lines:
-        (team, flair, rank_name) = line.replace('\n', '').split(',')
+        (team, flair, cbbpoll_name, kenpom_name) = line.replace('\n', '').split(',')
         flairs[team] = flair
-        rank_names[team] = rank_name
-    return flairs, rank_names
+        cbbpoll_names[team] = cbbpoll_name
+    return flairs, cbbpoll_names
 
 def download_rcbb_rank():
-    (flairs, rank_names) = get_teams()
+    (flairs, cbbpoll_names) = get_teams()
     url = 'http://cbbpoll.com/'
     lines = requests.get(url).content.decode('utf-8').split('\n')
     ranking, first_place_votes = [], []
@@ -26,9 +26,9 @@ def download_rcbb_rank():
     while i < 125:
         first_place_votes.append('(' + str(i) + ')')
         i = i + 1
-    rank_names_inv = {}
-    for team in list(rank_names.items()):
-        rank_names_inv[team[1]] = team[0]
+    cbbpoll_names_inv = {}
+    for team in list(cbbpoll_names.items()):
+        cbbpoll_names_inv[team[1]] = team[0]
     for line in lines:
         if "<td><span class='team-name'>" in line:
             team_rank = lines[lines.index(line) - 1].replace('<td>', '').replace('</td>', '')
@@ -40,7 +40,7 @@ def download_rcbb_rank():
                 if vote in team:
                     team = team.replace(vote, '')
                     break
-            ranking.append(rank_names_inv[team.replace('&amp;', '&')] + ',' + str(int(team_rank)))
+            ranking.append(cbbpoll_names_inv[team.replace('&amp;', '&')] + ',' + str(int(team_rank)))
     with open('./data/cbbpoll.txt', 'w') as f:
         for team in ranking:
             f.write(team + '\n')

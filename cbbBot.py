@@ -21,7 +21,7 @@ def get_info(game_id):
     game_data = cbbBot_data.espn(game_id)
     with open('./data/cbbpoll.txt', 'r') as imp_file:
         lines = imp_file.readlines()
-    (teams, rank_names) = cbbBot_data.get_teams()
+    (teams, cbbpoll_names) = cbbBot_data.get_teams()
     ranking = {}
     for line in lines:
         (team, rank) = line.replace('\n', '').split(',')
@@ -30,12 +30,12 @@ def get_info(game_id):
     #game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
     game_data['awayFlair'], game_data['homeFlair'] = game_data['awayTeam'], game_data['homeTeam']
     if game_data['awayTeam'] in teams.keys():
-        #if rank_names[game_data['awayTeam']] in ranking.keys():
-        #    game_data['awayRank'] = str(ranking[rank_names[game_data['awayTeam']]])
+        #if cbbpoll_names[game_data['awayTeam']] in ranking.keys():
+        #    game_data['awayRank'] = str(ranking[cbbpoll_names[game_data['awayTeam']]])
         game_data['awayFlair'] = teams[game_data['awayTeam']]
     if game_data['homeTeam'] in teams.keys():
-        #if rank_names[game_data['homeTeam']] in ranking.keys():
-    #        game_data['homeRank'] = str(ranking[rank_names[game_data['homeTeam']]])
+        #if cbbpoll_names[game_data['homeTeam']] in ranking.keys():
+    #        game_data['homeRank'] = str(ranking[cbbpoll_names[game_data['homeTeam']]])
         game_data['homeFlair'] = teams[game_data['homeTeam']]
     return game_data
 
