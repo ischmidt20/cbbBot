@@ -28,12 +28,12 @@ def get_info(game_id):
         (team, rank) = line.replace('\n', '').split(',')
         team = team.replace('&amp;', '&')
         ranking[team] = int(rank)
-        
+
     game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
     game_data['awayFlair'], game_data['homeFlair'] = game_data['awayTeam'], game_data['homeTeam']
     if game_data['awayTeam'] in teams.index:
         if game_data['awayTeam'] in ranking.keys():
-            game_data['awayRank'] = str(ranking[teams.loc[game_data['homeTeam']])
+            game_data['awayRank'] = str(ranking[game_data['awayTeam']])
         game_data['awayFlair'] = teams.loc[game_data['awayTeam'], 'Flair']
     if game_data['homeTeam'] in teams.index:
         if game_data['homeTeam'] in ranking.keys():
