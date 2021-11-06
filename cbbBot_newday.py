@@ -70,7 +70,7 @@ for game in full_events:
     top25 = (away_rank != '' or home_rank != '')
 
     if date.day == now.day:
-        games = games.append({'id': game_id, 'away': away_team, 'home': home_team, 'date': date, 'network': network, 'top25': top25, 'arank': away_rank, 'hrank': home_rank}, ignore_index = True)
+        games = games.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network, 'top25': top25, 'awayRank': away_rank, 'homeRank': home_rank}, ignore_index = True)
 
 if len(games) == 0:
     quit()
@@ -92,7 +92,7 @@ for line in lines:
 
 with open('./data/games_to_write.txt','a') as f: #create today's file
     for game, row in games.iterrows():
-        if (row['away'] in ranking or row['home'] in ranking) and game not in games_added:
+        if (row['awayTeam'] in ranking or row['homeTeam'] in ranking) and game not in games_added:
             f.write(game + '\n')
 
 with open('./client.txt', 'r') as imp_file:

@@ -211,6 +211,6 @@ def index_thread(games):
         else:
             pgthread = '[Thread](https://www.reddit.com' + row['pgthread'] + ')'
 
-        index_string = index_string + ' | '.join([row['status'], row['arank'] + row['away'], row['hrank'] + row['home'], network_flair, gamethread, pgthread]) + '\n'
+        index_string = index_string + ' | '.join([row['status'], row['awayRank'] + row['awayTeam'], row['homeRank'] + row['homeTeam'], network_flair, gamethread, pgthread]) + '\n'
 
     return index_string
