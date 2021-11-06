@@ -5,11 +5,20 @@ import pytz
 import json
 
 import pandas as pd
+import numpy as np
 
 tz = pytz.timezone('US/Eastern')
 
 def get_teams():
-    teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPoll', 'Kenpom']).set_index('Team')
+    teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName']).set_index('Team')
+    with open('./data/cbbpoll.txt', 'r') as imp_file:
+        lines = imp_file.readlines()
+    cbbpoll = [line.replace('\n', '') for line in lines]
+    teams.loc[cbbpoll, 'CBBPollRank'] = np.arange(1, 25 + 1)
+    with open('./data/kenpom.txt', 'r') as imp_file:
+        lines = imp_file.readlines()
+    kenpom = [line.replace('\n', '') for line in lines]
+    teams.loc[kenpom, 'KenpomRank'] = np.arange(1, len(teams) + 1)
     return teams
 
 def download_kenpom():
@@ -23,7 +32,7 @@ def download_kenpom():
             begin = line.find('>', line.find(search_str) + len(search_str))
             end = line.find('</a>')
             team = line[(begin + 1):end]
-            ranking.append(teams.loc[teams['Kenpom'] == team].index[0])
+            ranking.append(teams.loc[teams['KenpomName'] == team].index[0])
     with open('./data/kenpom.txt', 'w') as f:
         for team in ranking:
             f.write(team + '\n')
@@ -49,7 +58,7 @@ def download_rcbb_rank():
                 if vote in team:
                     team = team.replace(vote, '')
                     break
-            ranking.append(teams.loc[teams['CBBPoll'] == team].index[0] + ',' + str(int(team_rank)))
+            ranking.append(teams.loc[teams['CBBPollName'] == team].index[0])
     with open('./data/cbbpoll.txt', 'w') as f:
         for team in ranking:
             f.write(team + '\n')
