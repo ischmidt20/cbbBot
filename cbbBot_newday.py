@@ -7,6 +7,7 @@ import cbbBot_data
 import cbbBot_text
 
 import pandas as pd
+import numpy as np
 
 tz = pytz.timezone('US/Eastern')
 now = datetime.datetime.now(tz)
@@ -20,14 +21,10 @@ except:
     quit()
 
 cbbBot_data.download_rcbb_rank()
+cbbBot_data.download_kenpom()
+teams = cbbBot_data.get_teams()
 
 #now = now.replace(month = 11, year = 2021, day = 9)
-
-with open('./data/cbbpoll.txt','r') as imp_file:
-    lines = imp_file.readlines()
-ranking = []
-for line in lines:
-    ranking.append(line.replace('\n','').split(',')[0])
 
 url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
 obj = requests.get(url)
@@ -41,7 +38,9 @@ full_events = []
 
 full_events = cbbBot_data.get_events(now)
 
+espn_home_ranks, espn_away_ranks = [], []
 games = pd.DataFrame()
+
 for game in full_events:
     game_id = game['id']
     home_team, away_team = [team['team']['location'] for team in game['competitions'][0]['competitors']]
@@ -50,30 +49,33 @@ for game in full_events:
     if len(game['competitions'][0]['broadcasts']) > 0:
         network = game['competitions'][0]['broadcasts'][0]['names'][0]
 
-    away_rank = ''
-    if away_team in ranking:
-        away_rank = '#' + str(ranking.index(away_team) + 1) + ' '
-    home_rank = ''
-    if home_team in ranking:
-        home_rank = '#' + str(ranking.index(home_team) + 1) + ' '
-
-    # ranks = []
-    # for team in game['competitions'][0]['competitors']:
-    #     rank = ''
-    #     if 'curatedRank' in team:
-    #         if 'current' in team['curatedRank']:
-    #             rank = '#' + str(team['curatedRank']['current']) + ' '
-    #     ranks.append(rank)
-    #
-    # home_rank, away_rank = ranks
-
-    top25 = (away_rank != '' or home_rank != '')
+    espn_ranks = []
+    for team in game['competitions'][0]['competitors']:
+        rank = ''
+        if 'curatedRank' in team:
+            if 'current' in team['curatedRank']:
+                rank = str(team['curatedRank']['current'])
+                if rank == '99':
+                    rank = ''
+        espn_ranks.append(rank)
+    espn_home_ranks.append(espn_ranks[0])
+    espn_away_ranks.append(espn_ranks[1])
 
     if date.day == now.day:
-        games = games.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network, 'top25': top25, 'awayRank': away_rank, 'homeRank': home_rank}, ignore_index = True)
+        games = games.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network}, ignore_index = True)
 
 if len(games) == 0:
     quit()
+
+games = games.merge(teams[['CBBPollRank', 'KenpomRank']], how = 'left', left_on = 'awayTeam', right_index = True).merge(teams[['CBBPollRank', 'KenpomRank']], how = 'left', left_on = 'homeTeam', right_index = True)
+games = games.rename(columns = {'CBBPollRank_x': 'awayRank', 'KenpomRank_x': 'awayKenpomRank', 'CBBPollRank_y': 'homeRank', 'KenpomRank_y': 'homeKenpomRank'})
+
+if not cbbBot_data.use_reddit_rank:
+    games['awayRank'] = espn_away_ranks
+    games['homeRank'] = espn_home_ranks
+games['top25'] = games['awayRank'].replace('', np.nan).notna() | games['homeRank'].replace('', np.nan).notna()
+for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
+    games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
 
 games['requested'] = games['top25']
 games['pgrequested'] = games['top25']
@@ -85,14 +87,14 @@ games = games.sort_values(['top25', 'date'], ascending = [False, True]).set_inde
 games.to_csv('./data/games_today.csv')
 
 games_added = []
-with open('./data/games_to_write.txt','r') as f:
+with open('./data/games_to_write.txt', 'r') as f:
     lines = f.readlines()
 for line in lines:
-    games_added.append(line.replace('\n',''))
+    games_added.append(line.replace('\n', ''))
 
-with open('./data/games_to_write.txt','a') as f: #create today's file
+with open('./data/games_to_write.txt', 'a') as f: #create today's file
     for game, row in games.iterrows():
-        if (row['awayTeam'] in ranking or row['homeTeam'] in ranking) and game not in games_added:
+        if (row['top25']) and game not in games_added:
             f.write(game + '\n')
 
 with open('./client.txt', 'r') as imp_file:

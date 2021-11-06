@@ -197,6 +197,11 @@ def index_thread(games):
         if row['network'] in tv_flairs.keys():
             network_flair = tv_flairs[row['network']]
 
+        if row['awayRank'] != '':
+            row['awayRank'] = '#' + str(row['awayRank']) + ' '
+        if row['homeRank'] != '':
+            row['homeRank'] = '#' + str(row['homeRank']) + ' '
+
         if row['gamethread'] == '':
             gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
             if row['requested'] == 1:
