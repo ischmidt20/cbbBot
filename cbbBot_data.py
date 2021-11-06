@@ -9,6 +9,8 @@ import numpy as np
 
 tz = pytz.timezone('US/Eastern')
 
+use_reddit_rank = True
+
 def get_teams():
     teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName']).set_index('Team')
     with open('./data/cbbpoll.txt', 'r') as imp_file:
@@ -88,7 +90,7 @@ def get_events(date):
     return full_events
 
 def update_schedule(games):
-    events = get_events(datetime.datetime.now(tz) - datetime.timedelta(hours = 3))
+    events = get_events(datetime.datetime.now(tz) - datetime.timedelta(hours = 10))
     for game in events:
         game_id = game['id']
         status = game['status']['type']['detail'].replace(' - ', ' ').replace(' Half', '').upper()

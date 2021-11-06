@@ -21,15 +21,16 @@ def get_info(game_id):
     game_data = cbbBot_data.espn(game_id)
     teams = cbbBot_data.get_teams()
 
-    game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
+    if cbbBot_data.use_reddit_rank:
+        game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
     game_data['awayFlair'], game_data['homeFlair'] = game_data['awayTeam'], game_data['homeTeam']
 
     if game_data['awayTeam'] in teams.index:
-        if not np.isnan(teams.loc[game_data['awayTeam'], 'CBBPollRank']):
+        if cbbBot_data.use_reddit_rank and not np.isnan(teams.loc[game_data['awayTeam'], 'CBBPollRank']):
             game_data['awayRank'] = int(teams.loc[game_data['awayTeam'], 'CBBPollRank'])
         game_data['awayFlair'] = teams.loc[game_data['awayTeam'], 'Flair']
     if game_data['homeTeam'] in teams.index:
-        if not np.isnan(teams.loc[game_data['homeTeam'], 'CBBPollRank']):
+        if cbbBot_data.use_reddit_rank and not np.isnan(teams.loc[game_data['homeTeam'], 'CBBPollRank']):
             game_data['homeRank'] = int(teams.loc[game_data['homeTeam'], 'CBBPollRank'])
         game_data['homeFlair'] = teams.loc[game_data['homeTeam'], 'Flair']
     return game_data
