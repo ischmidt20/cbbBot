@@ -13,7 +13,7 @@ msg_spam = 'Thanks for your message. Unfortunately, you have already requested t
 msg_duplicate = 'Thanks for your message. This game has already been added to the queue, so a game thread will be posted one hour prior to tipoff, if one has not been posted already.'
 
 with open('./data/index_thread.txt', 'r') as f:
-    index_id = f.read()
+    index_permalink = f.read()
 
 def if_exists(dct, key, value):
     if key in dct:

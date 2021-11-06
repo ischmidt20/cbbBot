@@ -163,7 +163,7 @@ for game, row in games.iterrows():
 games = cbbBot_data.update_schedule(games)
 games.to_csv('./data/games_today.csv')
 
-r.submission(id = cbbBot_text.index_id).edit(cbbBot_text.index_thread(games))
+r.submission(id = cbbBot_text.index_permalink.split('/')[4]).edit(cbbBot_text.index_thread(games))
 
 thread = r.submission(id = '5ctg2v') #get thread to edit
 thread.edit(str(datetime.datetime.now(tz)) + '\n\n' + 'bot concluded script') #edit same thread with current timestamp; lets me know that the bot has finished without issues
