@@ -21,7 +21,7 @@ except:
 
 cbbBot_data.download_rcbb_rank()
 
-#now = now.replace(month = 3, year = 2021, day = 18)
+#now = now.replace(month = 11, year = 2021, day = 9)
 
 with open('./data/cbbpoll.txt','r') as imp_file:
     lines = imp_file.readlines()
@@ -39,7 +39,7 @@ schedule2 = json.loads(obj2.content)
 
 full_events = []
 
-full_events = cbbBot_data.get_events()
+full_events = cbbBot_data.get_events(now)
 
 games = pd.DataFrame()
 for game in full_events:
