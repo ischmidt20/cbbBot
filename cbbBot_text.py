@@ -64,7 +64,7 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
     thread = thread + time + '\n\nVenue: ' + game_data['venue'] + ', ' + game_data['city'] + ', ' + game_data['state']
 
     if game_data['spread'] or game_data['overUnder']:
-        thread = thread + '\n\nSpread: ' + game_data['spread'] + ' | O/U: ' + game_data['overUnder']
+        thread = thread + '\n\nSpread: ' + game_data['spread'] + ' | O/U: ' + str(game_data['overUnder'])
 
     thread = thread + '\n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
     if game_data['network'] in tv_stream_links.keys():
