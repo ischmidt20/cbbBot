@@ -73,7 +73,7 @@ games = games.rename(columns = {'CBBPollRank_x': 'awayRank', 'KenpomRank_x': 'aw
 if not cbbBot_data.use_reddit_rank:
     games['awayRank'] = espn_away_ranks
     games['homeRank'] = espn_home_ranks
-games['top25'] = games['awayRank'].replace('', np.nan).notna() | games['homeRank'].replace('', np.nan).notna()
+games['top25'] = (games['awayRank'].replace('', np.nan).notna() | games['homeRank'].replace('', np.nan).notna()).astype(int)
 for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
     games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
 
