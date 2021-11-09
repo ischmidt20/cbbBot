@@ -69,6 +69,8 @@ for line in lines:
     blacklist.append(line.replace('\n', ''))
 
 games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
+for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
+    games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
 
 stoppers = ['Ike348', '1hive']
 mods = ['Ike348', 'peanutsfan1995', 'Kllian', 'Concision', 'homemade_mayo', 'ztrobin5', 'AutoModerator', 'rCBB_Mod', 'Forestl', 'cbbflairwizard', '1hive', 'cinciforthewin', 'glass_bottle', 'OutlawsHeels', 'IrishBall', 'Nebraska_Actually', 'AlekRivard', 'cbbscorebot', 'Wicked_UMD', 'ouguy2017', 'DEP61', 'grubberbeb', 'cbbpollbot', 'NowWithVitamin_R', '44TheKid', 'SleveMcDichael4', 'jjstatman', 'jloose128', 'tldRAWR', 'BurrShotFirst1804', 's-sea', 'yakovgolyadkin', 'SnareShot', 'Purdue49OSU20']
@@ -117,8 +119,6 @@ try:
             message.mark_read()
 except:
     print('Could not check messages. Will continue. ' + str(datetime.datetime.now(tz)))
-
-#games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
 
 games.loc[[game for game in requested_games if game in games.index], 'requested'] = 1
 
