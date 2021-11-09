@@ -12,7 +12,7 @@ tz = pytz.timezone('US/Eastern')
 use_reddit_rank = True
 
 def get_teams():
-    teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName']).set_index('Team')
+    teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName'], encoding = 'latin1').set_index('Team')
     with open('./data/cbbpoll.txt', 'r') as imp_file:
         lines = imp_file.readlines()
     cbbpoll = [line.replace('\n', '') for line in lines]
