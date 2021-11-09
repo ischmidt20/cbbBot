@@ -151,15 +151,16 @@ for game, row in games.iterrows():
             else:
                 print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
         else:
-            try:
-                thread = r.submission(id = row['gamethread'].split('/')[4]) #find already posted thread
-                comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
-                (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
-                print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                thread.edit(thread_text) #edit thread
-                print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
-            except:
-                print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
+            pass
+            # try:
+            #     thread = r.submission(id = row['gamethread'].split('/')[4]) #find already posted thread
+            #     comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
+            #     (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
+            #     print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+            #     thread.edit(thread_text) #edit thread
+            #     print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+            # except:
+            #     print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
 
 games = cbbBot_data.update_schedule(games)
 games.to_csv('./data/games_today.csv')
