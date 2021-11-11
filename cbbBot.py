@@ -73,7 +73,7 @@ for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
     games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
 
 stoppers = ['Ike348', '1hive']
-mods = ['Ike348', 'peanutsfan1995', 'Kllian', 'Concision', 'homemade_mayo', 'ztrobin5', 'AutoModerator', 'rCBB_Mod', 'Forestl', 'cbbflairwizard', '1hive', 'cinciforthewin', 'glass_bottle', 'OutlawsHeels', 'IrishBall', 'Nebraska_Actually', 'AlekRivard', 'cbbscorebot', 'Wicked_UMD', 'ouguy2017', 'DEP61', 'grubberbeb', 'cbbpollbot', 'NowWithVitamin_R', '44TheKid', 'SleveMcDichael4', 'jjstatman', 'jloose128', 'tldRAWR', 'BurrShotFirst1804', 's-sea', 'yakovgolyadkin', 'SnareShot', 'Purdue49OSU20']
+mods = ['Ike348'] + [user.name for user in list(r.subreddit('CollegeBasketball').moderator())]
 
 try:
     print('Checking mail..... ' + str(datetime.datetime.now(tz)))
