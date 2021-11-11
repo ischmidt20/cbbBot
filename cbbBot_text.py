@@ -33,7 +33,10 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
     if game_data['gameClock'] != '':
         thread = thread + ' - **' + game_data['gameClock'].upper() + '**'
 
-    thread = thread + '\n\n\n###NCAA Basketball\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
+    thread = thread + '\n\n\n###NCAA Basketball'
+    #thread = thread + '\n [**^Click ^here ^to ^request ^a ^Game ^Thread**](https://www.reddit.com/r/CollegeBasketball/comments/5o5at9/introducing_ucbbbot_an_easier_way_of_making_game/)\n\n---\n '
+
+    thread = thread + '\n [**^' + ' ^'.join(('Index Thread for ' + game_data['startTime'].strftime('%B %d, %Y')).split()) + '**](https://www.reddit.com' + index_permalink + ')\n\n---\n '
     if game_data['awayRecord'] == '':
         game_data['awayRecord'] = '--'
     if game_data['homeRecord'] == '':
