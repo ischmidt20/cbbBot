@@ -154,7 +154,7 @@ def format_boxscore(game_data):
 
     return boxscore_string
 
-def make_pg_thread(game_id, game_data, row):
+def make_pg_thread(game_id, game_data):
     if game_data['awayRank'] != '':
         game_data['awayRank'] = '#' + str(game_data['awayRank']) + ' '
     if game_data['homeRank'] != '':
@@ -162,8 +162,8 @@ def make_pg_thread(game_id, game_data, row):
 
     home_won = game_data['homeScore'] > game_data['awayScore']
     ot = ''
-    if '/' in row['status']:
-        ot = ' in ' + row['status'].split('/')[-1]
+    if '/' in game_data['gameClock']:
+        ot = ' in ' + game_data['gameClock'].split('/')[-1]
 
     if home_won:
         title = '[Post Game Thread] ' + game_data['homeRank'] + game_data['homeTeam'] + ' defeats ' + game_data['awayRank'] + game_data['awayTeam'] + ', ' + str(game_data['homeScore']) + '-' + str(game_data['awayScore']) + ot
@@ -172,6 +172,7 @@ def make_pg_thread(game_id, game_data, row):
 
     thread = '[Box Score](https://www.espn.com/mens-college-basketball/boxscore?gameId=' + str(game_id) + ')'
     thread = thread + format_linescores(game_data)
+    thread = thread + '\n\n[**^' + ' ^'.join(('Index Thread for ' + game_data['startTime'].strftime('%B %d, %Y')).split()) + '**](https://www.reddit.com' + index_permalink + ')'
 
     return title, thread
 
