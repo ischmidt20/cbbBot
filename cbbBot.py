@@ -137,7 +137,7 @@ for game, row in games.iterrows():
                 print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
                 print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
-        if row['gamethread'] == '':
+        if (row['gamethread'] == '') and ('FINAL' not in row['status']):
             if datetime.datetime.now(tz) > (game_data['startTime'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
                 print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
                 try:
