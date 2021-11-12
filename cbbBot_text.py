@@ -58,7 +58,7 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
 
     time = game_data['startTime'].strftime('%I:%M %p') + ' ET'
     if game_data['network'] == '':
-        game_data['network'] = 'Check your local listings.'
+        game_data['network'] = 'Check local listings or other streaming platforms.'
     network_flair = game_data['network']
     if game_data['network'] in tv_flairs.keys():
         network_flair = tv_flairs[game_data['network']]
