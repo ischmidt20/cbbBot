@@ -126,8 +126,11 @@ print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
 for game, row in games.iterrows():
     if not any([desc in row['status'].lower() for desc in ['canceled', 'postponed']]) and row['requested'] == 1 and row['pgthread'] == '':
-        game_data = get_info(game)
-        print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
+        try:
+            game_data = get_info(game)
+            print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
+        except:
+            print('Failed to get game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
         if 'FINAL' in row['status']:
             try:
                 (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data)
