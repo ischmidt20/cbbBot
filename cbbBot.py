@@ -68,9 +68,7 @@ blacklist = []
 for line in lines:
     blacklist.append(line.replace('\n', ''))
 
-games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
-for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
-    games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
+games = cbbBot_data.read_games()
 
 stoppers = ['Ike348', '1hive']
 mods = ['Ike348'] + [user.name for user in list(r.subreddit('CollegeBasketball').moderator())]

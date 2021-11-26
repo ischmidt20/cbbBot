@@ -11,6 +11,12 @@ tz = pytz.timezone('US/Eastern')
 
 use_reddit_rank = True
 
+def read_games():
+    games = pd.read_csv('./data/games_today.csv', dtype = {'id': str}, parse_dates = ['date']).fillna('').set_index('id')
+    for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
+        games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
+    return games
+
 def read_teams():
     return pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName'], encoding = 'utf-8').set_index('Team')
 
