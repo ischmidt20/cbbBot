@@ -200,8 +200,8 @@ def index_thread(games):
     index_string = ''
     for order in [1, 2, 3]:
         index_string = index_string + '# ' + heading_dict[order] + '\n\n'
-        index_string = index_string + ' | '.join(['Time', 'Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
-        index_string = index_string + '----|' * (6) + '\n'
+        index_string = index_string + ' | '.join(['Time', 'TV', 'KP', 'Away', 'Home', 'KP', 'GT', 'PGT']) + '\n'
+        index_string = index_string + '----|' * (8) + '\n'
 
         for game, row in games[games['order'] == order].iterrows():
             time = row['date'].strftime('%H:%M')
@@ -229,6 +229,6 @@ def index_thread(games):
             else:
                 pgthread = '[Thread](https://www.reddit.com' + row['pgthread'] + ')'
 
-            index_string = index_string + ' | '.join([row['status'], row['awayRank'] + row['awayTeam'], row['homeRank'] + row['homeTeam'], network_flair, gamethread, pgthread]) + '\n'
+            index_string = index_string + ' | '.join([row['status'], network_flair, row['awayKenpomRank'], row['awayRank'] + row['awayTeam'], row['homeRank'] + row['homeTeam'], row['homeKenpomRank'], gamethread, pgthread]) + '\n'
 
     return index_string
