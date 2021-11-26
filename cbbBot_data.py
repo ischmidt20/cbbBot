@@ -11,8 +11,11 @@ tz = pytz.timezone('US/Eastern')
 
 use_reddit_rank = True
 
+def read_teams():
+    return pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName'], encoding = 'utf-8').set_index('Team')
+
 def get_teams():
-    teams = pd.read_csv('data/team_list.csv', names = ['Team', 'Flair', 'CBBPollName', 'KenpomName'], encoding = 'utf-8').set_index('Team')
+    teams = read_teams()
     with open('./data/cbbpoll.txt', 'r') as imp_file:
         lines = imp_file.readlines()
     cbbpoll = [line.replace('\n', '') for line in lines]
@@ -24,7 +27,7 @@ def get_teams():
     return teams
 
 def download_kenpom():
-    teams = get_teams()
+    teams = read_teams()
     url = 'https://kenpom.com/'
     lines = requests.get(url).content.decode('utf-8').split('\n')
     ranking = []
@@ -35,7 +38,7 @@ def download_kenpom():
             end = line.find('</a>')
             team = line[(begin + 1):end]
             ranking.append(teams.loc[teams['KenpomName'] == team].index[0])
-    with open('./data/kenpom.txt', 'w') as f:
+    with open('./data/kenpom.txt', 'w', encoding = 'utf-8') as f:
         for team in ranking:
             f.write(team + '\n')
 
