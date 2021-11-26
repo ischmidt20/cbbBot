@@ -85,7 +85,7 @@ try:
                             print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                     if subject.lower() == 'pgrequest':
                         message.reply(cbbBot_text.msg_success_pg)
-                        games.loc[body, 'pgrequest'] = 1
+                        games.loc[body, 'pgrequested'] = 1
                 else:
                     message.reply(cbbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
@@ -104,34 +104,33 @@ games.loc[[game for game in requested_games if game in games.index], 'requested'
 
 print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
-for game, row in games.iterrows():
-    if not any([desc in row['status'].lower() for desc in ['canceled', 'postponed']]) and row['requested'] == 1 and row['pgthread'] == '':
-        if 'FINAL' in row['status']:
+for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'postponed'])) & ((games['requested'] + games['pgrequested']) >= 1) & (games['pgthread'] == '')].iterrows():
+    if 'FINAL' in row['status']:
+        try:
+            game_data = cbbBot_data.get_game_data(game)
+            print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
+            (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data)
+            print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+            pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '323a5f80-872b-11e6-ac0e-0e5318091097')
+            games.loc[game, 'pgthread'] = pgthread.permalink
+            print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+        except:
+            print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
+    if (row['gamethread'] == '') and ('FINAL' not in row['status']):
+        if datetime.datetime.now(tz) > (row['date'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+            print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
             try:
                 game_data = cbbBot_data.get_game_data(game)
                 print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-                (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data)
-                print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '323a5f80-872b-11e6-ac0e-0e5318091097')
-                games.loc[game, 'pgthread'] = pgthread.permalink
-                print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+                (title, thread_text) = cbbBot_text.make_game_thread(game, game_data)
+                print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+                thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
+                games.loc[game, 'gamethread'] = thread.permalink
+                print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
-                print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
-        if (row['gamethread'] == '') and ('FINAL' not in row['status']):
-            if datetime.datetime.now(tz) > (row['date'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
-                print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
-                try:
-                    game_data = cbbBot_data.get_game_data(game)
-                    print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-                    (title, thread_text) = cbbBot_text.make_game_thread(game, game_data)
-                    print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                    thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
-                    games.loc[game, 'gamethread'] = thread.permalink
-                    print('Posted game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
-                except:
-                    print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
-            else:
-                print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
+                print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
+        else:
+            print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
 
 games = cbbBot_data.update_schedule(games)
 games.to_csv('./data/games_today.csv')
