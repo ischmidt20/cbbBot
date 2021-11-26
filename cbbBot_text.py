@@ -191,35 +191,44 @@ def format_linescores(game_data):
     return linescore_string
 
 def index_thread(games):
-    index_string = ' | '.join(['Time', 'Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
-    index_string = index_string + '----|' * (6) + '\n'
+    games['order'] = 3
+    tv = ['ESPN', 'ESPN2', 'ESPNU', 'ESPNN', 'ACCN', 'SECN', 'FS1', 'FS2', 'ABC', 'BTN', 'CBSSN', 'FOX', 'CBS', 'PAC12', 'NBC', 'NBCSN', 'TBS', 'TNT', 'truTV']
+    games.loc[games['network'].isin(tv), 'order'] = 2
+    games.loc[games['top25'] == 1, 'order'] = 1
+    heading_dict = {1: 'Ranked Games', 2: 'Nationally Televised Games', 3: 'Other Games'}
 
-    for game, row in games.iterrows():
-        time = row['date'].strftime('%H:%M')
+    index_string = ''
+    for order in [1, 2, 3]:
+        index_string = index_string + '# ' + heading_dict[order] + '\n\n'
+        index_string = index_string + ' | '.join(['Time', 'Away', 'Home', 'Network', 'Game Thread', 'Post-Game Thread']) + '\n'
+        index_string = index_string + '----|' * (6) + '\n'
 
-        network_flair = row['network'].replace('|','')
-        if row['network'] in tv_flairs.keys():
-            network_flair = tv_flairs[row['network']]
+        for game, row in games[games['order'] == order].iterrows():
+            time = row['date'].strftime('%H:%M')
 
-        if row['awayRank'] != '':
-            row['awayRank'] = '#' + str(row['awayRank']) + ' '
-        if row['homeRank'] != '':
-            row['homeRank'] = '#' + str(row['homeRank']) + ' '
+            network_flair = row['network'].replace('|','')
+            if row['network'] in tv_flairs.keys():
+                network_flair = tv_flairs[row['network']]
 
-        if row['gamethread'] == '':
-            gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
-            if row['requested'] == 1:
-                gamethread = 'Requested'
-            if any([desc in row['status'] for desc in ['FINAL', 'CANCELED', 'POSTPONED']]):
-                gamethread = ''
-        else:
-            gamethread = '[Thread](https://www.reddit.com' + row['gamethread'] + ')'
-        if row['pgthread'] == '':
-            pgthread = ''
-            #pgthread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=pgrequest&message=' + game + ')'
-        else:
-            pgthread = '[Thread](https://www.reddit.com' + row['pgthread'] + ')'
+            if row['awayRank'] != '':
+                row['awayRank'] = '#' + str(row['awayRank']) + ' '
+            if row['homeRank'] != '':
+                row['homeRank'] = '#' + str(row['homeRank']) + ' '
 
-        index_string = index_string + ' | '.join([row['status'], row['awayRank'] + row['awayTeam'], row['homeRank'] + row['homeTeam'], network_flair, gamethread, pgthread]) + '\n'
+            if row['gamethread'] == '':
+                gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
+                if row['requested'] == 1:
+                    gamethread = 'Requested'
+                if any([desc in row['status'] for desc in ['FINAL', 'CANCELED', 'POSTPONED']]):
+                    gamethread = ''
+            else:
+                gamethread = '[Thread](https://www.reddit.com' + row['gamethread'] + ')'
+            if row['pgthread'] == '':
+                pgthread = ''
+                #pgthread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=pgrequest&message=' + game + ')'
+            else:
+                pgthread = '[Thread](https://www.reddit.com' + row['pgthread'] + ')'
+
+            index_string = index_string + ' | '.join([row['status'], row['awayRank'] + row['awayTeam'], row['homeRank'] + row['homeTeam'], network_flair, gamethread, pgthread]) + '\n'
 
     return index_string
