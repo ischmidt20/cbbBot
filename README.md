@@ -2,7 +2,8 @@
 Automatically creates game threads for r/CollegeBasketball.
 
 Overview of files:
-- `cbbBot.py`: The actual bot. Logs into Reddit, checks messages, edits and submits threads, etc.
+- `cbbBot.py`: The actual bot. Logs into Reddit, checks messages, submits threads.
+- `cbbBot_edit.py`: Edits game threads. Separated into own script so that rate limits in regards to editing do not affect posting of threads.
 - `cbbBot_data.py`: Contains various functions used by cbbBot. Gets r/CollegeBasketball ranking, gets game info from ESPN, and matches different names for the same team.
 - `cbbBot_text.py`: Builds the markdown threads and title given the data.
 - `cbbBot_newday.py`: Automatically schedules Top 25 games for the day.
