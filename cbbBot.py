@@ -106,13 +106,10 @@ print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
 for game, row in games.iterrows():
     if not any([desc in row['status'].lower() for desc in ['canceled', 'postponed']]) and row['requested'] == 1 and row['pgthread'] == '':
-        try:
-            game_data = cbbBot_data.get_game_data(game)
-            print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
-        except:
-            print('Failed to get game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
         if 'FINAL' in row['status']:
             try:
+                game_data = cbbBot_data.get_game_data(game)
+                print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
                 (title, thread_text) = cbbBot_text.make_pg_thread(game, game_data)
                 print('Made post-game thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                 pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '323a5f80-872b-11e6-ac0e-0e5318091097')
@@ -121,9 +118,11 @@ for game, row in games.iterrows():
             except:
                 print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
         if (row['gamethread'] == '') and ('FINAL' not in row['status']):
-            if datetime.datetime.now(tz) > (game_data['startTime'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
+            if datetime.datetime.now(tz) > (row['date'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
                 print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
                 try:
+                    game_data = cbbBot_data.get_game_data(game)
+                    print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
                     (title, thread_text) = cbbBot_text.make_game_thread(game, game_data)
                     print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                     thread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '2be569e0-872b-11e6-a895-0e2ab20e1f97')
@@ -133,17 +132,6 @@ for game, row in games.iterrows():
                     print('Failed to post game ' + game + '. ' + str(datetime.datetime.now(tz)))
             else:
                 print('Game ' + game + ' will not be posted at this time. ' + str(datetime.datetime.now(tz)))
-        else:
-            pass
-            # try:
-            #     thread = r.submission(id = row['gamethread'].split('/')[4]) #find already posted thread
-            #     comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
-            #     (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
-            #     print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-            #     thread.edit(thread_text) #edit thread
-            #     print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
-            # except:
-            #     print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
 
 games = cbbBot_data.update_schedule(games)
 games.to_csv('./data/games_today.csv')
