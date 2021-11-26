@@ -37,6 +37,9 @@ except:
     print('Failed to edit thread with current time and date. Will continue..... ' + str(datetime.datetime.now(tz)))
 
 hour, minute = datetime.datetime.now(tz).hour, datetime.datetime.now(tz).minute
+if hour == 10 and minute == 7:
+    import os
+    os.system('python3 cbbBot_newday.py')
 
 with open('./data/games_to_write.txt', 'r') as imp_file: #get games already requested
     lines = imp_file.readlines()
