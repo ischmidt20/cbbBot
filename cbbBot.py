@@ -17,24 +17,6 @@ except:
     print('Failed to import praw. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
-def get_info(game_id):
-    game_data = cbbBot_data.espn(game_id)
-    teams = cbbBot_data.get_teams()
-
-    if cbbBot_data.use_reddit_rank:
-        game_data['awayRank'], game_data['homeRank'] = '', '' #clear ESPN rank values
-    game_data['awayFlair'], game_data['homeFlair'] = game_data['awayTeam'], game_data['homeTeam']
-
-    if game_data['awayTeam'] in teams.index:
-        if cbbBot_data.use_reddit_rank and not np.isnan(teams.loc[game_data['awayTeam'], 'CBBPollRank']):
-            game_data['awayRank'] = int(teams.loc[game_data['awayTeam'], 'CBBPollRank'])
-        game_data['awayFlair'] = teams.loc[game_data['awayTeam'], 'Flair']
-    if game_data['homeTeam'] in teams.index:
-        if cbbBot_data.use_reddit_rank and not np.isnan(teams.loc[game_data['homeTeam'], 'CBBPollRank']):
-            game_data['homeRank'] = int(teams.loc[game_data['homeTeam'], 'CBBPollRank'])
-        game_data['homeFlair'] = teams.loc[game_data['homeTeam'], 'Flair']
-    return game_data
-
 with open('./client.txt', 'r') as imp_file:
     lines = imp_file.readlines()
 lines = [line.replace('\n', '') for line in lines]
@@ -125,7 +107,7 @@ print('Checking games..... ' + str(datetime.datetime.now(tz)))
 for game, row in games.iterrows():
     if not any([desc in row['status'].lower() for desc in ['canceled', 'postponed']]) and row['requested'] == 1 and row['pgthread'] == '':
         try:
-            game_data = get_info(game)
+            game_data = cbbBot_data.get_game_data(game)
             print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
         except:
             print('Failed to get game info for ' + game + '! ' + str(datetime.datetime.now(tz)))
