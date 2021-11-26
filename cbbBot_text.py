@@ -1,5 +1,8 @@
 #!/Usr/bin/python3
 import datetime
+import pytz
+
+tz = pytz.timezone('US/Eastern')
 
 tv_flairs = {'BTN':'[Big Ten Network](#l/btn)', 'CBS':'[CBS](#l/cbs)', 'CBSSN':'[CBS Sports Network](#l/cbssn)', 'ESPN':'[ESPN](#l/espn)', 'ESPN2':'[ESPN2](#l/espn2)', 'ESPN3':'[ESPN3](#l/espn3)', 'ESPNU':'[ESPNU](#l/espnu)', 'FOX':'[Fox](#l/fox)', 'FS1':'[Fox Sports 1](#l/fs1)', 'FSN':'[Fox Sports Network](#l/fsn)', 'LHN':'[Longhorn Network](#l/lhn)', 'NBC':'[NBC](#l/nbc)', 'NBCSN':'[NBC Sports Network](#l/nbcsn)', 'PAC12':'[Pac-12 Network](#l/p12n)', 'SECN':'[SEC Network](#l/secn)', 'TBS':'[TBS](#l/tbs)', 'TNT':'[TNT](#l/tnt)', 'truTV':'[truTV](#l/trutv)', 'ACCN':'[ACC Network](#l/accn)', 'ACCNE':'[ACC Network Extra](#l/accne)', 'ACCNX':'[ACC Network Extra](#l/accne)', 'ESPNN':'[ESPNews](#l/espnews)', 'FS2':'[Fox Sports 2](#l/fs2)'}
 
@@ -83,6 +86,7 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
     thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN](" + espn_link + ") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
 
     thread = thread + " \n\n-----------------------------------------------------------------\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb)"
+    thread = thread + '\n\n^' + ' ^'.join(('Last Updated: ' + datetime.datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S %Z')).split())
 
     title = '[Game Thread] ' + game_data['awayRank'] + game_data['awayTeam'] + ' @ ' + game_data['homeRank'] + game_data['homeTeam'] + ' (' + time + ')'
     return title, thread
@@ -231,4 +235,5 @@ def index_thread(games):
 
             index_string = index_string + ' | '.join([row['status'], network_flair, row['awayKenpomRank'], row['awayRank'] + row['awayTeam'], row['homeRank'] + row['homeTeam'], row['homeKenpomRank'], gamethread, pgthread]) + '\n'
 
+    index_string = index_string + '\n\n^' + ' ^'.join(('Last Updated: ' + datetime.datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S %Z')).split())
     return index_string
