@@ -2,7 +2,6 @@
 import datetime
 import pytz
 import cbbBot_data
-import cbbBot_text
 
 import pandas as pd
 import numpy as np
@@ -40,6 +39,8 @@ hour, minute = datetime.datetime.now(tz).hour, datetime.datetime.now(tz).minute
 if hour == 10 and minute == 7:
     import os
     os.system('python3 cbbBot_newday.py')
+
+import cbbBot_text #Import later so index thread updates appropriately
 
 with open('./data/games_to_write.txt', 'r') as imp_file: #get games already requested
     lines = imp_file.readlines()
