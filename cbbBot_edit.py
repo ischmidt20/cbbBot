@@ -27,6 +27,10 @@ except:
     quit()
 
 while True:
+    hour, minute = datetime.datetime.now(tz).hour, datetime.datetime.now(tz).minute
+    if hour == 10 and minute == 6:
+        quit()
+
     games = cbbBot_data.read_games()
     for game, row in games.iterrows():
         if (row['gamethread'] != '') and not any([desc in row['status'].lower() for desc in ['final', 'canceled', 'postponed']]):
