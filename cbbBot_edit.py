@@ -19,7 +19,7 @@ with open('./client.txt', 'r') as imp_file:
 lines = [line.replace('\n', '') for line in lines]
 
 try:
-    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent = "CBB Bot v5", timeout = 2) #define praw and user agent, login
+    r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent = "CBB Bot v5") #define praw and user agent, login
     r.validate_on_submit = True
     print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
 except:
