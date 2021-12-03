@@ -118,6 +118,12 @@ for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'post
             pgthread = r.subreddit('CollegeBasketball').submit(title = title, selftext = thread_text, send_replies = False, flair_id = '323a5f80-872b-11e6-ac0e-0e5318091097')
             games.loc[game, 'pgthread'] = pgthread.permalink
             print('Posted post-game thread ' + game + '! ' + str(datetime.datetime.now(tz)))
+            thread = r.submission(id = row['gamethread'].split('/')[4]) #find already posted thread
+            comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
+            (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
+            print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
+            thread.edit(thread_text) #edit thread
+            print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
         except:
             print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
     if (row['gamethread'] == '') and ('FINAL' not in row['status']):
