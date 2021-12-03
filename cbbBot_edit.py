@@ -31,7 +31,14 @@ while True:
     if hour == 10 and minute == 6:
         quit()
 
-    games = cbbBot_data.read_games()
+    try:
+        games = cbbBot_data.read_games()
+        print('Read in games data frame! ' + str(datetime.datetime.now(tz)))
+    except:
+        print('Failed to read in games data frame.' + str(datetime.datetime.now(tz)))
+        time.sleep(5)
+        continue
+        
     for game, row in games.iterrows():
         if (row['gamethread'] != '') and not any([desc in row['status'].lower() for desc in ['final', 'canceled', 'postponed']]):
             try:
