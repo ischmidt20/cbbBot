@@ -28,13 +28,6 @@ except:
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
-try:
-    thread = r.submission(id = '5ctg2v') #get thread to edit
-    thread.edit(datetime.datetime.now(tz)) #edit same thread with current timestamp; lets me know that the bot is running
-    print('Edited check thread with current time and date! ' + str(datetime.datetime.now(tz)))
-except:
-    print('Failed to edit thread with current time and date. Will continue..... ' + str(datetime.datetime.now(tz)))
-
 hour, minute = datetime.datetime.now(tz).hour, datetime.datetime.now(tz).minute
 if hour == 10 and minute == 7:
     import os
@@ -147,6 +140,4 @@ games.to_csv('./data/games_today.csv')
 
 r.submission(id = cbbBot_text.index_permalink.split('/')[4]).edit(cbbBot_text.index_thread(games))
 
-thread = r.submission(id = '5ctg2v') #get thread to edit
-thread.edit(str(datetime.datetime.now(tz)) + '\n\n' + 'bot concluded script') #edit same thread with current timestamp; lets me know that the bot has finished without issues
 print('Concluded script without issues. ' + str(datetime.datetime.now(tz)))
