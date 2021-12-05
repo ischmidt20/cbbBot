@@ -40,7 +40,7 @@ while True:
         continue
         
     for game, row in games.iterrows():
-        if (row['gamethread'] != '') and not any([desc in row['status'].lower() for desc in ['final', 'canceled', 'postponed']]):
+        if (row['gamethread'] != '') and not any([desc in row['status'].lower() for desc in ['final', 'canceled', 'postponed', 'forfeit']]):
             try:
                 game_data = cbbBot_data.get_game_data(game)
                 print('Obtained game info for ' + game + '! ' + str(datetime.datetime.now(tz)))

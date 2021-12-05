@@ -101,7 +101,7 @@ games.loc[[game for game in requested_games if game in games.index], 'requested'
 
 print('Checking games..... ' + str(datetime.datetime.now(tz)))
 
-for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'postponed'])) & ((games['requested'] + games['pgrequested']) >= 1) & (games['pgthread'] == '')].iterrows():
+for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'postponed', 'forfeit'])) & ((games['requested'] + games['pgrequested']) >= 1) & (games['pgthread'] == '')].iterrows():
     if 'FINAL' in row['status']:
         try:
             game_data = cbbBot_data.get_game_data(game)

@@ -223,7 +223,7 @@ def index_thread(games):
                 gamethread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=request&message=' + game + ')'
                 if row['requested'] == 1:
                     gamethread = 'Requested'
-                if any([desc in row['status'] for desc in ['FINAL', 'CANCELED', 'POSTPONED']]):
+                if any([desc in row['status'] for desc in ['FINAL', 'CANCELED', 'POSTPONED', 'FORFEIT']]):
                     gamethread = ''
             else:
                 gamethread = '[Thread](https://www.reddit.com' + row['gamethread'] + ')'
