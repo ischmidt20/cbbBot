@@ -203,6 +203,8 @@ def index_thread(games):
 
     index_string = ''
     for order in [1, 2, 3]:
+        if (games['order'] == order).sum() == 0:
+            continue
         index_string = index_string + '# ' + heading_dict[order] + '\n\n'
         index_string = index_string + ' | '.join(['Time', 'TV', 'KP', 'Away', 'Home', 'KP', 'GT', 'PGT']) + '\n'
         index_string = index_string + '----|' * (8) + '\n'
