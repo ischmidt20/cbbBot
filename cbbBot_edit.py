@@ -38,7 +38,10 @@ while True:
         print('Failed to read in games data frame.' + str(datetime.datetime.now(tz)))
         time.sleep(5)
         continue
-        
+
+    if len(games) == 0:
+        quit()
+
     for game, row in games.iterrows():
         if (row['gamethread'] != '') and not any([desc in row['status'].lower() for desc in ['final', 'canceled', 'postponed', 'forfeit']]):
             try:
