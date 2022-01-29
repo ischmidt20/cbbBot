@@ -196,7 +196,7 @@ def format_linescores(game_data):
 
 def index_thread(games):
     games['order'] = 3
-    tv = ['ESPN', 'ESPN2', 'ESPNU', 'ESPNN', 'ACCN', 'SECN', 'FS1', 'FS2', 'ABC', 'BTN', 'CBSSN', 'FOX', 'CBS', 'PAC12', 'NBC', 'NBCSN', 'TBS', 'TNT', 'truTV']
+    tv = ['ESPN', 'ESPN2', 'ESPNU', 'ESPNN', 'ACCN', 'SECN', 'FS1', 'FS2', 'ABC', 'BTN', 'CBSSN', 'FOX', 'CBS', 'PAC12', 'NBC', 'NBCSN', 'TBS', 'TNT', 'truTV', 'USA Net']
     games.loc[games['network'].isin(tv), 'order'] = 2
     games.loc[games['top25'] == 1, 'order'] = 1
     heading_dict = {1: 'Ranked Games', 2: 'Nationally Televised Games', 3: 'Other Games'}
