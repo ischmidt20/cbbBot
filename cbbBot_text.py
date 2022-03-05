@@ -72,6 +72,8 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
     if game_data['spread'] or game_data['overUnder']:
         thread = thread + '\n\nSpread: ' + game_data['spread'] + ' | O/U: ' + str(game_data['overUnder'])
 
+    thread = thread + "\n\nGame Info: [ESPN](http://www.espn.com/mens-college-basketball/game?gameId=" + game_id + ")"
+
     thread = thread + '\n\n-----------------------------------------------------------------\n\n**Television:** \n' + network_flair + '\n\n\n**Streams:**\n'
     if game_data['network'] in tv_stream_links.keys():
         thread = thread + tv_stream_links[game_data['network']] + '\n'
@@ -82,8 +84,7 @@ def make_game_thread(game_id, game_data, comment_stream_link = ''):
         thread = thread + '\n**Recent Plays:**\n\n' + format_plays(game_data)
 
     thread = thread + format_boxscore(game_data)
-    espn_link = 'http://www.espn.com/mens-college-basketball/game?gameId=' + game_id
-    thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Follow the game on [ESPN](" + espn_link + ") for preview, play-by-play, more stats, and recap.\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
+    thread = thread + "\n\n-----------------------------------------------------------------\n\n**Thread Notes:**\n\n- I'm a bot! Don't be afraid to leave feedback!\n\n- Discuss whatever you wish. You can trash talk, but keep it civil.\n\n- Try [reddit stream](" + comment_stream_link + ") to keep up with comments.\n\n- Show your team affiliation - get a team logo by clicking 'Select Flair' on the right."
 
     thread = thread + " \n\n-----------------------------------------------------------------\n\n###[](#l/twitter) [Follow Our Twitter](https://twitter.com/redditcbb)"
     thread = thread + '\n\n^' + ' ^'.join(('Last Updated: ' + datetime.datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S %Z')).split())
