@@ -24,16 +24,6 @@ cbbBot_data.download_rcbb_rank()
 cbbBot_data.download_kenpom()
 teams = cbbBot_data.get_teams()
 
-#now = now.replace(month = 11, year = 2021, day = 9)
-
-url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + now.strftime('%Y%m%d') + '&groups=50&limit=357'
-obj = requests.get(url)
-schedule = json.loads(obj.content)
-
-url2 = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + (now + datetime.timedelta(days = 1)).strftime('%Y%m%d') + '&groups=50&limit=357'
-obj2 = requests.get(url2)
-schedule2 = json.loads(obj2.content)
-
 full_events = []
 
 full_events = cbbBot_data.get_events(now)
