@@ -67,6 +67,8 @@ games['top25'] = (games['awayRank'].replace('', np.nan).notna() | games['homeRan
 for column in ['awayRank', 'awayKenpomRank', 'homeRank', 'homeKenpomRank']:
     games[column] = games[column].fillna('').astype(str).str.replace('.0', '', regex = False)
 
+games = games.drop_duplicates('id', keep = 'first')
+
 games['requested'] = games['top25']
 games['pgrequested'] = games['top25']
 games['gamethread'] = [''] * len(games)
