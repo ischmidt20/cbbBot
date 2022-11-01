@@ -69,7 +69,7 @@ def download_kenpom():
             f.write(team + '\n')
 
 def download_rcbb_rank():
-    teams = get_teams()
+    teams = read_teams()
     url = 'http://cbbpoll.net/'
     line = requests.get(url).content.decode('utf-8')
     start_str = 'type="application/json">'
