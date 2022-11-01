@@ -1,15 +1,17 @@
 #!/Usr/bin/python3
-import requests
-import datetime
+import cloudscraper
 import pytz
-import json
+import requests
 
 import pandas as pd
 import numpy as np
 
+import datetime
+import json
+
 tz = pytz.timezone('US/Eastern')
 
-use_reddit_rank = False
+use_reddit_rank = True
 
 def get_game_data(game_id):
     game_data = espn(game_id)
@@ -53,7 +55,7 @@ def get_teams():
 def download_kenpom():
     teams = read_teams()
     url = 'https://kenpom.com/'
-    lines = requests.get(url).content.decode('utf-8').split('\n')
+    lines = cloudscraper.create_scraper().get('https://kenpom.com/').content.decode('utf-8').split('\n')
     ranking = []
     search_str = '<a href="team.php'
     for line in lines:
