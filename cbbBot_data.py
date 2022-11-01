@@ -70,26 +70,17 @@ def download_kenpom():
 
 def download_rcbb_rank():
     teams = get_teams()
-    url = 'http://cbbpoll.com/'
-    lines = requests.get(url).content.decode('utf-8').split('\n')
-    ranking, first_place_votes = [], []
-    i = 1
-    while i < 125:
-        first_place_votes.append('(' + str(i) + ')')
-        i = i + 1
+    url = 'http://cbbpoll.net/'
+    line = requests.get(url).content.decode('utf-8')
+    start_str = 'type="application/json">'
+    start_index = line.find(start_str)
+    data = json.loads(line[start_index + len(start_str): line.find('</script>', start_index)])
+    poll = data['props']['pageProps']['userpoll']
 
-    for line in lines:
-        if "<td><span class='team-name'>" in line:
-            team_rank = lines[lines.index(line) - 1].replace('<td>', '').replace('</td>', '')
-            line = line.replace('&#39;', "'").replace('&#38;', '&')
-            begin = line.find('></span>')
-            end = line.find('</span></td>')
-            team = line[(begin + 9):end]
-            for vote in first_place_votes:
-                if vote in team:
-                    team = team.replace(vote, '')
-                    break
-            ranking.append(teams.loc[teams['CBBPollName'] == team].index[0])
+    ranking = []
+    for i in range(25):
+        team = poll[i]['shortName']
+        ranking.append(teams.loc[teams['CBBPollName'] == team].index[0])
     with open('./data/cbbpoll.txt', 'w') as f:
         for team in ranking:
             f.write(team + '\n')
