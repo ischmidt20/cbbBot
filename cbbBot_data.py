@@ -8,6 +8,7 @@ import numpy as np
 
 import datetime
 import json
+import time
 
 tz = pytz.timezone('US/Eastern')
 
@@ -55,7 +56,12 @@ def get_teams():
 def download_kenpom():
     teams = read_teams()
     url = 'https://kenpom.com/'
-    lines = cloudscraper.create_scraper().get('https://kenpom.com/').content.decode('utf-8').split('\n')
+    downloaded = False
+    while not downloaded:
+        lines = cloudscraper.create_scraper().get('https://kenpom.com/').content.decode('utf-8').split('\n')
+        if len(lines) > 150:
+            downloaded = True
+        time.sleep(5)
     ranking = []
     search_str = '<a href="team.php'
     for line in lines:
