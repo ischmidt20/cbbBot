@@ -34,6 +34,9 @@ Buffalo,[Buffalo](#f/buffalo),Buffalo,Buffalo
 Butler,[Butler](#f/butler),Butler,Butler
 BYU,[BYU](#f/byu),BYU,BYU
 Cal Poly,[Cal Poly](#f/calpoly),Cal Poly,Cal Poly
+Cal State Bakersfield,[CSU Bakersfield](#f/csubakersfield),Cal State Bakersfield,Cal St. Bakersfield
+Cal State Fullerton,[Cal State Fullerton](#f/csufullerton),Cal State Fullerton,Cal St. Fullerton
+Cal State Northridge,[CSUN](#f/csunorthridge),Cal State Northridge,Cal St. Northridge
 California,[California](#f/california),California,California
 California Baptist,[California Baptist](#f/californiabaptist),Cal Baptist,Cal Baptist
 Campbell,[Campbell](#f/campbell),Campbell,Campbell
@@ -57,9 +60,6 @@ Columbia,[Columbia](#f/columbia),Columbia,Columbia
 Coppin State,[Coppin State](#f/coppinstate),Coppin State,Coppin St.
 Cornell,[Cornell](#f/cornell),Cornell,Cornell
 Creighton,[Creighton](#f/creighton),Creighton,Creighton
-CSU Bakersfield,[CSU Bakersfield](#f/csubakersfield),Cal State Bakersfield,Cal St. Bakersfield
-CSU Fullerton,[Cal State Fullerton](#f/csufullerton),Cal State Fullerton,Cal St. Fullerton
-CSU Northridge,[CSUN](#f/csunorthridge),Cal State Northridge,Cal St. Northridge
 Dartmouth,[Dartmouth](#f/dartmouth),Dartmouth,Dartmouth
 Davidson,[Davidson](#f/davidson),Davidson,Davidson
 Dayton,[Dayton](#f/dayton),Dayton,Dayton
@@ -68,7 +68,6 @@ Delaware State,[Delaware State](#f/delawarestate),Delaware State,Delaware St.
 Denver,[Denver](#f/denver),Denver,Denver
 DePaul,[DePaul](#f/depaul),DePaul,DePaul
 Detroit Mercy,[Detroit](#f/detroitmercy),Detroit,Detroit Mercy
-Dixie State,[Dixie State](#f/dixiestate),Dixie State,Dixie St.
 Drake,[Drake](#f/drake),Drake,Drake
 Drexel,[Drexel](#f/drexel),Drexel,Drexel
 Duke,[Duke](#f/duke),Duke,Duke
@@ -112,7 +111,7 @@ High Point,[High Point](#f/highpoint),High Point,High Point
 Hofstra,[Hofstra](#f/hofstra),Hofstra,Hofstra
 Holy Cross,[Holy Cross](#f/holycross),Holy Cross,Holy Cross
 Houston,[Houston](#f/houston),Houston,Houston
-Houston Baptist,[Houston Baptist](#f/houstonbaptist),Houston Baptist,Houston Baptist
+Houston Christian,[Houston Baptist](#f/houstonbaptist),Houston Baptist,Houston Baptist
 Howard,[Howard](#f/howard),Howard,Howard
 Idaho,[Idaho](#f/idaho),Idaho,Idaho
 Idaho State,[Idaho State](#f/idahostate),Idaho State,Idaho St.
@@ -140,6 +139,7 @@ Lafayette,[Lafayette](#f/lafayette),Lafayette,Lafayette
 Lamar,[Lamar](#f/lamar),Lamar,Lamar
 Lehigh,[Lehigh](#f/lehigh),Lehigh,Lehigh
 Liberty,[Liberty](#f/liberty),Liberty,Liberty
+Lindenwood,,,
 Lipscomb,[Lipscomb](#f/lipscomb),Lipscomb,Lipscomb
 Little Rock,[Little Rock](#f/ualr),Little Rock,Little Rock
 Long Beach State,[Long Beach State](#f/csulongbeach),Long Beach State,Long Beach St.
@@ -148,8 +148,8 @@ Longwood,[Longwood](#f/longwood),Longwood,Longwood
 Louisiana,[Louisiana](#f/louisiana),Louisiana,Louisiana
 Louisiana Tech,[Louisiana Tech](#f/louisianatech),Louisiana Tech,Louisiana Tech
 Louisville,[Louisville](#f/louisville),Louisville,Louisville
-Loyola (MD),[Loyola Maryland](#f/loyolamaryland),Loyola-MD,Loyola MD
 Loyola Chicago,[Loyola Chicago](#f/loyolachicago),Loyola Chicago,Loyola Chicago
+Loyola Maryland,[Loyola Maryland](#f/loyolamaryland),Loyola-MD,Loyola MD
 Loyola Marymount,[Loyola Marymount](#f/loyolamarymount),Loyola Marymount,Loyola Marymount
 LSU,[LSU](#f/lsu),LSU,LSU
 Maine,[Maine](#f/maine),Maine,Maine
@@ -234,6 +234,7 @@ Princeton,[Princeton](#f/princeton),Princeton,Princeton
 Providence,[Providence](#f/providence),Providence,Providence
 Purdue,[Purdue](#f/purdue),Purdue,Purdue
 Purdue Fort Wayne,[Purdue Fort Wayne](#f/fortwayne),Fort Wayne,Purdue Fort Wayne
+Queens University,,,
 Quinnipiac,[Quinnipiac](#f/quinnipiac),Quinnipiac,Quinnipiac
 Radford,[Radford](#f/radford),Radford,Radford
 Rhode Island,[Rhode Island](#f/rhodeisland),URI,Rhode Island
@@ -271,16 +272,18 @@ South Florida,[USF](#f/usf),USF,South Florida
 Southeast Missouri State,[Southeast Missouri](#f/southeastmissouri),SE Missouri State,Southeast Missouri St.
 Southern,[Southern](#f/southern),Southern,Southern
 Southern Illinois,[Southern Illinois](#f/southernillinois),Southern Illinois,Southern Illinois
+Southern Indiana,,,
 Southern Miss,[Southern Miss](#f/southernmiss),Southern Miss,Southern Miss
 Southern Utah,[Southern Utah](#f/southernutah),Southern Utah,Southern Utah
 St. Bonaventure,[St. Bonaventure](#f/stbonaventure),St. Bonaventure,St. Bonaventure
-St. Francis (BKN),[St. Francis Brooklyn](#f/stfrancisbrooklyn),St. Francis Brooklyn,St. Francis NY
 St. Francis (PA),[St. Francis](#f/stfrancis),St. Francis PA,St. Francis PA
+St. Francis Brooklyn,[St. Francis Brooklyn](#f/stfrancisbrooklyn),St. Francis Brooklyn,St. Francis NY
 St. John's,[St. John's](#f/stjohnsny),St. John's,St. John's
 St. Thomas - Minnesota,[St. Thomas](#f/stthomasmn),,St. Thomas
 Stanford,[Stanford](#f/stanford),Stanford,Stanford
 Stephen F. Austin,[Stephen F. Austin](#f/stephenfaustin),Stephen F. Austin,Stephen F. Austin
 Stetson,[Stetson](#f/stetson),Stetson,Stetson
+Stonehill,,,
 Stony Brook,[Stony Brook](#f/stonybrook),Stony Brook,Stony Brook
 Syracuse,[Syracuse](#f/syracuse),Syracuse,Syracuse
 Tarleton,[Tarleton State](#f/tarletonstate),Tarleton,Tarleton St.
@@ -291,7 +294,8 @@ Tennessee State,[Tennessee State](#f/tennesseestate),Tennessee State,Tennessee S
 Tennessee Tech,[Tennessee Tech](#f/tennesseetech),Tennessee Tech,Tennessee Tech
 Texas,[Texas](#f/texas),Texas,Texas
 Texas A&M,[Texas A&M](#f/texasam),Texas A&M,Texas A&M
-Texas A&M-CC,[Texas A&M-Corpus Christi](#f/texasamcorpuschristi),Texas A&M-Corpus Christi,Texas A&M Corpus Chris
+Texas A&M-Commerce,,,
+Texas A&M-Corpus Christi,[Texas A&M-Corpus Christi](#f/texasamcorpuschristi),Texas A&M-Corpus Christi,Texas A&M Corpus Chris
 Texas Southern,[Texas Southern](#f/texassouthern),Texas Southern,Texas Southern
 Texas State,[Texas State](#f/texasstate),Texas State,Texas St.
 Texas Tech,[Texas Tech](#f/texastech),Texas Tech,Texas Tech
@@ -325,6 +329,7 @@ UT Martin,[UT Martin](#f/utmartin),Tennessee-Martin,Tennessee Martin
 UT Rio Grande Valley,[UTRGV](#f/texasriograndevalley),UTRGV,UT Rio Grande Valley
 Utah,[Utah](#f/utah),Utah,Utah
 Utah State,[Utah State](#f/utahstate),Utah State,Utah St.
+Utah Tech,[Dixie State](#f/dixiestate),Dixie State,Dixie St.
 Utah Valley,[Utah Valley](#f/utahvalley),Utah Valley,Utah Valley
 UTEP,[UTEP](#f/utep),UTEP,UTEP
 UTSA,[UTSA](#f/utsa),UTSA,UTSA
