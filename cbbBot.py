@@ -62,7 +62,7 @@ try:
                 if cbbBot_data.check_game(body): #if message is valid game
                     if subject.lower() == 'request':
                         if ((games['user'] == message.author).sum() >= 2) and (message.author not in mods):
-                            message.reply(cbbBot_text.msg_spam)
+                            message.reply(body = cbbBot_text.msg_spam)
                             message.mark_read()
                             continue
                         if body not in requested_games:
@@ -73,26 +73,26 @@ try:
                             if games.loc[body, 'requested'] == 0:
                                 games.loc[body, 'requested'] = 1
                                 games.loc[body, 'user'] = message.author
-                                message.reply(cbbBot_text.msg_success)
+                                message.reply(body = cbbBot_text.msg_success)
                                 print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                             else:
-                                message.reply(cbbBot_text.msg_duplicate)
+                                message.reply(body = cbbBot_text.msg_duplicate)
                         else:
-                            message.reply(cbbBot_text.msg_success)
+                            message.reply(body = cbbBot_text.msg_success)
                             print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                     if subject.lower() == 'pgrequest':
-                        message.reply(cbbBot_text.msg_success_pg)
+                        message.reply(body = cbbBot_text.msg_success_pg)
                         games.loc[body, 'pgrequested'] = 1
                 else:
-                    message.reply(cbbBot_text.msg_fail)
+                    message.reply(body = bbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
                 blacklist.append(body)
                 with open('./data/blacklist.txt', 'a') as f:
                     f.write(body + '\n')
                 print('Bot will not write game ' + game + '. ' + str(datetime.datetime.now(tz)))
-                message.reply(cbbBot_text.msg_stopped)
+                message.reply(body = cbbBot_text.msg_stopped)
             elif message.author != 'reddit':
-                message.reply(cbbBot_text.msg_fail)
+                message.reply(body = cbbBot_text.msg_fail)
             message.mark_read()
 except:
     print('Could not check messages. Will continue. ' + str(datetime.datetime.now(tz)))
