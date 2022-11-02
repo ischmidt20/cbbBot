@@ -119,7 +119,7 @@ for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'post
             print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
         except:
             print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
-    if (row['gamethread'] == '') and ('FINAL' not in row['status']):
+    if (row['requested'] == 1) and (row['gamethread'] == '') and ('FINAL' not in row['status']):
         if datetime.datetime.now(tz) > (row['date'] - datetime.timedelta(minutes = 60)) and game not in blacklist: #if time is later than 60 minutes before game time, and game is not over, post thread, write thread_id to file
             print('Posting game ' + game + ' ..... ' + str(datetime.datetime.now(tz)))
             try:
