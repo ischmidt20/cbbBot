@@ -81,8 +81,9 @@ try:
                             message.reply(body = cbbBot_text.msg_success)
                             print('Added game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                     if subject.lower() == 'pgrequest':
-                        message.reply(body = cbbBot_text.msg_success_pg)
                         games.loc[body, 'pgrequested'] = 1
+                        message.reply(body = cbbBot_text.msg_success_pg)
+                        print('Added post-game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                 else:
                     message.reply(body = bbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
