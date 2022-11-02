@@ -54,7 +54,7 @@ while True:
                 comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
                 (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
                 print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-                thread.edit(thread_text) #edit thread
+                thread.edit(body = thread_text) #edit thread
                 print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
                 print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))

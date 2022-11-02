@@ -115,7 +115,7 @@ for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'post
             comment_stream_link = 'http://www.reddit-stream.com' + thread.permalink
             (title, thread_text) = cbbBot_text.make_game_thread(game, game_data, comment_stream_link) #re-write thread
             print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
-            thread.edit(thread_text) #edit thread
+            thread.edit(body = thread_text) #edit thread
             print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
         except:
             print('Failed to post post-game ' + game + '. ' + str(datetime.datetime.now(tz)))
@@ -138,6 +138,6 @@ for game, row in games.loc[(~games['status'].str.lower().isin(['canceled', 'post
 games = cbbBot_data.update_schedule(games)
 games.to_csv('./data/games_today.csv')
 
-r.submission(id = cbbBot_text.index_permalink.split('/')[4]).edit(cbbBot_text.index_thread(games))
+r.submission(id = cbbBot_text.index_permalink.split('/')[4]).edit(body = cbbBot_text.index_thread(games))
 
 print('Concluded script without issues. ' + str(datetime.datetime.now(tz)))
