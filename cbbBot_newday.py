@@ -29,7 +29,7 @@ full_events = []
 full_events = cbbBot_data.get_events(now)
 
 espn_home_ranks, espn_away_ranks = [], []
-games = pd.DataFrame()
+game_dicts = []
 
 for game in full_events:
     game_id = game['id']
@@ -52,7 +52,9 @@ for game in full_events:
     espn_away_ranks.append(espn_ranks[1])
 
     if date.day == now.day:
-        games = games.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network}, ignore_index = True)
+        game_dicts.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network})
+
+games = pd.DataFrame(game_dicts)
 
 if len(games) == 0:
     quit()
