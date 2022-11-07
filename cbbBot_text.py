@@ -231,7 +231,8 @@ def index_thread(games):
             else:
                 gamethread = '[Thread](https://www.reddit.com' + row['gamethread'] + ')'
             if row['pgthread'] == '':
-                pgthread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=pgrequest&message=' + game + ')'
+                pgthread = ''
+                #pgthread = '[Request](https://www.reddit.com/message/compose/?to=cbbBot&subject=pgrequest&message=' + game + ')'
             else:
                 pgthread = '[Thread](https://www.reddit.com' + row['pgthread'] + ')'
 
