@@ -58,5 +58,5 @@ while True:
                 print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
             except:
                 print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
-            time.sleep(5)
+            time.sleep(10)
     time.sleep(5)
