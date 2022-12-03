@@ -10,6 +10,7 @@ tv_stream_links = {'BTN':'[BTN](https://www.fox.com/live/channel/BTN/)', 'CBS':'
 
 msg_success = 'Thanks for your message. The game you requested has been successfully added to the queue and will be created within an hour of the scheduled game time. If the game has already started, the thread will be created momentarily. If the game is over, no thread will be created.'
 msg_fail = 'Thanks for your message. If you are trying to submit a game thread request, please make sure your title is "request" (case-insensitive) and the body contains only the ESPN game ID. If your request is successful, you will get a confirmation reply. If you have a question or comment about the bot, please send to u/Ike348.'
+msg_young = 'Thanks for your message. Unfortunately, your account is either too new or does not have enough karma to request a game thread.'
 msg_stopped = 'Successfully blocked this game thread!'
 msg_success_pg = 'Thanks for your message. A post-game thread will be created for this game upon its conclusion.'
 msg_spam = 'Thanks for your message. Unfortunately, you have already requested the maximum of 2 game threads today, so the bot will not consider any additional requests from this account until tomorrow.'

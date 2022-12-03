@@ -61,8 +61,15 @@ try:
             if len(body) == 9 and body.isnumeric(): #if message is 9-digit ID
                 if cbbBot_data.check_game(body): #if message is valid game
                     if subject.lower() == 'request':
+                        # If user has requested too many threads already
                         if ((games['user'] == message.author).sum() >= 2) and (message.author not in mods):
                             message.reply(body = cbbBot_text.msg_spam)
+                            message.mark_read()
+                            continue
+                        # If user does not meet karma or age thresholds
+                        author = r.redditor(message.author)
+                        if (author.comment_karma < 0) or (author.link_karma < 0) or ((datetime.datetime.utcnow().timestamp() - author.created_utc) < 86400):
+                            message.reply(body = cbbBot_text.msg_young)
                             message.mark_read()
                             continue
                         if body not in requested_games:
