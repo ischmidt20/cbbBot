@@ -51,7 +51,7 @@ for game in full_events:
     espn_home_ranks.append(espn_ranks[0])
     espn_away_ranks.append(espn_ranks[1])
 
-    if date.day == now.day:
+    if (date - datetime.timedelta(hours = 10)).day == now.day:
         game_dicts.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network})
 
 games = pd.DataFrame(game_dicts)

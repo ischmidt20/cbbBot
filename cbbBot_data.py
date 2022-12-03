@@ -109,10 +109,11 @@ def get_events(date):
     groups = ['50', '100', '98', '55', '56', '68']
     full_events = []
     for group in groups:
-        url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + date.strftime('%Y%m%d') + '&groups=' + group + '&limit=357'
-        obj = requests.get(url)
-        schedule = json.loads(obj.content)
-        full_events = full_events + schedule['events']
+        for offset in [0, 1]:
+            url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + (date + datetime.timedelta(days = offset)).strftime('%Y%m%d') + '&groups=' + group + '&limit=357'
+            obj = requests.get(url)
+            schedule = json.loads(obj.content)
+            full_events = full_events + schedule['events']
     return full_events
 
 def update_schedule(games):
