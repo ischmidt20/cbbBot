@@ -68,7 +68,7 @@ try:
                             continue
                         # If user does not meet karma or age thresholds
                         author = r.redditor(message.author)
-                        if (author.comment_karma < 0) or ((datetime.datetime.utcnow().timestamp() - author.created_utc) < 86400):
+                        if (author.comment_karma < 10) or ((datetime.datetime.utcnow().timestamp() - author.created_utc) < (86400 * 7)):
                             message.reply(body = cbbBot_text.msg_young)
                             message.mark_read()
                             continue
