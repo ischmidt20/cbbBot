@@ -48,11 +48,11 @@ for game in full_events:
                 if rank == '99':
                     rank = ''
         espn_ranks.append(rank)
-    espn_home_ranks.append(espn_ranks[0])
-    espn_away_ranks.append(espn_ranks[1])
 
     if (date - datetime.timedelta(hours = 10)).day == now.day:
         game_dicts.append({'id': game_id, 'awayTeam': away_team, 'homeTeam': home_team, 'date': date, 'network': network})
+        espn_home_ranks.append(espn_ranks[0])
+        espn_away_ranks.append(espn_ranks[1])
 
 games = pd.DataFrame(game_dicts)
 

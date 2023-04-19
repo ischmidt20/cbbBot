@@ -106,7 +106,7 @@ def check_game(game_id):
     return True
 
 def get_events(date):
-    groups = ['50', '100', '98', '55', '56', '68']
+    groups = ['50']
     full_events = []
     for group in groups:
         for offset in [0, 1]:
