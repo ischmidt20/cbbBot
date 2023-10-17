@@ -1,7 +1,9 @@
 #!/Usr/bin/python3
-import requests
-import json
 import datetime
+import json
+import time
+
+import requests
 import pytz
 
 teams = {}
@@ -9,10 +11,14 @@ teams = {}
 tz = pytz.timezone('US/Eastern')
 date = datetime.datetime.now(tz)
 
-while date.replace(tzinfo=None) < datetime.datetime(year = 2023, month = 2, day = 1):
+while date.replace(tzinfo=None) < datetime.datetime(year = 2024, month = 2, day = 1):
     url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + date.strftime('%Y%m%d') + '&groups=50&limit=357'
-    obj = requests.get(url)
-    schedule = json.loads(obj.content)
+    downloaded = False
+    while not downloaded:
+        obj = requests.get(url)
+        schedule = json.loads(obj.content)
+        downloaded = 'events' in schedule
+        time.sleep(1)
 
     for game in schedule['events']:
         game_id = game['id']

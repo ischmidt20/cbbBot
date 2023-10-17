@@ -4,7 +4,6 @@ Akron,[Akron](#f/akron),Akron,Akron
 Alabama,[Alabama](#f/alabama),Alabama,Alabama
 Alabama A&M,[Alabama A&M](#f/alabamaam),Alabama A & M,Alabama A&M
 Alabama State,[Alabama State](#f/alabamastate),Alabama State,Alabama St.
-Albany,[Albany](#f/albany),Albany,Albany
 Alcorn State,[Alcorn State](#f/alcornstate),Alcorn State,Alcorn St.
 American University,[American University](#f/american),American,American
 Appalachian State,[Appalachian State](#f/appalachianstate),Appalachian State,Appalachian St.
@@ -104,7 +103,6 @@ Grambling,[Grambling](#f/grambling),Grambling State,Grambling St.
 Grand Canyon,[Grand Canyon](#f/grandcanyon),Grand Canyon,Grand Canyon
 Green Bay,[Green Bay](#f/greenbay),Green Bay,Green Bay
 Hampton,[Hampton](#f/hampton),Hampton,Hampton
-Hartford,[Hartford](#f/hartford),Hartford,Hartford
 Harvard,[Harvard](#f/harvard),Harvard,Harvard
 Hawai'i,[Hawai'i](#f/hawaii),Hawaii,Hawaii
 High Point,[High Point](#f/highpoint),High Point,High Point
@@ -137,6 +135,7 @@ Kentucky,[Kentucky](#f/kentucky),Kentucky,Kentucky
 La Salle,[La Salle](#f/lasalle),La Salle,La Salle
 Lafayette,[Lafayette](#f/lafayette),Lafayette,Lafayette
 Lamar,[Lamar](#f/lamar),Lamar,Lamar
+Le Moyne,[Le Moyne](#f/lemoyne-sheet1-row22-col03),Le Moyne,Le Moyne
 Lehigh,[Lehigh](#f/lehigh),Lehigh,Lehigh
 Liberty,[Liberty](#f/liberty),Liberty,Liberty
 Lindenwood,[Lindenwood](#f/lindenwood),,Lindenwood
@@ -159,6 +158,7 @@ Marquette,[Marquette](#f/marquette),Marquette,Marquette
 Marshall,[Marshall](#f/marshall),Marshall,Marshall
 Maryland,[Maryland](#f/maryland),Maryland,Maryland
 Maryland-Eastern Shore,[UMES](#f/umes),UMES,Maryland Eastern Shore
+Massachusetts,[UMass](#f/umass),UMass,Massachusetts
 McNeese,[McNeese](#f/mcneese),McNeese,McNeese St.
 Memphis,[Memphis](#f/memphis),Memphis,Memphis
 Mercer,[Mercer](#f/mercer),Mercer,Mercer
@@ -277,16 +277,15 @@ Southern Miss,[Southern Miss](#f/southernmiss),Southern Miss,Southern Miss
 Southern Utah,[Southern Utah](#f/southernutah),Southern Utah,Southern Utah
 St. Bonaventure,[St. Bonaventure](#f/stbonaventure),St. Bonaventure,St. Bonaventure
 St. Francis (PA),[St. Francis](#f/stfrancis),St. Francis PA,St. Francis PA
-St. Francis Brooklyn,[St. Francis Brooklyn](#f/stfrancisbrooklyn),St. Francis Brooklyn,St. Francis NY
 St. John's,[St. John's](#f/stjohnsny),St. John's,St. John's
-St. Thomas - Minnesota,[St. Thomas](#f/stthomasmn),,St. Thomas
+St. Thomas-Minnesota,[St. Thomas](#f/stthomasmn),,St. Thomas
 Stanford,[Stanford](#f/stanford),Stanford,Stanford
 Stephen F. Austin,[Stephen F. Austin](#f/stephenfaustin),Stephen F. Austin,Stephen F. Austin
 Stetson,[Stetson](#f/stetson),Stetson,Stetson
 Stonehill,[Stonehill](#f/stonehill),,Stonehill
 Stony Brook,[Stony Brook](#f/stonybrook),Stony Brook,Stony Brook
 Syracuse,[Syracuse](#f/syracuse),Syracuse,Syracuse
-Tarleton,[Tarleton State](#f/tarletonstate),Tarleton,Tarleton St.
+Tarleton State,[Tarleton State](#f/tarletonstate),Tarleton,Tarleton St.
 TCU,[TCU](#f/tcu),TCU,TCU
 Temple,[Temple](#f/temple),Temple,Temple
 Tennessee,[Tennessee](#f/tennessee),Tennessee,Tennessee
@@ -306,6 +305,7 @@ Troy,[Troy](#f/troy),Troy,Troy
 Tulane,[Tulane](#f/tulane),Tulane,Tulane
 Tulsa,[Tulsa](#f/tulsa),Tulsa,Tulsa
 UAB,[UAB](#f/uab),UAB,UAB
+UAlbany,[Albany](#f/albany),Albany,Albany
 UC Davis,[UC Davis](#f/ucdavis),UC Davis,UC Davis
 UC Irvine,[UC Irvine](#f/ucirvine),UC Irvine,UC Irvine
 UC Riverside,[UC Riverside](#f/ucriverside),UC Riverside,UC Riverside
@@ -316,7 +316,6 @@ UCLA,[UCLA](#f/ucla),UCLA,UCLA
 UConn,[Connecticut](#f/connecticut),UConn,Connecticut
 UIC,[UIC](#f/uic),UIC,Illinois Chicago
 UL Monroe,[ULM](#f/ulm),ULM,Louisiana Monroe
-UMass,[UMass](#f/umass),UMass,Massachusetts
 UMass Lowell,[UMass Lowell](#f/massachusettslowell),UMass Lowell,UMass Lowell
 UMBC,[UMBC](#f/umbc),UMBC,UMBC
 UNC Asheville,[UNC Asheville](#f/uncasheville),UNC Asheville,UNC Asheville
