@@ -12,7 +12,7 @@ import time
 
 tz = pytz.timezone('US/Eastern')
 
-use_reddit_rank = True
+use_reddit_rank = False
 
 def get_game_data(game_id):
     game_data = espn(game_id)
