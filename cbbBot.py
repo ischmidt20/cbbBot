@@ -12,7 +12,8 @@ try: #import if praw is happy, quit this cycle if not
     import praw
     import praw.models
     print('Imported praw! ' + str(datetime.datetime.now(tz)))
-except:
+except Exception as e:
+    print(e)
     print('Failed to import praw. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
@@ -24,7 +25,8 @@ try:
     r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent = "CBB Bot v5", timeout = 2) #define praw and user agent, login
     r.validate_on_submit = True
     print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
-except:
+except Exception as e:
+    print(e)
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
@@ -92,7 +94,7 @@ try:
                         message.reply(body = cbbBot_text.msg_success_pg)
                         print('Added post-game ' + body + ' to queue! ' + str(datetime.datetime.now(tz)))
                 else:
-                    message.reply(body = bbBot_text.msg_fail)
+                    message.reply(body = cbbBot_text.msg_fail)
             elif message.author in stoppers and subject.lower() == 'stop': #if admin wants to prevent game thread from being made
                 blacklist.append(body)
                 with open('./data/blacklist.txt', 'a') as f:
@@ -102,7 +104,8 @@ try:
             elif message.author != 'reddit':
                 message.reply(body = cbbBot_text.msg_fail)
             message.mark_read()
-except:
+except Exception as e:
+    print(e)
     print('Could not check messages. Will continue. ' + str(datetime.datetime.now(tz)))
 
 games.loc[[game for game in requested_games if game in games.index], 'requested'] = 1
