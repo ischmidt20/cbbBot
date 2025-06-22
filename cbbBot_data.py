@@ -75,21 +75,27 @@ def download_kenpom():
             f.write(team + '\n')
 
 def download_rcbb_rank():
-    teams = read_teams()
-    url = 'http://cbbpoll.net/'
-    line = requests.get(url).content.decode('utf-8')
-    start_str = 'type="application/json">'
-    start_index = line.find(start_str)
-    data = json.loads(line[start_index + len(start_str): line.find('</script>', start_index)])
-    poll = data['props']['pageProps']['userpoll']
+    try:
+        teams = read_teams()
+        url = 'http://cbbpoll.net/'
+        line = requests.get(url).content.decode('utf-8')
+        start_str = 'type="application/json">'
+        start_index = line.find(start_str)
+        data = json.loads(line[start_index + len(start_str): line.find('</script>', start_index)])
+        poll = data['props']['pageProps']['userpoll']
 
-    ranking = []
-    for i in range(25):
-        team = poll[i]['shortName']
-        ranking.append(teams.loc[teams['CBBPollName'] == team].index[0])
-    with open('./data/cbbpoll.txt', 'w') as f:
-        for team in ranking:
-            f.write(team + '\n')
+        ranking = []
+        for i in range(25):
+            team = poll[i]['shortName']
+            ranking.append(teams.loc[teams['CBBPollName'] == team].index[0])
+        with open('./data/cbbpoll.txt', 'w') as f:
+            for team in ranking:
+                f.write(team + '\n')
+    except Exception as e:
+        print(e)
+        print('Failed to pull cbb poll' + str(datetime.datetime.now(tz)))
+
+    
 
 def if_exists(dct, key, value):
     if key in dct:

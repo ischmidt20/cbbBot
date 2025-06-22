@@ -10,7 +10,8 @@ tz = pytz.timezone('US/Eastern')
 try: #import if praw is happy, quit this cycle if not
     import praw
     print('Imported praw! ' + str(datetime.datetime.now(tz)))
-except:
+except Exception as e:
+    print(e)
     print('Failed to import praw. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
@@ -22,7 +23,8 @@ try:
     r = praw.Reddit(client_id = lines[0], client_secret = lines[1], username = "cbbBot", password = lines[2], user_agent = "CBB Bot v5") #define praw and user agent, login
     r.validate_on_submit = True
     print('Logged in to Reddit! ' + str(datetime.datetime.now(tz)))
-except:
+except Exception as e:
+    print(e)
     print('Failed to login to Reddit. Shutting down..... ' + str(datetime.datetime.now(tz)))
     quit()
 
@@ -34,7 +36,8 @@ while True:
     try:
         games = cbbBot_data.read_games()
         print('Read in games data frame! ' + str(datetime.datetime.now(tz)))
-    except:
+    except Exception as e:
+        print(e)
         print('Failed to read in games data frame.' + str(datetime.datetime.now(tz)))
         time.sleep(5)
         continue
@@ -56,7 +59,8 @@ while True:
                 print('Made thread for game ' + game + '! ' + str(datetime.datetime.now(tz)))
                 thread.edit(body = thread_text) #edit thread
                 print('Edited thread ' + game + '! ' + str(datetime.datetime.now(tz)))
-            except:
+            except Exception as e:
+                print(e)
                 print('Failed to edit thread ' + game + '. Will continue..... ' + str(datetime.datetime.now(tz)))
             time.sleep(10)
     time.sleep(5)
