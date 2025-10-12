@@ -4,14 +4,12 @@ import json
 import time
 
 import requests
-import pytz
+
+year = 2025
 
 teams = {}
-
-tz = pytz.timezone('US/Eastern')
-date = datetime.datetime.now(tz)
-
-while date.replace(tzinfo=None) < datetime.datetime(year = 2025, month = 2, day = 1):
+date = datetime.datetime(year = year, month = 11, day = 1)
+while date < datetime.datetime(year = year + 1, month = 3, day = 1):
     url = 'http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?dates=' + date.strftime('%Y%m%d') + '&groups=50&limit=357'
     downloaded = False
     while not downloaded:
