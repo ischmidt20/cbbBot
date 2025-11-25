@@ -11,6 +11,7 @@ tz = pytz.timezone('US/Eastern')
 try: #import if praw is happy, quit this cycle if not
     import praw
     import praw.models
+    import prawcore
     print('Imported praw! ' + str(datetime.datetime.now(tz)))
 except Exception as e:
     print(e)
@@ -70,7 +71,13 @@ try:
                             continue
                         # If user does not meet karma or age thresholds
                         author = r.redditor(message.author)
-                        if (author.comment_karma < 10) or ((datetime.datetime.utcnow().timestamp() - author.created_utc) < (86400 * 7)):
+                        try:
+                            karma = author.comment_karma
+                            accountAge = datetime.datetime.utcnow().timestamp() - author.created_utc
+                        except prawcore.exceptions.NotFound:
+                            karma = 0
+                            accountAge = 0
+                        if (karma < 10) or (accountAge < (86400 * 7)):
                             message.reply(body = cbbBot_text.msg_young)
                             message.mark_read()
                             continue
