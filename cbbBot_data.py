@@ -95,8 +95,6 @@ def download_rcbb_rank():
         print(e)
         print('Failed to pull cbb poll' + str(datetime.datetime.now(tz)))
 
-    
-
 def if_exists(dct, key, value):
     if key in dct:
         return dct[key]
@@ -165,7 +163,7 @@ def espn(game_id):
         return_data['gameClock'] = ''
 
     return_data['spread'], return_data['overUnder'] = '', ''
-    if game['pickcenter']:
+    if game.get('pickcenter'):
         for provider in game['pickcenter']:
             if provider['provider']['name'] == 'consensus':
                 return_data['spread'] = provider['details']
